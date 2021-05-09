@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.RepositoryImpl
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
+import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import javax.inject.Singleton
 
@@ -15,8 +16,12 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideRepository(
-        api: ForecastApi
+        api: ForecastApi,
+        networkMapper: NetworkForecastMapper
     ): Repository {
-        return RepositoryImpl(api)
+        return RepositoryImpl(api, networkMapper)
     }
+
+    @Provides
+    fun provideNetworkForecastMapper() = NetworkForecastMapper()
 }
