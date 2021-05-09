@@ -1,8 +1,11 @@
-package ru.yellowshark.dsr_weather
+package ru.yellowshark.dsr_weather.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dagger.hilt.android.AndroidEntryPoint
+import ru.yellowshark.dsr_weather.R
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
