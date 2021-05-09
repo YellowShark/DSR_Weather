@@ -24,7 +24,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     @Provides
-    fun provideApi(retrofit: Retrofit): ForecastApi =
+    fun provideForecastApi(retrofit: Retrofit): ForecastApi =
         retrofit.create(ForecastApi::class.java)
 
     @Singleton
