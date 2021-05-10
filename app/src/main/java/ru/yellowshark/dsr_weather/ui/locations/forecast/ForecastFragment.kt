@@ -2,6 +2,7 @@ package ru.yellowshark.dsr_weather.ui.locations.forecast
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -20,6 +21,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getForecast("Воронеж")
+        viewModel.getAllDayForecast("Воронеж")
         observeViewModel()
     }
 
@@ -27,7 +29,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
         viewModel.forecast.observe(viewLifecycleOwner) {
             with(binding) {
                 Glide.with(requireContext())
-                    .load("$WEATHER_ICON_URL_PREFIX${it.icon}$WEATHER_ICON_URL_POSTFIX")
+                    .load(it.icon)
                     .into(forecastIconImage)
 
                 forecastDateText.text = it.date
@@ -38,6 +40,10 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
                 forecastPressureText.text = it.pressure
                 forecastHumidityText.text = it.humidity
             }
+        }
+
+        viewModel.fullForecast.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 }
