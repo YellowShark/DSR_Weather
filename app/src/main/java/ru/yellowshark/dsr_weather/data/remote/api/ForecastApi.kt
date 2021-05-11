@@ -13,6 +13,6 @@ interface ForecastApi {
     @GET("data/2.5/forecast")
     fun getAllDayForecast(
         @Query("q") city: String,
-        @Query("cnt") cnt: Int = 8
+        @Query("cnt") cnt: Int = 9
     ): Single<AllDayForecastResponse>
 }

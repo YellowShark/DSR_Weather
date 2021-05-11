@@ -32,7 +32,7 @@ class NetworkShortForecastMapper : Mapper<ShortForecast, Forecast> {
                 time = dtTxt.toShortTimeFormat(),
                 temp = "${main.temp.toInt()} \u00B0C",
                 icon = "$WEATHER_ICON_URL_PREFIX${weather[0].icon}$WEATHER_ICON_URL_POSTFIX",
-                humidity = "Влажность: ${main.humidity}%"
+                humidity = "${main.humidity}%"
             )
         }
     }

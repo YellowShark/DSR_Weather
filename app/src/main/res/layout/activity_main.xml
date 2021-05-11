@@ -7,9 +7,9 @@
     android:orientation="vertical"
     tools:context=".ui.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <!--<androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize" />
+        android:layout_height="?actionBarSize" />-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_main_fragment"
