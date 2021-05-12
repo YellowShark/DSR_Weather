@@ -2,9 +2,13 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation.xml"
-    app:startDestination="@id/forecastFragment">
+    app:startDestination="@id/locationsFragment">
     <fragment
         android:id="@+id/forecastFragment"
         android:name="ru.yellowshark.dsr_weather.ui.locations.forecast.ForecastFragment"
         android:label="ForecastFragment" />
+    <fragment
+        android:id="@+id/locationsFragment"
+        android:name="ru.yellowshark.dsr_weather.ui.locations.LocationsFragment"
+        android:label="LocationsFragment" />
 </navigation>
