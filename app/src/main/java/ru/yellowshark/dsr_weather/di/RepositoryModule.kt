@@ -5,7 +5,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.RepositoryImpl
+import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
+import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
 import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
 import ru.yellowshark.dsr_weather.domain.mapper.NetworkShortForecastMapper
 import ru.yellowshark.dsr_weather.domain.repository.Repository
@@ -18,10 +20,18 @@ object RepositoryModule {
     @Singleton
     fun provideRepository(
         api: ForecastApi,
+        dao: LocationsDao,
         networkMapper: NetworkForecastMapper,
-        networkShortForecastMapper: NetworkShortForecastMapper
+        networkShortForecastMapper: NetworkShortForecastMapper,
+        localLocationMapper: LocalLocationMapper,
     ): Repository {
-        return RepositoryImpl(api, networkMapper, networkShortForecastMapper)
+        return RepositoryImpl(
+            api,
+            dao,
+            networkMapper,
+            networkShortForecastMapper,
+            localLocationMapper
+        )
     }
 
     @Provides
@@ -29,4 +39,7 @@ object RepositoryModule {
 
     @Provides
     fun provideNetworkShortForecastMapper() = NetworkShortForecastMapper()
+
+    @Provides
+    fun provideLocalLocationMapper() = LocalLocationMapper()
 }

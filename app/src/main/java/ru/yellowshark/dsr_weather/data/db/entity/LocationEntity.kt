@@ -7,15 +7,17 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "locations")
 data class LocationEntity(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Int,
+    @ColumnInfo(name = "temp")
+    var temp: Int,
     @ColumnInfo(name = "city")
-    val city: String,
+    var city: String,
     @ColumnInfo(name = "lat")
-    val lat: Long = 0L,
+    var lat: Long = 0L,
     @ColumnInfo(name = "lon")
-    val lon: Long = 0L,
+    var lon: Long = 0L,
     @ColumnInfo(name = "has_next_day_forecast")
-    val hasNextDayForecast: Boolean = false,
+    var hasNextDayForecast: Boolean = false,
     @ColumnInfo(name = "is_favorite")
     var isFavorite: Boolean = false,
 )

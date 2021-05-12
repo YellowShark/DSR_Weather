@@ -30,24 +30,5 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
 
     private fun initRv() {
         binding.allLocationsRv.adapter = adapter
-        mockAdapter()
-    }
-
-    private fun mockAdapter() {
-        adapter.data = listOf(
-            Location(
-                "Воронеж",
-                "30"
-            ),
-            Location(
-                "Москва",
-                "30"
-            ),
-            Location(
-                "Питер",
-                "30"
-            ),
-
-        )
     }
 }

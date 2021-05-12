@@ -34,6 +34,7 @@ class AddLocationFragment : Fragment(R.layout.fragment_add_location) {
         with(binding) {
             addLocationViewPager.apply {
                 adapter = pagerAdapter
+                setOnTouchListener { v, event -> return@setOnTouchListener true }
                 addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                     override fun onPageScrolled(
                         position: Int,
@@ -50,6 +51,13 @@ class AddLocationFragment : Fragment(R.layout.fragment_add_location) {
                     }
                 })
             }
+        }
+    }
+
+    fun goNextPager() {
+        with(binding) {
+            val currPos = addLocationViewPager.currentItem
+            addLocationViewPager.currentItem = currPos + 1
         }
     }
 }

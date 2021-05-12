@@ -15,4 +15,12 @@
         android:id="@+id/destination_add_location"
         android:name="ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment"
         android:label="AddLocationFragment" />
+    <fragment
+        android:id="@+id/locationNameFragment"
+        android:name="ru.yellowshark.dsr_weather.ui.locations.add.LocationNameFragment"
+        android:label="LocationNameFragment" />
+    <fragment
+        android:id="@+id/destination_map"
+        android:name="ru.yellowshark.dsr_weather.ui.locations.add.MapFragment"
+        android:label="MapFragment" />
 </navigation>
