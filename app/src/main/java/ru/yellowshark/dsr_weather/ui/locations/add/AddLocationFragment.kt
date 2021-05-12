@@ -53,11 +53,4 @@ class AddLocationFragment : Fragment(R.layout.fragment_add_location) {
             }
         }
     }
-
-    fun goNextPager() {
-        with(binding) {
-            val currPos = addLocationViewPager.currentItem
-            addLocationViewPager.currentItem = currPos + 1
-        }
-    }
 }
