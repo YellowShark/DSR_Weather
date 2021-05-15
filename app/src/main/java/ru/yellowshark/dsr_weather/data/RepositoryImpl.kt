@@ -23,6 +23,8 @@ class RepositoryImpl @Inject constructor(
     private val localLocationMapper: LocalLocationMapper
 ) : Repository {
 
+    private val newLocation = Location(0, 0, "")
+
     override fun getForecast(city: String): Single<Forecast> {
         return api.getForecast(city)
             .map { networkMapper.toDomain(it) }
@@ -41,8 +43,8 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun saveLocation(location: Location): Completable {
-        return dao.insertLocation(localLocationMapper.fromDomain(location))
+    override fun saveLocation(): Completable {
+        return dao.insertLocation(localLocationMapper.fromDomain(newLocation))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -54,5 +56,18 @@ class RepositoryImpl @Inject constructor(
             }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun setNextDay(hasNextDayForecast: Boolean) {
+        newLocation.hasNextDayForecast = hasNextDayForecast
+    }
+
+    override fun setLocationName(name: String) {
+        newLocation.city = name
+    }
+
+    override fun setCoordinates(lon: Long, lat: Long) {
+        newLocation.lon = lon
+        newLocation.lat = lat
     }
 }

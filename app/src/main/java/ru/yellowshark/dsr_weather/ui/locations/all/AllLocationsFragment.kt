@@ -2,7 +2,9 @@ package ru.yellowshark.dsr_weather.ui.locations.all
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
@@ -12,16 +14,28 @@ import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
 
 class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
     private val binding: FragmentAllLocationsBinding by viewBinding()
+    private val viewModel: AllLocationsViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(AllLocationsViewModel::class.java)
+    }
     private val adapter: LocationsAdapter by lazy { LocationsAdapter() }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         initRv()
+        observeVm()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getLocations()
     }
 
     private fun initListeners() {
-        binding.allLocationsAddLocationsBtn.setOnClickListener { openWizard() }
+        with(binding) {
+            allLocationsAddLocationsBtn.setOnClickListener { openWizard() }
+            allLocationsAddFab.setOnClickListener { openWizard() }
+        }
     }
 
     private fun openWizard() {
@@ -30,5 +44,17 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
 
     private fun initRv() {
         binding.allLocationsRv.adapter = adapter
+    }
+
+    private fun observeVm() {
+        with(binding) {
+            viewModel.locations.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    adapter.data = it
+                    allLocationsEmptyRv.isVisible = false
+                } else
+                    allLocationsEmptyRv.isVisible = true
+            }
+        }
     }
 }

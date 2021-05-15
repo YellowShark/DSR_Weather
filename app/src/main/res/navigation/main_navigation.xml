@@ -17,10 +17,10 @@
         android:label="AddLocationFragment" />
     <fragment
         android:id="@+id/locationNameFragment"
-        android:name="ru.yellowshark.dsr_weather.ui.locations.add.LocationNameFragment"
+        android:name="ru.yellowshark.dsr_weather.ui.locations.add.name.LocationNameFragment"
         android:label="LocationNameFragment" />
     <fragment
         android:id="@+id/destination_map"
-        android:name="ru.yellowshark.dsr_weather.ui.locations.add.MapFragment"
+        android:name="ru.yellowshark.dsr_weather.ui.locations.add.map.MapFragment"
         android:label="MapFragment" />
 </navigation>

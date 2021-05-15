@@ -7,6 +7,9 @@ import androidx.viewpager.widget.ViewPager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentAddLocationBinding
+import ru.yellowshark.dsr_weather.ui.locations.add.details.DetailsFragment
+import ru.yellowshark.dsr_weather.ui.locations.add.map.MapFragment
+import ru.yellowshark.dsr_weather.ui.locations.add.name.LocationNameFragment
 
 class AddLocationFragment : Fragment(R.layout.fragment_add_location) {
     private val binding: FragmentAddLocationBinding by viewBinding()

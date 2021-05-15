@@ -12,7 +12,13 @@ interface Repository {
 
     fun getAllDayForecast(city: String): Single<List<ShortForecast>>
 
-    fun saveLocation(location: Location): Completable
+    fun saveLocation(): Completable
 
     fun getLocations(): Single<List<Location>>
+
+    fun setNextDay(hasNextDayForecast: Boolean)
+
+    fun setLocationName(name: String)
+
+    fun setCoordinates(lon: Long, lat: Long)
 }

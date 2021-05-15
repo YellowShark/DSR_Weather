@@ -11,13 +11,13 @@ import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
 import ru.yellowshark.dsr_weather.domain.repository.Repository
+import ru.yellowshark.dsr_weather.ui.locations.base.BaseViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class ForecastViewModel @Inject constructor(
     private val repository: Repository
-) : ViewModel() {
-    private val disposables = CompositeDisposable()
+) : BaseViewModel() {
     private val _forecast = MutableLiveData<Forecast>()
     val forecast: LiveData<Forecast>
         get() = _forecast

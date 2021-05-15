@@ -1,16 +1,20 @@
-package ru.yellowshark.dsr_weather.ui.locations.add
+package ru.yellowshark.dsr_weather.ui.locations.add.name
 
 import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.Navigation
+import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentLocationNameBinding
+import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 class LocationNameFragment : Fragment(R.layout.fragment_location_name) {
     private val binding: FragmentLocationNameBinding by viewBinding()
+    private val viewModel: LocationNameViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(LocationNameViewModel::class.java)
+    }
     private lateinit var onClickListener: OnClickListener
 
     override fun onAttach(context: Context) {
@@ -20,8 +24,15 @@ class LocationNameFragment : Fragment(R.layout.fragment_location_name) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.locationNameOkBtn.setOnClickListener {
-            onClickListener.onClickListener(it)
+        initListeners()
+    }
+
+    private fun initListeners() {
+        with(binding) {
+            locationNameOkBtn.setOnClickListener {
+                viewModel.setLocationName(locationNameNameEt.text.toString())
+                onClickListener.onClickListener(it)
+            }
         }
     }
 }
