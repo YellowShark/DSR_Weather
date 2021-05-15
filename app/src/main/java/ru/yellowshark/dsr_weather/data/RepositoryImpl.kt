@@ -58,6 +58,12 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun updateLocationTemp(locationId: Int, newTemp: Int): Completable {
+        return dao.updateLocationTemp(locationId, newTemp)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun setNextDay(hasNextDayForecast: Boolean) {
         newLocation.hasNextDayForecast = hasNextDayForecast
     }

@@ -24,7 +24,7 @@ class LocationsViewHolder(
     fun bind(location: Location) {
         with(binding) {
             itemLocationCity.text = location.city
-            //itemLocationTemperature.text = location.temp
+            itemLocationTemperature.text = "${location.temp} °C"
         }
     }
 }

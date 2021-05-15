@@ -16,6 +16,8 @@ interface Repository {
 
     fun getLocations(): Single<List<Location>>
 
+    fun updateLocationTemp(locationId: Int, newTemp: Int): Completable
+
     fun setNextDay(hasNextDayForecast: Boolean)
 
     fun setLocationName(name: String)

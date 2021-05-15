@@ -50,7 +50,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
                 forecastDateText.text = it.date
                 forecastCityText.text = it.cityName
                 forecastDescText.text = it.description
-                forecastTemperatureText.text = it.temperature
+                forecastTemperatureText.text = "${it.temperature} °C"
                 forecastWindText.text = it.wind
                 forecastPressureText.text = it.pressure
                 forecastHumidityText.text = it.humidity

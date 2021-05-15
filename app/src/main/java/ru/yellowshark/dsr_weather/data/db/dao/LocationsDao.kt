@@ -14,4 +14,11 @@ interface LocationsDao {
 
     @Query("SELECT * FROM locations")
     fun getLocations(): Single<List<LocationEntity>>
+
+    @Query("""
+        UPDATE locations
+        SET `temp` = :newTemp
+        WHERE id = :locationId
+        """)
+    fun updateLocationTemp(locationId: Int, newTemp: Int): Completable
 }

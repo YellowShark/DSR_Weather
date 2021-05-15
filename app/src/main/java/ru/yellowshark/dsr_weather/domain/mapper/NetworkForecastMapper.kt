@@ -14,9 +14,10 @@ class NetworkForecastMapper : Mapper<Forecast, ForecastResponse> {
             val sdf = SimpleDateFormat("HH:mm\nE, dd MMM.", Locale.getDefault())
             val date = sdf.format(Date(System.currentTimeMillis()))
             return Forecast(
+                id = 0,
                 date = date,
                 cityName = name,
-                temperature = "${main.temp.toInt()} \u00B0C",
+                temperature = dto.main.temp.toInt(),
                 humidity = "Влажность: ${main.humidity}%",
                 icon = "$WEATHER_ICON_URL_PREFIX${weather[0].icon}$WEATHER_ICON_URL_POSTFIX",
                 description = weather[0].description,

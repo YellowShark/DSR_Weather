@@ -9,7 +9,6 @@ import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentAllLocationsBinding
-import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
 
 class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
@@ -28,7 +27,7 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getLocations()
+        viewModel.updateLocations()
     }
 
     private fun initListeners() {
@@ -48,12 +47,9 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
 
     private fun observeVm() {
         with(binding) {
-            viewModel.locations.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty()) {
-                    adapter.data = it
-                    allLocationsEmptyRv.isVisible = false
-                } else
-                    allLocationsEmptyRv.isVisible = true
+            viewModel.location.observe(viewLifecycleOwner) {
+                adapter.addItem(it)
+                allLocationsEmptyRv.isVisible = false
             }
         }
     }
