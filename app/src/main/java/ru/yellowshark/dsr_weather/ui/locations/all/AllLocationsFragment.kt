@@ -2,6 +2,7 @@ package ru.yellowshark.dsr_weather.ui.locations.all
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,8 @@ import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
+import ru.yellowshark.dsr_weather.utils.Event
+import ru.yellowshark.dsr_weather.utils.Event.*
 
 class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
     private val binding: FragmentLocationsBinding by viewBinding()
@@ -49,8 +52,8 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
 
     private fun initListeners() {
         with(binding) {
-            allLocationsAddLocationsBtn.setOnClickListener { openWizard() }
-            allLocationsAddFab.setOnClickListener { openWizard() }
+            locationsAddLocationsBtn.setOnClickListener { openWizard() }
+            locationsAddFab.setOnClickListener { openWizard() }
         }
     }
 
@@ -59,15 +62,46 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
     }
 
     private fun initRv() {
-        binding.allLocationsRv.adapter = adapter
+        binding.locationsRv.adapter = adapter
     }
 
     private fun observeVm() {
         with(binding) {
+            viewModel.event.observe(viewLifecycleOwner) { event ->
+                when (event) {
+                    LOADING -> {
+                        locationsLoader.isVisible = true
+                        locationsNoLocationsWrapper.isVisible = false
+                        locationsAddFab.isVisible = false
+                        locationsRv.isVisible = false
+                    }
+                    SUCCESS -> {
+                        locationsLoader.isVisible = false
+                        locationsNoLocationsWrapper.isVisible = false
+                        locationsAddFab.isVisible = true
+                        locationsRv.isVisible = true
+                    }
+                    ERROR -> {
+                        locationsLoader.isVisible = false
+                        locationsNoLocationsWrapper.isVisible = false
+                        locationsAddFab.isVisible = true
+                        locationsRv.isVisible = true
+                        Toast.makeText(requireContext(), "Произошла ошибка", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    EMPTY -> {
+                        locationsLoader.isVisible = false
+                        locationsNoLocationsWrapper.isVisible = true
+                        locationsAddFab.isVisible = false
+                        locationsRv.isVisible = false
+                    }
+                }
+            }
+
             viewModel.location.observe(viewLifecycleOwner) {
                 adapter.addItem(it)
-                allLocationsNoLocationsWrapper.isVisible = false
-                allLocationsAddFab.isVisible = true
+                locationsNoLocationsWrapper.isVisible = false
+                locationsAddFab.isVisible = true
             }
         }
     }
