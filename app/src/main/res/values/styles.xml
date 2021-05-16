@@ -6,4 +6,15 @@
         <item name="android:textColor">@color/gray</item>
         <item name="textAllCaps">false</item>
     </style>
+
+    <style name="fab_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:theme">@style/Widget.MaterialComponents.ExtendedFloatingActionButton</item>
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="tint">@color/white</item>
+    </style>
+
 </resources>
