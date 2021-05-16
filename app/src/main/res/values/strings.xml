@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">DSR-Weather</string>
+    <string name="app_name" translatable="false">DSR-Weather</string>
+
+    <string name="with_next_day_forecast">with next day forecast</string>
+    <string name="without_next_day_forecast">without next day forecast</string>
+    <string name="add">Add</string>
+
+    <string name="location_name">Location name</string>
+    <string name="ok" translatable="false">OK</string>
+
+    <string name="no_locations_text">You don\'t have any city to show weather.\nPlease, add city by tapping button below.</string>
+    <string name="add_location">Add location</string>
+
+    <string name="locations">Locations</string>
+    <string name="forecast">Forecast</string>
+    <string name="new_location">New location</string>
+
+    <string name="all_locations">All locations</string>
+    <string name="fav_locations">Liked locations</string>
+
+    <string name="unknown_error">Unknown error</string>
+    <string name="error_no_internet">Failed to load data. Check your Internet connection.</string>
+
+    <string name="temperature_graph">Temperature graph</string>
+
+    <string name="humidity">Humidity:</string>
+    <string name="pressure">Pressure:</string>
+    <string name="wind">Wind:</string>
+    <string name="mm_hg">mm Hg</string>
+    <string name="m_s">m/s</string>
 </resources>

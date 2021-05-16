@@ -1,8 +1,10 @@
 package ru.yellowshark.dsr_weather.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.RepositoryImpl
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
@@ -35,7 +37,8 @@ object RepositoryModule {
     }
 
     @Provides
-    fun provideNetworkForecastMapper() = NetworkForecastMapper()
+    fun provideNetworkForecastMapper(@ApplicationContext context: Context) =
+        NetworkForecastMapper(context)
 
     @Provides
     fun provideNetworkShortForecastMapper() = NetworkShortForecastMapper()

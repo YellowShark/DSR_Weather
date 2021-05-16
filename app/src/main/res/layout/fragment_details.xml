@@ -15,14 +15,14 @@
             android:id="@+id/details_withNextDay_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="с прогнозом на следующий день"
+            android:text="@string/with_next_day_forecast"
             android:textColor="@color/black" />
 
         <RadioButton
             android:id="@+id/details_withoutNextDay_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="без прогноза на следующий день"
+            android:text="@string/without_next_day_forecast"
             android:textColor="@color/black" />
 
     </RadioGroup>
@@ -35,7 +35,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="40dp"
         android:background="@color/black"
-        android:text="Добавить"
+        android:text="@string/add"
         android:textColor="@color/white" />
 
 </LinearLayout>

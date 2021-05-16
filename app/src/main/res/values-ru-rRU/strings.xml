@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="with_next_day_forecast">с прогнозом на следующий день</string>
+    <string name="without_next_day_forecast">без прогноза на следующий день</string>
+    <string name="add">Добавить</string>
+
+    <string name="location_name">Название локации</string>
+
+    <string name="no_locations_text">Вы ещё не выбрали ни одного города.\nПожалуйста, добавьте город, нажав на кнопку внизу.</string>
+    <string name="add_location">Добавить локацию</string>
+
+    <string name="locations">Локации</string>
+    <string name="forecast">Прогноз</string>
+    <string name="new_location">Новая локация</string>
+
+    <string name="all_locations">Все локации</string>
+    <string name="fav_locations">Избранные</string>
+
+    <string name="unknown_error">Произошла неизвестная ошибка</string>
+    <string name="error_no_internet">Не удалось выйти в сеть для обновления погодных данных.</string>
+
+    <string name="temperature_graph">График температуры</string>
+
+    <string name="humidity">Влажность:</string>
+    <string name="pressure">Давление:</string>
+    <string name="wind">Ветер:</string>
+    <string name="mm_hg">мм рт. ст.</string>
+    <string name="m_s">м/с</string>
+</resources>

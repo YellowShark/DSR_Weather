@@ -18,6 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.domain.exception.NoConnectivityException
 import ru.yellowshark.dsr_weather.utils.*
+import java.util.*
 import javax.inject.Singleton
 
 @Module
@@ -72,12 +73,16 @@ object NetworkModule {
     @Provides
     fun provideApiKeyInterceptor(): Interceptor {
         return Interceptor { chain ->
+            var language = BASE_LANGUAGE
+            if (Locale.getDefault().language == "ru")
+                language = RUSSIAN
+
             val url = chain.request()
                 .url()
                 .newBuilder()
                 .addQueryParameter("appid", API_KEY)
                 .addQueryParameter("units", METRIC_UNITS)
-                .addQueryParameter("lang", SECOND_LANGUAGE)
+                .addQueryParameter("lang", language)
                 .build()
 
             val request = chain.request()

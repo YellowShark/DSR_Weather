@@ -79,7 +79,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
         }.also {
             binding.forecastGraph.apply {
                 addSeries(it)
-                title = "График температуры"
+                title = context.getString(R.string.temperature_graph)
                 titleColor = ContextCompat.getColor(requireContext(), R.color.black)
                 titleTextSize = 50F
                 gridLabelRenderer.apply {

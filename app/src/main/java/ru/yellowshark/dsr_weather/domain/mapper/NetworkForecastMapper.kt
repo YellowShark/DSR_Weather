@@ -1,5 +1,7 @@
 package ru.yellowshark.dsr_weather.domain.mapper
 
+import android.content.Context
+import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.utils.Mapper
@@ -8,7 +10,9 @@ import ru.yellowshark.dsr_weather.utils.WEATHER_ICON_URL_PREFIX
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NetworkForecastMapper : Mapper<Forecast, ForecastResponse> {
+class NetworkForecastMapper(
+    private val context: Context
+) : Mapper<Forecast, ForecastResponse> {
     override fun toDomain(dto: ForecastResponse): Forecast {
         with(dto) {
             val sdf = SimpleDateFormat("HH:mm\nE, dd MMM.", Locale.getDefault())
@@ -18,11 +22,11 @@ class NetworkForecastMapper : Mapper<Forecast, ForecastResponse> {
                 date = date,
                 cityName = name,
                 temperature = dto.main.temp.toInt(),
-                humidity = "Влажность: ${main.humidity}%",
+                humidity = "${context.getString(R.string.humidity)} ${main.humidity}%",
                 icon = "$WEATHER_ICON_URL_PREFIX${weather[0].icon}$WEATHER_ICON_URL_POSTFIX",
                 description = weather[0].description,
-                pressure = "Давление: ${main.pressure} мм рт. ст.",
-                wind = "Ветер: ${wind.speed} м/c"
+                pressure = "${context.getString(R.string.pressure)} ${main.pressure} ${context.getString(R.string.mm_hg)}",
+                wind = "${context.getString(R.string.wind)} ${wind.speed} ${context.getString(R.string.m_s)}"
             )
         }
     }

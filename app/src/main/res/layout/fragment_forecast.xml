@@ -91,7 +91,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Ветер:"
+                tools:text="Ветер:"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Давление:"
+                tools:text="Давление:"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                android:text="Влажность:"
+                tools:text="Влажность:"
                 android:textColor="@color/black"
                 android:textSize="16sp" />
 

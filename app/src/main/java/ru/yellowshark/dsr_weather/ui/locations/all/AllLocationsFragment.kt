@@ -99,7 +99,7 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
                         locationsRv.isVisible = true
                         Toast.makeText(
                             requireContext(),
-                            "Не удалось выйти в сеть для обновления погодных данных.",
+                            getString(R.string.error_no_internet),
                             Toast.LENGTH_SHORT
                         )
                             .show()
@@ -109,7 +109,7 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
                         locationsNoLocationsWrapper.isVisible = false
                         locationsAddFab.isVisible = true
                         locationsRv.isVisible = true
-                        Toast.makeText(requireContext(), "Произошла ошибка", Toast.LENGTH_SHORT)
+                        Toast.makeText(requireContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT)
                             .show()
                     }
                     EMPTY -> {

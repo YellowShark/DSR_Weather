@@ -21,7 +21,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 // init favorites +++
 // next day forecast
 // toolbar +++
-// onSwipeRefresh
+// onSwipeRefresh +++
 // google maps
 // metric and imperial systems
 // 2 languages
