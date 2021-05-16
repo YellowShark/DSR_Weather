@@ -27,6 +27,11 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
 
     override fun onResume() {
         super.onResume()
+        updateData()
+    }
+
+    private fun updateData() {
+        adapter.clearData()
         viewModel.updateLocations()
     }
 
@@ -50,6 +55,7 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
             viewModel.location.observe(viewLifecycleOwner) {
                 adapter.addItem(it)
                 allLocationsEmptyRv.isVisible = false
+                allLocationsAddFab.isVisible = true
             }
         }
     }
