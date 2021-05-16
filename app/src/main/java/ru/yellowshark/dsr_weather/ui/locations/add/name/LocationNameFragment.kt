@@ -30,8 +30,12 @@ class LocationNameFragment : Fragment(R.layout.fragment_location_name) {
     private fun initListeners() {
         with(binding) {
             locationNameOkBtn.setOnClickListener {
-                viewModel.setLocationName(locationNameNameEt.text.toString())
-                onClickListener.onClickListener(it)
+                locationNameNameEt.text.toString().let { name ->
+                    if (name.trim().isNotEmpty()) {
+                        viewModel.setLocationName(name)
+                        onClickListener.onClickListener(it)
+                    }
+                }
             }
         }
     }
