@@ -11,6 +11,17 @@ import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
+//TODO
+// add loader
+// init favorites
+// next day forecast
+// toolbar
+// google maps
+// metric and imperial systems
+// 2 languages
+// triggers
+
+
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_navigation.xml"
-    app:startDestination="@id/destination_locatiaons">
+    app:startDestination="@id/destination_locations">
     <fragment
         android:id="@+id/destination_forecast"
         android:name="ru.yellowshark.dsr_weather.ui.locations.forecast.ForecastFragment"
@@ -12,7 +12,7 @@
             app:argType="string" />
     </fragment>
     <fragment
-        android:id="@+id/destination_locatiaons"
+        android:id="@+id/destination_locations"
         android:name="ru.yellowshark.dsr_weather.ui.locations.LocationsFragment"
         android:label="LocationsFragment" >
         <action
@@ -23,12 +23,4 @@
         android:id="@+id/destination_add_location"
         android:name="ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment"
         android:label="AddLocationFragment" />
-    <fragment
-        android:id="@+id/locationNameFragment"
-        android:name="ru.yellowshark.dsr_weather.ui.locations.add.name.LocationNameFragment"
-        android:label="LocationNameFragment" />
-    <fragment
-        android:id="@+id/destination_map"
-        android:name="ru.yellowshark.dsr_weather.ui.locations.add.map.MapFragment"
-        android:label="MapFragment" />
 </navigation>
