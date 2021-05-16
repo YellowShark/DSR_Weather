@@ -6,11 +6,19 @@
     <fragment
         android:id="@+id/destination_forecast"
         android:name="ru.yellowshark.dsr_weather.ui.locations.forecast.ForecastFragment"
-        android:label="ForecastFragment" />
+        android:label="ForecastFragment" >
+        <argument
+            android:name="locationName"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/destination_locatiaons"
         android:name="ru.yellowshark.dsr_weather.ui.locations.LocationsFragment"
-        android:label="LocationsFragment" />
+        android:label="LocationsFragment" >
+        <action
+            android:id="@+id/action_forecast"
+            app:destination="@id/destination_forecast" />
+    </fragment>
     <fragment
         android:id="@+id/destination_add_location"
         android:name="ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment"

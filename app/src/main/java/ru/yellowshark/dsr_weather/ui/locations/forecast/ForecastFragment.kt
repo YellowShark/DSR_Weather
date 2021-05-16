@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
@@ -24,6 +25,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
     private val binding: FragmentForecastBinding by viewBinding()
     private val viewModel by lazy { ViewModelProvider(requireActivity()).get(ForecastViewModel::class.java) }
     private val forecastAdapter: ForecastAdapter by lazy { ForecastAdapter() }
+    private val args: ForecastFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -92,7 +94,6 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
     }
 
     private fun uploadForecast() {
-        viewModel.getForecast("Воронеж")
-        viewModel.getAllDayForecast("Воронеж")
+        viewModel.getFullForecast(args.locationName)
     }
 }

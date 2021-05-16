@@ -30,7 +30,7 @@ class ForecastViewModel @Inject constructor(
         super.onCleared()
     }
 
-    fun getForecast(city: String) {
+    private fun getForecast(city: String) {
         disposables.add(
             repository.getForecast(city)
                 .subscribe(
@@ -40,7 +40,7 @@ class ForecastViewModel @Inject constructor(
         )
     }
 
-    fun getAllDayForecast(city: String) {
+    private fun getAllDayForecast(city: String) {
         disposables.add(
             repository.getAllDayForecast(city)
                 .subscribe(
@@ -48,5 +48,10 @@ class ForecastViewModel @Inject constructor(
                     { t -> t.printStackTrace() }
                 )
         )
+    }
+
+    fun getFullForecast(locationName: String) {
+        getForecast(locationName)
+        getAllDayForecast(locationName)
     }
 }

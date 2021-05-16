@@ -9,6 +9,8 @@ import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentAllLocationsBinding
+import ru.yellowshark.dsr_weather.domain.model.Location
+import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
 
 class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
@@ -16,7 +18,11 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
     private val viewModel: AllLocationsViewModel by lazy {
         ViewModelProvider(requireActivity()).get(AllLocationsViewModel::class.java)
     }
-    private val adapter: LocationsAdapter by lazy { LocationsAdapter() }
+    private val adapter: LocationsAdapter by lazy {
+        LocationsAdapter {
+            openForecastFragment(it)
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,6 +34,12 @@ class AllLocationsFragment : Fragment(R.layout.fragment_all_locations) {
     override fun onResume() {
         super.onResume()
         updateData()
+    }
+
+    private fun openForecastFragment(location: Location) {
+        LocationsFragmentDirections.actionForecast(location.city).also {
+            Navigation.findNavController(binding.root).navigate(it)
+        }
     }
 
     private fun updateData() {
