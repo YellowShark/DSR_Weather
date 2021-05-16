@@ -13,7 +13,6 @@ import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
-import ru.yellowshark.dsr_weather.utils.Event
 import ru.yellowshark.dsr_weather.utils.Event.*
 
 class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
@@ -85,7 +84,19 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
                         locationsAddFab.isVisible = true
                         locationsRv.isVisible = true
                     }
-                    ERROR -> {
+                    NO_INTERNET -> {
+                        locationsLoader.isVisible = false
+                        locationsNoLocationsWrapper.isVisible = false
+                        locationsAddFab.isVisible = true
+                        locationsRv.isVisible = true
+                        Toast.makeText(
+                            requireContext(),
+                            "Не удалось выйти в сеть для обновления погодных данных.",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                    UNKNOWN_ERROR -> {
                         locationsLoader.isVisible = false
                         locationsNoLocationsWrapper.isVisible = false
                         locationsAddFab.isVisible = true

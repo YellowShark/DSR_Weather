@@ -3,6 +3,7 @@ package ru.yellowshark.dsr_weather.ui.locations.all
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import ru.yellowshark.dsr_weather.domain.exception.NoConnectivityException
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.repository.Repository
@@ -47,7 +48,7 @@ class AllLocationsViewModel @Inject constructor(
 
     private fun writeInDbAndShowResults(forecast: Forecast, location: Location) {
         disposables.add(
-            repository.updateLocationTemp(forecast.id, forecast.temperature)
+            repository.updateLocationTemp(location.id, forecast.temperature)
                 .subscribe({
                     _event.value = Event.SUCCESS
                     _location.value = location.apply { temp = forecast.temperature }
@@ -57,6 +58,19 @@ class AllLocationsViewModel @Inject constructor(
 
     private fun onError(t: Throwable) {
         t.printStackTrace()
-        _event.value = Event.ERROR
+        if (_event.value != Event.NO_INTERNET && _event.value != Event.UNKNOWN_ERROR) {
+            if (t is NoConnectivityException)
+                _event.value = Event.NO_INTERNET
+            else
+                _event.value = Event.UNKNOWN_ERROR
+            showLocalData()
+        }
+    }
+
+    private fun showLocalData() {
+        disposables.add(repository.getLocations()
+            .subscribe { list ->
+                list.forEach { _location.value = it }
+            })
     }
 }
