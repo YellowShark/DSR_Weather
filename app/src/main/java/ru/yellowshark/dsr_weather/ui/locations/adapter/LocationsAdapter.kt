@@ -38,4 +38,16 @@ class LocationsAdapter(
         data[pos] = location
         notifyItemChanged(pos)
     }
+
+    fun removeItem(pos: Int) {
+        data.removeAt(pos)
+        //notifyItemChanged(pos)
+        notifyDataSetChanged()
+    }
+
+    fun setData(list: List<Location>) {
+        data.clear()
+        data.addAll(list)
+        notifyDataSetChanged()
+    }
 }

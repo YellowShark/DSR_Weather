@@ -12,7 +12,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 //TODO
-// init favorites
+// init favorites +++
 // next day forecast
 // toolbar
 // onSwipeRefresh
