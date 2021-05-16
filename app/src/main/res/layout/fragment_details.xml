@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:orientation="vertical">
 
     <RadioGroup
         android:id="@+id/details_rg"
@@ -15,13 +15,15 @@
             android:id="@+id/details_withNextDay_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="с прогнозом на следующий день" />
+            android:text="с прогнозом на следующий день"
+            android:textColor="@color/black" />
 
         <RadioButton
             android:id="@+id/details_withoutNextDay_rb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="без прогноза на следующий день" />
+            android:text="без прогноза на следующий день"
+            android:textColor="@color/black" />
 
     </RadioGroup>
 
@@ -30,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
         android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
         android:background="@color/black"
         android:text="Добавить"
         android:textColor="@color/white" />
