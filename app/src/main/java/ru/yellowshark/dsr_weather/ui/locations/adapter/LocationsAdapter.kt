@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.yellowshark.dsr_weather.domain.model.Location
 
 class LocationsAdapter(
-    private val onLocationClickListener: (Location) -> Unit
+    private val onLocationClickListener: (Location) -> Unit,
+    private val onStarClickListener: (Int, Int, Boolean) -> Unit,
 ) : RecyclerView.Adapter<LocationsViewHolder>() {
 
     private var data: ArrayList<Location> = arrayListOf()
@@ -14,7 +15,7 @@ class LocationsAdapter(
         LocationsViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: LocationsViewHolder, position: Int) {
-        holder.bind(data[position], onLocationClickListener)
+        holder.bind(position, data[position], onLocationClickListener, onStarClickListener)
     }
 
     override fun getItemCount(): Int = data.size
@@ -29,5 +30,12 @@ class LocationsAdapter(
             data.clear()
             notifyDataSetChanged()
         }
+    }
+
+    fun updateLocation(pos: Int) {
+        val location = data[pos]
+        location.isFavorite = !location.isFavorite
+        data[pos] = location
+        notifyItemChanged(pos)
     }
 }

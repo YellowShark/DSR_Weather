@@ -64,6 +64,21 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getFavoriteLocations(): Single<List<Location>> {
+        return dao.getFavoriteLocations()
+            .map {
+                it.map { entity -> localLocationMapper.toDomain(entity) }
+            }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable {
+        return dao.updateIsFavorite(locationId, newValue)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun setNextDay(hasNextDayForecast: Boolean) {
         newLocation.hasNextDayForecast = hasNextDayForecast
     }

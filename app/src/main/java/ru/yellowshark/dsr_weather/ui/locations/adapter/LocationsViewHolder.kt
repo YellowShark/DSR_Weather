@@ -2,7 +2,9 @@ package ru.yellowshark.dsr_weather.ui.locations.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.ItemLocationBinding
 import ru.yellowshark.dsr_weather.domain.model.Location
 
@@ -17,11 +19,36 @@ class LocationsViewHolder(
         }
     }
 
-    fun bind(location: Location, onLocationClickListener: (Location) -> Unit) {
+    fun bind(
+        position: Int,
+        location: Location,
+        onLocationClickListener: (Location) -> Unit,
+        onStarClickListener: (Int, Int, Boolean) -> Unit
+    ) {
         with(binding) {
-            itemLocationCity.text = location.city
-            itemLocationTemperature.text = "${location.temp} °C"
-            root.setOnClickListener { onLocationClickListener(location) }
+            root.context.let { context ->
+                itemLocationCity.text = location.city
+                itemLocationTemperature.text = "${location.temp} °C"
+                root.setOnClickListener { onLocationClickListener(location) }
+                itemLocationFavBtn.apply {
+                    setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            if (location.isFavorite) R.drawable.ic_fill_star else R.drawable.ic_outline_star
+                        )
+                    )
+                    setOnClickListener {
+                        val isFav = !location.isFavorite
+                        itemLocationFavBtn.setImageDrawable(
+                            ContextCompat.getDrawable(
+                                context,
+                                if (isFav) R.drawable.ic_fill_star else R.drawable.ic_outline_star
+                            )
+                        )
+                        onStarClickListener(position, location.id, isFav)
+                    }
+                }
+            }
         }
     }
 }

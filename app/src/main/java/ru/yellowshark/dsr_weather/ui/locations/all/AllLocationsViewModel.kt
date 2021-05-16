@@ -22,6 +22,10 @@ class AllLocationsViewModel @Inject constructor(
         get() = _event
     private val _event = MutableLiveData<Event>()
 
+    fun updateIsFavorite(locationId: Int, newValue: Boolean) {
+        disposables.add(repository.updateIsFavorite(locationId, newValue).subscribe())
+    }
+
     fun updateLocations() {
         disposables.add(repository.getLocations()
             .doOnSubscribe { _event.value = Event.LOADING }

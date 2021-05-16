@@ -22,9 +22,13 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
         ViewModelProvider(requireActivity()).get(AllLocationsViewModel::class.java)
     }
     private val adapter: LocationsAdapter by lazy {
-        LocationsAdapter {
-            openForecastFragment(it)
-        }
+        LocationsAdapter(
+            { openForecastFragment(it) },
+            { pos, id, isFav ->
+                viewModel.updateIsFavorite(id, isFav)
+                adapter.updateLocation(pos)
+            }
+        )
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
