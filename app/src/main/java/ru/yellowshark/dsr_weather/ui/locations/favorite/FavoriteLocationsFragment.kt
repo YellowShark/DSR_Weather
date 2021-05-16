@@ -31,6 +31,8 @@ class FavoriteLocationsFragment : Fragment(R.layout.fragment_locations) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initUi()
+        initListeners()
+        initRv()
         observeVm()
     }
 
@@ -47,13 +49,21 @@ class FavoriteLocationsFragment : Fragment(R.layout.fragment_locations) {
 
     private fun initUi() {
         with(binding) {
-            locationsRv.adapter = adapter
-
             locationsLoader.isVisible = false
             locationsNoLocationsWrapper.isVisible = false
             locationsAddFab.isVisible = false
             locationsRv.isVisible = true
         }
+    }
+
+    private fun initListeners() {
+        binding.locationsRefresher.apply {
+            setOnRefreshListener { this.isRefreshing = false }
+        }
+    }
+
+    private fun initRv() {
+        binding.locationsRv.adapter = adapter
     }
 
     private fun observeVm() {

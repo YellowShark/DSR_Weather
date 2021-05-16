@@ -20,7 +20,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 //TODO
 // init favorites +++
 // next day forecast
-// toolbar
+// toolbar +++
 // onSwipeRefresh
 // google maps
 // metric and imperial systems

@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
@@ -15,7 +16,8 @@ import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
 import ru.yellowshark.dsr_weather.utils.Event.*
 
-class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
+class AllLocationsFragment : Fragment(R.layout.fragment_locations),
+    SwipeRefreshLayout.OnRefreshListener {
     private val binding: FragmentLocationsBinding by viewBinding()
     private val viewModel: AllLocationsViewModel by lazy {
         ViewModelProvider(requireActivity()).get(AllLocationsViewModel::class.java)
@@ -42,6 +44,11 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
         updateData()
     }
 
+    override fun onRefresh() {
+        updateData()
+        binding.locationsRefresher.isRefreshing = false
+    }
+
     private fun openForecastFragment(location: Location) {
         LocationsFragmentDirections.actionForecast(location.city).also {
             Navigation.findNavController(binding.root).navigate(it)
@@ -55,6 +62,7 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations) {
 
     private fun initListeners() {
         with(binding) {
+            locationsRefresher.setOnRefreshListener(this@AllLocationsFragment)
             locationsAddLocationsBtn.setOnClickListener { openWizard() }
             locationsAddFab.setOnClickListener { openWizard() }
         }
