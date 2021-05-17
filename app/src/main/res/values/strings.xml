@@ -38,4 +38,7 @@
     <string name="future_temp">Temperature tomorrow</string>
 
     <string name="google_maps_key" translatable="false">AIzaSyBLR3iEOULZSNtuNNhhGLIpTASvwxvVLg4</string>
+
+    <string name="search">Search</string>
+    <string name="nothing_found">By your request nothing found</string>
 </resources>

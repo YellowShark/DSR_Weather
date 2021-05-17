@@ -15,9 +15,9 @@ data class LocationEntity(
     @ColumnInfo(name = "city")
     var city: String,
     @ColumnInfo(name = "lat")
-    var lat: Long = 0L,
+    var lat: Double = 0.0,
     @ColumnInfo(name = "lon")
-    var lon: Long = 0L,
+    var lon: Double = 0.0,
     @ColumnInfo(name = "has_next_day_forecast")
     var hasNextDayForecast: Boolean = false,
     @ColumnInfo(name = "is_favorite")

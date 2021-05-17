@@ -9,7 +9,7 @@ import ru.yellowshark.dsr_weather.data.db.entity.LocationEntity
 
 const val DB_NAME = "locations.db"
 
-@Database(entities = [LocationEntity::class], version = 4)
+@Database(entities = [LocationEntity::class], version = 5)
 abstract class LocationsDatabase : RoomDatabase() {
     companion object {
         @Volatile

@@ -10,7 +10,7 @@ class MapViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel() {
 
-    fun setCoordinates(lon: Long, lat: Long) {
+    fun setCoordinates(lon: Double, lat: Double) {
         repository.setCoordinates(lon, lat)
     }
 }

@@ -34,4 +34,7 @@
 
     <string name="curr_temp">Текущая температура</string>
     <string name="future_temp">Температура на завтра</string>
+
+    <string name="search">Поиск</string>
+    <string name="nothing_found">По заданному запросу ничего не найдено</string>
 </resources>

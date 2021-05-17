@@ -107,7 +107,7 @@ class RepositoryImpl @Inject constructor(
         newLocation.city = name
     }
 
-    override fun setCoordinates(lon: Long, lat: Long) {
+    override fun setCoordinates(lon: Double, lat: Double) {
         newLocation.lon = lon
         newLocation.lat = lat
     }

@@ -5,8 +5,8 @@ data class Location(
     var temp: String,
     var city: String,
     var futureTemp: String = "",
-    var lat: Long = 0L,
-    var lon: Long = 0L,
+    var lat: Double = 0.0,
+    var lon: Double = 0.0,
     var hasNextDayForecast: Boolean = false,
     var isFavorite: Boolean = false,
 )
