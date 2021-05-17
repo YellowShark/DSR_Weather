@@ -60,8 +60,12 @@ class AllLocationsViewModel @Inject constructor(
     }
 
     private fun loadCurrentForecast(location: Location) {
-        repository.getForecast(location.city)
-            .subscribe({ writeInDbAndShowResults(listOf(it.temperature, ""), location) }, { onError(it) })
+        disposables.add(
+            repository.getForecast(location.city)
+                .subscribe(
+                    { writeInDbAndShowResults(listOf(it.temperature, ""), location) },
+                    { onError(it) })
+        )
     }
 
     private fun writeInDbAndShowResults(forecasts: List<String>, location: Location) {
