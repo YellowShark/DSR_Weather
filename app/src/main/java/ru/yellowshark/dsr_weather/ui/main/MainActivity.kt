@@ -1,10 +1,10 @@
 package ru.yellowshark.dsr_weather.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -18,7 +18,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 //TODO
 // init favorites +++
-// next day forecast
+// next day forecast +++
 // toolbar +++
 // onSwipeRefresh +++
 // google maps

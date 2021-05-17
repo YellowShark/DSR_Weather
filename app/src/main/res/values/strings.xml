@@ -36,4 +36,6 @@
 
     <string name="curr_temp">Current temperature</string>
     <string name="future_temp">Temperature tomorrow</string>
+
+    <string name="google_maps_key" translatable="false">AIzaSyBLR3iEOULZSNtuNNhhGLIpTASvwxvVLg4</string>
 </resources>

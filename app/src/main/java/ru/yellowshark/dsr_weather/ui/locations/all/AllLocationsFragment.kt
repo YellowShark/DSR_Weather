@@ -18,6 +18,7 @@ import ru.yellowshark.dsr_weather.utils.Event.*
 
 class AllLocationsFragment : Fragment(R.layout.fragment_locations),
     SwipeRefreshLayout.OnRefreshListener {
+
     private val binding: FragmentLocationsBinding by viewBinding()
     private val viewModel: AllLocationsViewModel by lazy {
         ViewModelProvider(requireActivity()).get(AllLocationsViewModel::class.java)
