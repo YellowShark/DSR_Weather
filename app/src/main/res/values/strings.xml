@@ -33,4 +33,7 @@
     <string name="choose_measure_system">Choose measure system</string>
     <string name="metric">metric</string>
     <string name="imperial">imperial</string>
+
+    <string name="curr_temp">Current temperature</string>
+    <string name="future_temp">Temperature tomorrow</string>
 </resources>

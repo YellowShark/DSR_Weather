@@ -4,7 +4,8 @@ import ru.yellowshark.dsr_weather.data.db.entity.LocationEntity
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.utils.Mapper
 
-class LocalLocationMapper : Mapper<Location, LocationEntity> {
+class LocalLocationMapper: Mapper<Location, LocationEntity> {
+
     override fun toDomain(dto: LocationEntity): Location =
         with(dto) {
             Location(id, temp, city, futureTemp, lat, lon, hasNextDayForecast, isFavorite)

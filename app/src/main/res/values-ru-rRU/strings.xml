@@ -31,4 +31,7 @@
     <string name="choose_measure_system">Выберите систему измерения</string>
     <string name="metric">метрическая</string>
     <string name="imperial">имперская</string>
+
+    <string name="curr_temp">Текущая температура</string>
+    <string name="future_temp">Температура на завтра</string>
 </resources>
