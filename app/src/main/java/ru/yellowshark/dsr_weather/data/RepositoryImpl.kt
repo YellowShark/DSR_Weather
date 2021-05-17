@@ -28,15 +28,15 @@ class RepositoryImpl @Inject constructor(
 
     private val newLocation = Location(0, "", "")
 
-    override fun getForecast(city: String): Single<Forecast> {
-        return api.getForecast(city)
+    override fun getForecast(lat: Double, lon: Double): Single<Forecast> {
+        return api.getForecast(lat, lon)
             .map { networkMapper.toDomain(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getAllDayForecast(city: String): Single<List<ShortForecast>> {
-        return api.getAllDayForecast(city)
+    override fun getAllDayForecast(lat: Double, lon: Double): Single<List<ShortForecast>> {
+        return api.getAllDayForecast(lat, lon)
             .map {
                 it.list.map { forecast ->
                     networkShortForecastMapper.toDomain(forecast)
@@ -46,8 +46,8 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getTomorrowForecast(city: String): Single<ShortForecast> {
-        return api.getTwoDaysForecast(city)
+    override fun getTomorrowForecast(lat: Double, lon: Double): Single<ShortForecast> {
+        return api.getTwoDaysForecast(lat, lon)
             .subscribeOn(Schedulers.io())
             .map { it.list.map { forecast ->
                 networkShortForecastMapper.toDomain(forecast)

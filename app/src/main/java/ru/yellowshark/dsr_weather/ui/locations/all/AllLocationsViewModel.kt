@@ -48,8 +48,8 @@ class AllLocationsViewModel @Inject constructor(
 
     private fun loadWithNextDayForecast(location: Location) {
         disposables.add(
-            repository.getForecast(location.city).zipWith(
-                repository.getTomorrowForecast(location.city),
+            repository.getForecast(location.lat, location.lon).zipWith(
+                repository.getTomorrowForecast(location.lat, location.lon),
                 BiFunction { today, tomorrow ->
                     return@BiFunction listOf(today.temperature, tomorrow.temp)
                 })
@@ -61,7 +61,7 @@ class AllLocationsViewModel @Inject constructor(
 
     private fun loadCurrentForecast(location: Location) {
         disposables.add(
-            repository.getForecast(location.city)
+            repository.getForecast(location.lat, location.lon)
                 .subscribe(
                     { writeInDbAndShowResults(listOf(it.temperature, ""), location) },
                     { onError(it) })

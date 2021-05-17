@@ -9,17 +9,22 @@ import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 
 interface ForecastApi {
     @GET("data/2.5/weather")
-    fun getForecast(@Query("q") city: String): Single<ForecastResponse>
+    fun getForecast(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double
+    ): Single<ForecastResponse>
 
     @GET("data/2.5/forecast")
     fun getAllDayForecast(
-        @Query("q") city: String,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
         @Query("cnt") cnt: Int = 9
     ): Single<AllDayForecastResponse>
 
     @GET("data/2.5/forecast")
     fun getTwoDaysForecast(
-        @Query("q") city: String,
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
         @Query("cnt") cnt: Int = 13
     ): Observable<AllDayForecastResponse>
 }

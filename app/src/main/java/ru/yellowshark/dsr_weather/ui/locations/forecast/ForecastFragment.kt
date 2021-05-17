@@ -93,6 +93,6 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
     }
 
     private fun uploadForecast() {
-        viewModel.getFullForecast(args.locationName)
+        viewModel.getFullForecast(args.lat.toDouble(), args.lon.toDouble())
     }
 }

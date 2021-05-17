@@ -7,7 +7,6 @@ import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import ru.yellowshark.dsr_weather.ui.locations.base.BaseViewModel
-import ru.yellowshark.dsr_weather.utils.METRIC_UNITS
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,9 +25,9 @@ class ForecastViewModel @Inject constructor(
         super.onCleared()
     }
 
-    private fun getForecast(city: String) {
+    private fun getForecast(lat: Double, lon: Double) {
         disposables.add(
-            repository.getForecast(city)
+            repository.getForecast(lat, lon)
                 .subscribe(
                     { _forecast.value = it },
                     { t -> t.printStackTrace() }
@@ -36,9 +35,9 @@ class ForecastViewModel @Inject constructor(
         )
     }
 
-    private fun getAllDayForecast(city: String) {
+    private fun getAllDayForecast(lat: Double, lon: Double) {
         disposables.add(
-            repository.getAllDayForecast(city)
+            repository.getAllDayForecast(lat, lon)
                 .subscribe(
                     { _fullForecast.value = it },
                     { t -> t.printStackTrace() }
@@ -46,8 +45,8 @@ class ForecastViewModel @Inject constructor(
         )
     }
 
-    fun getFullForecast(locationName: String) {
-        getForecast(locationName)
-        getAllDayForecast(locationName)
+    fun getFullForecast(lat: Double, lon: Double) {
+        getForecast(lat, lon)
+        getAllDayForecast(lat, lon)
     }
 }

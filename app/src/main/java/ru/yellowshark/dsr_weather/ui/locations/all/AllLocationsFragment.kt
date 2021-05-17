@@ -51,9 +51,10 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
     }
 
     private fun openForecastFragment(location: Location) {
-        LocationsFragmentDirections.actionForecast(location.city).also {
-            Navigation.findNavController(binding.root).navigate(it)
-        }
+        LocationsFragmentDirections.actionForecast(location.lat.toFloat(), location.lon.toFloat())
+            .also {
+                Navigation.findNavController(binding.root).navigate(it)
+            }
     }
 
     private fun updateData() {
@@ -110,7 +111,11 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
                         locationsNoLocationsWrapper.isVisible = false
                         locationsAddFab.isVisible = true
                         locationsRv.isVisible = true
-                        Toast.makeText(requireContext(), getString(R.string.unknown_error), Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.unknown_error),
+                            Toast.LENGTH_SHORT
+                        )
                             .show()
                     }
                     EMPTY -> {

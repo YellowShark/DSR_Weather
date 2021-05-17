@@ -7,11 +7,11 @@ import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
 
 interface Repository {
-    fun getForecast(city: String): Single<Forecast>
+    fun getForecast(lat: Double, lon: Double): Single<Forecast>
 
-    fun getAllDayForecast(city: String): Single<List<ShortForecast>>
+    fun getAllDayForecast(lat: Double, lon: Double): Single<List<ShortForecast>>
 
-    fun getTomorrowForecast(city: String): Single<ShortForecast>
+    fun getTomorrowForecast(lat: Double, lon: Double): Single<ShortForecast>
 
     fun saveLocation(): Completable
 

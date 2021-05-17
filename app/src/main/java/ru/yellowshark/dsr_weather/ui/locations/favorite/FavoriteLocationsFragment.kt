@@ -42,9 +42,10 @@ class FavoriteLocationsFragment : Fragment(R.layout.fragment_locations) {
     }
 
     private fun openForecastFragment(location: Location) {
-        LocationsFragmentDirections.actionForecast(location.city).also {
-            Navigation.findNavController(binding.root).navigate(it)
-        }
+        LocationsFragmentDirections.actionForecast(location.lat.toFloat(), location.lon.toFloat())
+            .also {
+                Navigation.findNavController(binding.root).navigate(it)
+            }
     }
 
     private fun initUi() {
