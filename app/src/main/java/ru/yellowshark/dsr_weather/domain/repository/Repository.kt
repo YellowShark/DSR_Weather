@@ -11,11 +11,13 @@ interface Repository {
 
     fun getAllDayForecast(city: String): Single<List<ShortForecast>>
 
+    fun getTomorrowForecast(city: String): Single<ShortForecast>
+
     fun saveLocation(): Completable
 
     fun getLocations(): Single<List<Location>>
 
-    fun updateLocationTemp(locationId: Int, newTemp: String): Completable
+    fun updateLocationTemp(locationId: Int, newTemps: List<String>): Completable
 
     fun getFavoriteLocations(): Single<List<Location>>
 

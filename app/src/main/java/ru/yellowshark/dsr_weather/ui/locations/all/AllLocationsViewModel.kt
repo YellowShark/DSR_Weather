@@ -3,8 +3,8 @@ package ru.yellowshark.dsr_weather.ui.locations.all
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.functions.BiFunction
 import ru.yellowshark.dsr_weather.domain.exception.NoConnectivityException
-import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import ru.yellowshark.dsr_weather.ui.locations.base.BaseViewModel
@@ -40,18 +40,39 @@ class AllLocationsViewModel @Inject constructor(
     }
 
     private fun updateTemperature(location: Location) {
+        if (location.hasNextDayForecast)
+            loadWithNextDayForecast(location)
+        else
+            loadCurrentForecast(location)
+    }
+
+    private fun loadWithNextDayForecast(location: Location) {
         disposables.add(
-            repository.getForecast(location.city)
-                .subscribe({ writeInDbAndShowResults(it, location) }, { onError(it) })
+            repository.getForecast(location.city).zipWith(
+                repository.getTomorrowForecast(location.city),
+                BiFunction { today, tomorrow ->
+                    return@BiFunction listOf(today.temperature, tomorrow.temp)
+                })
+                .subscribe({
+                    writeInDbAndShowResults(it, location)
+                }, { onError(it) })
         )
     }
 
-    private fun writeInDbAndShowResults(forecast: Forecast, location: Location) {
+    private fun loadCurrentForecast(location: Location) {
+        repository.getForecast(location.city)
+            .subscribe({ writeInDbAndShowResults(listOf(it.temperature, ""), location) }, { onError(it) })
+    }
+
+    private fun writeInDbAndShowResults(forecasts: List<String>, location: Location) {
         disposables.add(
-            repository.updateLocationTemp(location.id, forecast.temperature)
+            repository.updateLocationTemp(location.id, forecasts)
                 .subscribe({
                     _event.value = Event.SUCCESS
-                    _location.value = location.apply { temp = forecast.temperature }
+                    _location.value = location.apply {
+                        temp = forecasts[0]
+                        futureTemp = forecasts[1]
+                    }
                 }, { onError(it) })
         )
     }

@@ -1,6 +1,7 @@
 package ru.yellowshark.dsr_weather.data
 
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -45,6 +46,19 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun getTomorrowForecast(city: String): Single<ShortForecast> {
+        return api.getTwoDaysForecast(city)
+            .subscribeOn(Schedulers.io())
+            .map { it.list.map { forecast ->
+                networkShortForecastMapper.toDomain(forecast)
+                }
+            }
+            .flatMap { Observable.fromIterable(it) }
+            .filter { it.time == "12:00" }
+            .lastOrError()
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun saveLocation(): Completable {
         return dao.insertLocation(localLocationMapper.fromDomain(newLocation))
             .subscribeOn(Schedulers.io())
@@ -64,8 +78,8 @@ class RepositoryImpl @Inject constructor(
         return unitManager.getUnit()
     }
 
-    override fun updateLocationTemp(locationId: Int, newTemp: String): Completable {
-        return dao.updateLocationTemp(locationId, newTemp)
+    override fun updateLocationTemp(locationId: Int, newTemps: List<String>): Completable {
+        return dao.updateLocationTemps(locationId, newTemps[0], newTemps[1])
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

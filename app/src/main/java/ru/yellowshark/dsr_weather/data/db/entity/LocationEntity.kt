@@ -10,6 +10,8 @@ data class LocationEntity(
     var id: Int,
     @ColumnInfo(name = "temp")
     var temp: String,
+    @ColumnInfo(name = "future_temp")
+    var futureTemp: String,
     @ColumnInfo(name = "city")
     var city: String,
     @ColumnInfo(name = "lat")

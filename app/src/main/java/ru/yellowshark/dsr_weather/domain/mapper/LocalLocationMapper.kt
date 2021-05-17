@@ -7,11 +7,11 @@ import ru.yellowshark.dsr_weather.utils.Mapper
 class LocalLocationMapper : Mapper<Location, LocationEntity> {
     override fun toDomain(dto: LocationEntity): Location =
         with(dto) {
-            Location(id, temp, city, lat, lon, hasNextDayForecast, isFavorite)
+            Location(id, temp, city, futureTemp, lat, lon, hasNextDayForecast, isFavorite)
         }
 
     override fun fromDomain(domain: Location): LocationEntity =
         with(domain) {
-            LocationEntity(id, temp, city, lat, lon, hasNextDayForecast, isFavorite)
+            LocationEntity(id, temp, futureTemp, city, lat, lon, hasNextDayForecast, isFavorite)
         }
 }

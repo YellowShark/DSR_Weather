@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import io.reactivex.Completable
 import io.reactivex.Single
+import retrofit2.http.DELETE
 import ru.yellowshark.dsr_weather.data.db.entity.LocationEntity
 
 @Dao
@@ -18,11 +19,13 @@ interface LocationsDao {
     @Query(
         """
         UPDATE locations
-        SET `temp` = :newTemp
+        SET 
+            `temp` = :newTemp,
+            future_temp = :newFutureTemp
         WHERE id = :locationId
         """
     )
-    fun updateLocationTemp(locationId: Int, newTemp: String): Completable
+    fun updateLocationTemps(locationId: Int, newTemp: String, newFutureTemp: String): Completable
 
     @Query("SELECT * FROM locations WHERE is_favorite = 1")
     fun getFavoriteLocations(): Single<List<LocationEntity>>

@@ -1,5 +1,6 @@
 package ru.yellowshark.dsr_weather.data.remote.api
 
+import io.reactivex.Observable
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,4 +16,10 @@ interface ForecastApi {
         @Query("q") city: String,
         @Query("cnt") cnt: Int = 9
     ): Single<AllDayForecastResponse>
+
+    @GET("data/2.5/forecast")
+    fun getTwoDaysForecast(
+        @Query("q") city: String,
+        @Query("cnt") cnt: Int = 13
+    ): Observable<AllDayForecastResponse>
 }
