@@ -50,8 +50,4 @@ class ForecastViewModel @Inject constructor(
         getForecast(locationName)
         getAllDayForecast(locationName)
     }
-
-    fun getUnit(): String {
-        return if (repository.getUnit() == METRIC_UNITS) "C" else "F"
-    }
 }

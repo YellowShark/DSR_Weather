@@ -22,7 +22,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 // toolbar +++
 // onSwipeRefresh +++
 // google maps
-// metric and imperial systems -
+// metric and imperial systems +++
 // 2 languages +++
 // triggers
 
