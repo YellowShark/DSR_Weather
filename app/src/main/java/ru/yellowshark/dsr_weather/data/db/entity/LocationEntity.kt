@@ -9,7 +9,7 @@ data class LocationEntity(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     @ColumnInfo(name = "temp")
-    var temp: Int,
+    var temp: String,
     @ColumnInfo(name = "city")
     var city: String,
     @ColumnInfo(name = "lat")

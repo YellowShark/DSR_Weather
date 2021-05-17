@@ -5,6 +5,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
 import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
@@ -20,10 +21,11 @@ class RepositoryImpl @Inject constructor(
     private val dao: LocationsDao,
     private val networkMapper: NetworkForecastMapper,
     private val networkShortForecastMapper: NetworkShortForecastMapper,
-    private val localLocationMapper: LocalLocationMapper
+    private val localLocationMapper: LocalLocationMapper,
+    private val unitManager: UnitManager
 ) : Repository {
 
-    private val newLocation = Location(0, 0, "")
+    private val newLocation = Location(0, "", "")
 
     override fun getForecast(city: String): Single<Forecast> {
         return api.getForecast(city)
@@ -58,7 +60,11 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun updateLocationTemp(locationId: Int, newTemp: Int): Completable {
+    override fun getUnit(): String {
+        return unitManager.getUnit()
+    }
+
+    override fun updateLocationTemp(locationId: Int, newTemp: String): Completable {
         return dao.updateLocationTemp(locationId, newTemp)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

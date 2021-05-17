@@ -28,7 +28,7 @@ class LocationsViewHolder(
         with(binding) {
             root.context.let { context ->
                 itemLocationCity.text = location.city
-                itemLocationTemperature.text = "${location.temp} °C"
+                itemLocationTemperature.text = location.temp
                 root.setOnClickListener { onLocationClickListener(location) }
                 itemLocationFavBtn.apply {
                     setImageDrawable(

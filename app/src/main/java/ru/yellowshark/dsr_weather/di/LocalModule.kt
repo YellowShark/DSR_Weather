@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.db.LocationsDatabase
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import javax.inject.Singleton
 
 @Module
@@ -22,5 +23,10 @@ object LocalModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): LocationsDatabase {
         return LocationsDatabase(context)
+    }
+
+    @Provides
+    fun provideMeasureSystemManager(@ApplicationContext context: Context): UnitManager {
+        return UnitManager(context)
     }
 }

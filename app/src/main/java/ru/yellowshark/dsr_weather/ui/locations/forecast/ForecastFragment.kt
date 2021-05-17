@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
 import com.jjoe64.graphview.GridLabelRenderer
-import com.jjoe64.graphview.LegendRenderer
 import com.jjoe64.graphview.series.DataPoint
 import com.jjoe64.graphview.series.LineGraphSeries
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +51,7 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
                 forecastDateText.text = it.date
                 forecastCityText.text = it.cityName
                 forecastDescText.text = it.description
-                forecastTemperatureText.text = "${it.temperature} °C"
+                forecastTemperatureText.text = it.temperature
                 forecastWindText.text = it.wind
                 forecastPressureText.text = it.pressure
                 forecastHumidityText.text = it.humidity

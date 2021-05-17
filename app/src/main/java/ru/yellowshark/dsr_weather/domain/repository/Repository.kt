@@ -2,8 +2,6 @@ package ru.yellowshark.dsr_weather.domain.repository
 
 import io.reactivex.Completable
 import io.reactivex.Single
-import ru.yellowshark.dsr_weather.data.db.entity.LocationEntity
-import ru.yellowshark.dsr_weather.data.remote.response.AllDayForecastResponse
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
@@ -17,7 +15,7 @@ interface Repository {
 
     fun getLocations(): Single<List<Location>>
 
-    fun updateLocationTemp(locationId: Int, newTemp: Int): Completable
+    fun updateLocationTemp(locationId: Int, newTemp: String): Completable
 
     fun getFavoriteLocations(): Single<List<Location>>
 
@@ -28,4 +26,6 @@ interface Repository {
     fun setLocationName(name: String)
 
     fun setCoordinates(lon: Long, lat: Long)
+
+    fun getUnit(): String
 }

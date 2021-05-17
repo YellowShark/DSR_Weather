@@ -15,6 +15,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.domain.exception.NoConnectivityException
 import ru.yellowshark.dsr_weather.utils.*
@@ -71,7 +72,7 @@ object NetworkModule {
 
     @ApiKeyInterceptor
     @Provides
-    fun provideApiKeyInterceptor(): Interceptor {
+    fun provideApiKeyInterceptor(unitManager: UnitManager): Interceptor {
         return Interceptor { chain ->
             var language = BASE_LANGUAGE
             if (Locale.getDefault().language == "ru")
@@ -81,7 +82,7 @@ object NetworkModule {
                 .url()
                 .newBuilder()
                 .addQueryParameter("appid", API_KEY)
-                .addQueryParameter("units", METRIC_UNITS)
+                .addQueryParameter("units", unitManager.getUnit())
                 .addQueryParameter("lang", language)
                 .build()
 

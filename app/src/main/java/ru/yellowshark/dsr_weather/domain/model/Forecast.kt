@@ -4,7 +4,7 @@ data class Forecast(
     val id: Int,
     val cityName: String,
     val date: String,
-    val temperature: Int,
+    val temperature: String,
     val humidity: String,
     val icon: String,
     val description: String,

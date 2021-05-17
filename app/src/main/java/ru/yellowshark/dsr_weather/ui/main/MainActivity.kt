@@ -1,11 +1,11 @@
-package ru.yellowshark.dsr_weather.ui
+package ru.yellowshark.dsr_weather.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.webkit.WebViewFragment
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -14,7 +14,6 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.ActivityMainBinding
-import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 //TODO
@@ -23,8 +22,8 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 // toolbar +++
 // onSwipeRefresh +++
 // google maps
-// metric and imperial systems
-// 2 languages
+// metric and imperial systems -
+// 2 languages +++
 // triggers
 
 
@@ -45,6 +44,29 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener 
         navController = navMainFragment.navController
     }
 
+    override fun onSupportNavigateUp(): Boolean =
+        navController.navigateUp()
+
+
+    override fun onClickListener(v: View) {
+        val pager = findViewById<ViewPager>(R.id.addLocation_viewPager)
+        val currPos = pager.currentItem
+        pager.currentItem = currPos + 1
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return if (item.itemId == R.id.action_set_unit) {
+            showDialog()
+            true
+        } else
+            super.onOptionsItemSelected(item)
+    }
+
     private fun setupToolbar() {
         with(binding) {
             setSupportActionBar(toolbar)
@@ -62,13 +84,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener 
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean =
-        navController.navigateUp()
-
-
-    override fun onClickListener(v: View) {
-        val pager = findViewById<ViewPager>(R.id.addLocation_viewPager)
-        val currPos = pager.currentItem
-        pager.currentItem = currPos + 1
+    private fun showDialog() {
+        DialogSetMeasure(
+            arrayOf(
+                getString(R.string.metric),
+                getString(R.string.imperial)
+            )
+        ).show(supportFragmentManager, DialogSetMeasure::class.java.simpleName)
     }
 }

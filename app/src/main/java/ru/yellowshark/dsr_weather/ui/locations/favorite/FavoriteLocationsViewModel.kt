@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import ru.yellowshark.dsr_weather.ui.locations.base.BaseViewModel
+import ru.yellowshark.dsr_weather.utils.METRIC_UNITS
 import javax.inject.Inject
 
 @HiltViewModel

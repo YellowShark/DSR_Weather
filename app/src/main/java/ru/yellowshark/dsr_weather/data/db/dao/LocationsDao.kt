@@ -22,7 +22,7 @@ interface LocationsDao {
         WHERE id = :locationId
         """
     )
-    fun updateLocationTemp(locationId: Int, newTemp: Int): Completable
+    fun updateLocationTemp(locationId: Int, newTemp: String): Completable
 
     @Query("SELECT * FROM locations WHERE is_favorite = 1")
     fun getFavoriteLocations(): Single<List<LocationEntity>>

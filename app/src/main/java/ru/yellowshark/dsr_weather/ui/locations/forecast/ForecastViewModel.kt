@@ -1,17 +1,13 @@
 package ru.yellowshark.dsr_weather.ui.locations.forecast
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.disposables.CompositeDisposable
-import ru.yellowshark.dsr_weather.data.remote.response.AllDayForecastResponse
-import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import ru.yellowshark.dsr_weather.ui.locations.base.BaseViewModel
+import ru.yellowshark.dsr_weather.utils.METRIC_UNITS
 import javax.inject.Inject
 
 @HiltViewModel
@@ -53,5 +49,9 @@ class ForecastViewModel @Inject constructor(
     fun getFullForecast(locationName: String) {
         getForecast(locationName)
         getAllDayForecast(locationName)
+    }
+
+    fun getUnit(): String {
+        return if (repository.getUnit() == METRIC_UNITS) "C" else "F"
     }
 }

@@ -28,4 +28,9 @@
     <string name="wind">Wind:</string>
     <string name="mm_hg">mm Hg</string>
     <string name="m_s">m/s</string>
+
+    <string name="unit">unit</string>
+    <string name="choose_measure_system">Choose measure system</string>
+    <string name="metric">metric</string>
+    <string name="imperial">imperial</string>
 </resources>

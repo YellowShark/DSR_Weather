@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.RepositoryImpl
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
 import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
@@ -26,22 +27,24 @@ object RepositoryModule {
         networkMapper: NetworkForecastMapper,
         networkShortForecastMapper: NetworkShortForecastMapper,
         localLocationMapper: LocalLocationMapper,
+        unitManager: UnitManager
     ): Repository {
         return RepositoryImpl(
             api,
             dao,
             networkMapper,
             networkShortForecastMapper,
-            localLocationMapper
+            localLocationMapper,
+            unitManager
         )
     }
 
     @Provides
-    fun provideNetworkForecastMapper(@ApplicationContext context: Context) =
-        NetworkForecastMapper(context)
+    fun provideNetworkForecastMapper(@ApplicationContext context: Context, unitManager: UnitManager) =
+        NetworkForecastMapper(context, unitManager)
 
     @Provides
-    fun provideNetworkShortForecastMapper() = NetworkShortForecastMapper()
+    fun provideNetworkShortForecastMapper(unitManager: UnitManager) = NetworkShortForecastMapper(unitManager)
 
     @Provides
     fun provideLocalLocationMapper() = LocalLocationMapper()

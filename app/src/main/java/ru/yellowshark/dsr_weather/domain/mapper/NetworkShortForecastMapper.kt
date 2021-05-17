@@ -1,7 +1,9 @@
 package ru.yellowshark.dsr_weather.domain.mapper
 
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.response.Forecast
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
+import ru.yellowshark.dsr_weather.utils.METRIC_UNITS
 import ru.yellowshark.dsr_weather.utils.Mapper
 import ru.yellowshark.dsr_weather.utils.WEATHER_ICON_URL_POSTFIX
 import ru.yellowshark.dsr_weather.utils.WEATHER_ICON_URL_PREFIX
@@ -25,12 +27,15 @@ private fun String.toShortTimeFormat(): String {
     return sdf.format(Date(millis))
 }
 
-class NetworkShortForecastMapper : Mapper<ShortForecast, Forecast> {
+class NetworkShortForecastMapper(
+    private val unitManager: UnitManager
+) : Mapper<ShortForecast, Forecast> {
     override fun toDomain(dto: Forecast): ShortForecast {
         with(dto) {
+            val unit = if (unitManager.getUnit() == METRIC_UNITS) "C" else "F"
             return ShortForecast(
                 time = dtTxt.toShortTimeFormat(),
-                temp = "${main.temp.toInt()} \u00B0C",
+                temp = "${main.temp.toInt()} \u00B0$unit",
                 icon = "$WEATHER_ICON_URL_PREFIX${weather[0].icon}$WEATHER_ICON_URL_POSTFIX",
                 humidity = "${main.humidity}%"
             )
