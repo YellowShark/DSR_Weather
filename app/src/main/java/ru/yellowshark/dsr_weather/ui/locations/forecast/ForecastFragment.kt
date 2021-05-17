@@ -22,7 +22,11 @@ import ru.yellowshark.dsr_weather.domain.model.ShortForecast
 @AndroidEntryPoint
 class ForecastFragment : Fragment(R.layout.fragment_forecast) {
     private val binding: FragmentForecastBinding by viewBinding()
-    private val viewModel by lazy { ViewModelProvider(requireActivity()).get(ForecastViewModel::class.java) }
+    private val viewModel: ForecastViewModel by lazy {
+        ViewModelProvider(requireActivity()).get(
+            ForecastViewModel::class.java
+        )
+    }
     private val forecastAdapter: ForecastAdapter by lazy { ForecastAdapter() }
     private val args: ForecastFragmentArgs by navArgs()
 
@@ -43,25 +47,34 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
 
     private fun observeViewModel() {
         viewModel.forecast.observe(viewLifecycleOwner) {
-            with(binding) {
-                Glide.with(requireContext())
-                    .load(it.icon)
-                    .into(forecastIconImage)
+            it?.let {
+                with(binding) {
+                    Glide.with(requireContext())
+                        .load(it.icon)
+                        .into(forecastIconImage)
 
-                forecastDateText.text = it.date
-                forecastCityText.text = it.cityName
-                forecastDescText.text = it.description
-                forecastTemperatureText.text = it.temperature
-                forecastWindText.text = it.wind
-                forecastPressureText.text = it.pressure
-                forecastHumidityText.text = it.humidity
+                    forecastDateText.text = it.date
+                    forecastCityText.text = it.cityName
+                    forecastDescText.text = it.description
+                    forecastTemperatureText.text = it.temperature
+                    forecastWindText.text = it.wind
+                    forecastPressureText.text = it.pressure
+                    forecastHumidityText.text = it.humidity
+                }
             }
         }
 
         viewModel.fullForecast.observe(viewLifecycleOwner) {
-            forecastAdapter.data = it.subList(1, it.size)
-            initGraph(it)
+            it?.let {
+                forecastAdapter.data = it.subList(1, it.size)
+                initGraph(it)
+            }
         }
+    }
+
+    override fun onDestroy() {
+        viewModel.clear()
+        super.onDestroy()
     }
 
     private fun initGraph(list: List<ShortForecast>) {
