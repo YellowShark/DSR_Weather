@@ -17,6 +17,8 @@ interface Repository {
 
     fun getLocations(): Single<List<Location>>
 
+    fun deleteLocation(locationId: Int): Completable
+
     fun updateLocationTemp(locationId: Int, newTemps: List<String>): Completable
 
     fun getFavoriteLocations(): Single<List<Location>>

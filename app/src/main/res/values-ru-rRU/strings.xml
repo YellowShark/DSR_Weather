@@ -26,6 +26,7 @@
     <string name="wind">Ветер:</string>
     <string name="mm_hg">мм рт. ст.</string>
     <string name="m_s">м/с</string>
+    <string name="delete">Удалить</string>
 
     <string name="unit">система измерения</string>
     <string name="choose_measure_system">Выберите систему измерения</string>

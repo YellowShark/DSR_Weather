@@ -52,7 +52,11 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
     }
 
     private fun openForecastFragment(location: Location) {
-        LocationsFragmentDirections.actionForecast(location.lat.toFloat(), location.lon.toFloat())
+        LocationsFragmentDirections.actionForecast(
+            location.lat.toFloat(),
+            location.lon.toFloat(),
+            location.id
+        )
             .also {
                 findNavController().navigate(it)
             }

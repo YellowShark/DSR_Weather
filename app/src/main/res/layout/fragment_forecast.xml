@@ -91,27 +91,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                tools:text="Ветер:"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Ветер:" />
 
             <TextView
                 android:id="@+id/forecast_pressure_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                tools:text="Давление:"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Давление:" />
 
             <TextView
                 android:id="@+id/forecast_humidity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="12dp"
-                tools:text="Влажность:"
                 android:textColor="@color/black"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                tools:text="Влажность:" />
 
         </LinearLayout>
 
@@ -122,8 +122,20 @@
             android:layout_margin="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_details_wrapper" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/forecast_delete_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="40dp"
+            android:background="@color/black"
+            android:text="@string/delete"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/forecast_graph" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

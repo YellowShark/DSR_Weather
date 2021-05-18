@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import io.reactivex.Completable
 import io.reactivex.Single
-import retrofit2.http.DELETE
 import ru.yellowshark.dsr_weather.data.db.entity.LocationEntity
 
 @Dao
@@ -38,4 +37,7 @@ interface LocationsDao {
         """
     )
     fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable
+
+    @Query("DELETE FROM locations WHERE id =:locationId")
+    fun deleteLocation(locationId: Int): Completable
 }

@@ -24,6 +24,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 // google maps +++
 // metric and imperial systems +++
 // 2 languages +++
+// delete location +++
 // triggers
 
 

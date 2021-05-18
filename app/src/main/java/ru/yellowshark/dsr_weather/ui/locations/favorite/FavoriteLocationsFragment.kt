@@ -5,7 +5,7 @@ import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
@@ -42,9 +42,13 @@ class FavoriteLocationsFragment : Fragment(R.layout.fragment_locations) {
     }
 
     private fun openForecastFragment(location: Location) {
-        LocationsFragmentDirections.actionForecast(location.lat.toFloat(), location.lon.toFloat())
+        LocationsFragmentDirections.actionForecast(
+            location.lat.toFloat(),
+            location.lon.toFloat(),
+            location.id
+        )
             .also {
-                Navigation.findNavController(binding.root).navigate(it)
+                findNavController().navigate(it)
             }
     }
 

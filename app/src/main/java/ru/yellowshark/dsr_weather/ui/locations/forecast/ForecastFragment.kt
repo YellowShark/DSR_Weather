@@ -6,6 +6,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
@@ -34,7 +35,13 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
         super.onViewCreated(view, savedInstanceState)
         initRv()
         observeViewModel()
+        initListeners()
         uploadForecast()
+    }
+
+    override fun onDestroy() {
+        viewModel.clear()
+        super.onDestroy()
     }
 
     private fun initRv() {
@@ -70,11 +77,10 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
                 initGraph(it)
             }
         }
-    }
 
-    override fun onDestroy() {
-        viewModel.clear()
-        super.onDestroy()
+        viewModel.locationDeleted.observe(viewLifecycleOwner) { deleted ->
+            if (deleted) findNavController().navigateUp()
+        }
     }
 
     private fun initGraph(list: List<ShortForecast>) {
@@ -103,6 +109,10 @@ class ForecastFragment : Fragment(R.layout.fragment_forecast) {
                 }
             }
         }
+    }
+
+    private fun initListeners() {
+        binding.forecastDeleteBtn.setOnClickListener { viewModel.deleteLocation(args.locationId) }
     }
 
     private fun uploadForecast() {

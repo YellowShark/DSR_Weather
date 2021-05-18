@@ -74,6 +74,12 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun deleteLocation(locationId: Int): Completable {
+        return dao.deleteLocation(locationId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun getUnit(): String {
         return unitManager.getUnit()
     }

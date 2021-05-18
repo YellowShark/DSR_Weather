@@ -13,12 +13,16 @@ import javax.inject.Inject
 class ForecastViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel() {
+
     private val _forecast = MutableLiveData<Forecast?>()
     val forecast: LiveData<Forecast?>
         get() = _forecast
     private val _fullForecast = MutableLiveData<List<ShortForecast>?>()
     val fullForecast: LiveData<List<ShortForecast>?>
         get() = _fullForecast
+    val locationDeleted: LiveData<Boolean>
+        get() = _locationDeleted
+    private val _locationDeleted = MutableLiveData<Boolean>()
 
     private fun getForecast(lat: Double, lon: Double) {
         disposables.add(
@@ -45,8 +49,16 @@ class ForecastViewModel @Inject constructor(
         getAllDayForecast(lat, lon)
     }
 
+    fun deleteLocation(locationId: Int) {
+        disposables.add(repository.deleteLocation(locationId)
+            .subscribe {
+                _locationDeleted.value = true
+            })
+    }
+
     fun clear() {
         _fullForecast.value = null
         _forecast.value = null
+        _locationDeleted.value = false
     }
 }

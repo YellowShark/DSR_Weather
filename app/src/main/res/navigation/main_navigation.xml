@@ -13,6 +13,9 @@
         <argument
             android:name="lon"
             app:argType="float" />
+        <argument
+            android:name="locationId"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/destination_locations"
