@@ -13,7 +13,7 @@ interface Repository {
 
     fun getTomorrowForecast(lat: Double, lon: Double): Single<ShortForecast>
 
-    fun saveLocation(): Completable
+    fun saveLocation(newLocation: Location): Completable
 
     fun getLocations(): Single<List<Location>>
 
@@ -24,10 +24,4 @@ interface Repository {
     fun getFavoriteLocations(): Single<List<Location>>
 
     fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable
-
-    fun setNextDay(hasNextDayForecast: Boolean)
-
-    fun setLocationName(name: String)
-
-    fun setCoordinates(lon: Double, lat: Double)
 }

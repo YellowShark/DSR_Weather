@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentMapBinding
+import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationViewModel
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 import java.io.IOException
 
@@ -30,9 +31,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     private val binding: FragmentMapBinding by viewBinding()
-    private val viewModel: MapViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(MapViewModel::class.java)
-    }
+    private val viewModel: AddLocationViewModel by activityViewModels()
     private lateinit var onClickListener: OnClickListener
     private lateinit var map: GoogleMap
     private var currentCoordinates = LatLng(MOSCOW_LAT, MOSCOW_LON)

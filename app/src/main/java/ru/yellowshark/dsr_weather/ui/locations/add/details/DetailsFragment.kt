@@ -3,20 +3,16 @@ package ru.yellowshark.dsr_weather.ui.locations.add.details
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentDetailsBinding
-import ru.yellowshark.dsr_weather.ui.locations.forecast.ForecastViewModel
+import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationViewModel
 
 class DetailsFragment : Fragment(R.layout.fragment_details) {
     private val binding: FragmentDetailsBinding by viewBinding()
-    private val viewModel: DetailsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(
-            DetailsViewModel::class.java
-        )
-    }
+    private val viewModel: AddLocationViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
