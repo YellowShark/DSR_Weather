@@ -23,7 +23,6 @@ import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationViewModel
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 import java.io.IOException
 
-
 class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     companion object {
         const val MOSCOW_LAT = 55.754093
