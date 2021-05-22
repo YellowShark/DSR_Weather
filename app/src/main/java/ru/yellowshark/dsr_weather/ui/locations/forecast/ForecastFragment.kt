@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,11 +23,7 @@ import ru.yellowshark.dsr_weather.domain.model.ShortForecast
 @AndroidEntryPoint
 class ForecastFragment : Fragment(R.layout.fragment_forecast) {
     private val binding: FragmentForecastBinding by viewBinding()
-    private val viewModel: ForecastViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(
-            ForecastViewModel::class.java
-        )
-    }
+    private val viewModel: ForecastViewModel by viewModels()
     private val forecastAdapter: ForecastAdapter by lazy { ForecastAdapter() }
     private val args: ForecastFragmentArgs by navArgs()
 

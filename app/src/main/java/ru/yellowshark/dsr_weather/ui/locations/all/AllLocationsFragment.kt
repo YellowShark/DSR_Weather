@@ -5,11 +5,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
 import ru.yellowshark.dsr_weather.domain.model.Location
@@ -17,13 +18,12 @@ import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
 import ru.yellowshark.dsr_weather.utils.Event.*
 
+@AndroidEntryPoint
 class AllLocationsFragment : Fragment(R.layout.fragment_locations),
     SwipeRefreshLayout.OnRefreshListener {
 
     private val binding: FragmentLocationsBinding by viewBinding()
-    private val viewModel: AllLocationsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(AllLocationsViewModel::class.java)
-    }
+    private val viewModel: AllLocationsViewModel by viewModels()
     private val adapter: LocationsAdapter by lazy {
         LocationsAdapter(
             { openForecastFragment(it) },

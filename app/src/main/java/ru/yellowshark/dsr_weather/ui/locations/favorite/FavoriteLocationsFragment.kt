@@ -4,20 +4,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.kirich1409.viewbindingdelegate.viewBinding
+import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
 
+@AndroidEntryPoint
 class FavoriteLocationsFragment : Fragment(R.layout.fragment_locations) {
     private val binding: FragmentLocationsBinding by viewBinding()
-    private val viewModel: FavoriteLocationsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(FavoriteLocationsViewModel::class.java)
-    }
+    private val viewModel: FavoriteLocationsViewModel by viewModels()
     private val adapter: LocationsAdapter by lazy {
         LocationsAdapter(
             { openForecastFragment(it) },

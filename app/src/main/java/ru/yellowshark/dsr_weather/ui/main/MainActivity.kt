@@ -73,8 +73,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener 
             setSupportActionBar(toolbar)
             val appBarConfiguration = AppBarConfiguration.Builder(
                 R.id.destination_locations,
-                R.id.destination_add_location,
-                R.id.destination_forecast
+                R.id.destination_add_location
             ).build()
 
             NavigationUI.setupActionBarWithNavController(
