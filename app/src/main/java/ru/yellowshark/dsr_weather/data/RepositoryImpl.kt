@@ -6,7 +6,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
-import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
 import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
@@ -22,8 +21,7 @@ class RepositoryImpl @Inject constructor(
     private val dao: LocationsDao,
     private val networkMapper: NetworkForecastMapper,
     private val networkShortForecastMapper: NetworkShortForecastMapper,
-    private val localLocationMapper: LocalLocationMapper,
-    private val unitManager: UnitManager
+    private val localLocationMapper: LocalLocationMapper
 ) : Repository {
 
     private val newLocation = Location(0, "", "")
@@ -49,8 +47,9 @@ class RepositoryImpl @Inject constructor(
     override fun getTomorrowForecast(lat: Double, lon: Double): Single<ShortForecast> {
         return api.getTwoDaysForecast(lat, lon)
             .subscribeOn(Schedulers.io())
-            .map { it.list.map { forecast ->
-                networkShortForecastMapper.toDomain(forecast)
+            .map {
+                it.list.map { forecast ->
+                    networkShortForecastMapper.toDomain(forecast)
                 }
             }
             .flatMap { Observable.fromIterable(it) }

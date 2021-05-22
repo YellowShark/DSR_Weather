@@ -27,7 +27,6 @@ object RepositoryModule {
         networkMapper: NetworkForecastMapper,
         networkShortForecastMapper: NetworkShortForecastMapper,
         localLocationMapper: LocalLocationMapper,
-        unitManager: UnitManager
     ): Repository {
         return RepositoryImpl(
             api,
@@ -35,7 +34,6 @@ object RepositoryModule {
             networkMapper,
             networkShortForecastMapper,
             localLocationMapper,
-            unitManager
         )
     }
 
