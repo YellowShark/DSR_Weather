@@ -30,6 +30,4 @@ interface Repository {
     fun setLocationName(name: String)
 
     fun setCoordinates(lon: Double, lat: Double)
-
-    fun getUnit(): String
 }

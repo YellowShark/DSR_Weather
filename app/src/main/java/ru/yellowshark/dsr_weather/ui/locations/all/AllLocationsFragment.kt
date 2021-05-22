@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
@@ -16,6 +17,7 @@ import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.ui.locations.LocationsFragmentDirections
 import ru.yellowshark.dsr_weather.ui.locations.adapter.LocationsAdapter
+import ru.yellowshark.dsr_weather.ui.main.MainViewModel
 import ru.yellowshark.dsr_weather.utils.Event.*
 
 @AndroidEntryPoint
@@ -24,6 +26,7 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
 
     private val binding: FragmentLocationsBinding by viewBinding()
     private val viewModel: AllLocationsViewModel by viewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
     private val adapter: LocationsAdapter by lazy {
         LocationsAdapter(
             { openForecastFragment(it) },
@@ -44,6 +47,11 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
     override fun onResume() {
         super.onResume()
         updateData()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mainViewModel.selectMetric(null)
     }
 
     override fun onRefresh() {
@@ -85,6 +93,10 @@ class AllLocationsFragment : Fragment(R.layout.fragment_locations),
 
     private fun observeVm() {
         with(binding) {
+            mainViewModel.metric.observe(viewLifecycleOwner) {
+                it?.let { updateData() }
+            }
+
             viewModel.event.observe(viewLifecycleOwner) { event ->
                 when (event) {
                     LOADING -> {

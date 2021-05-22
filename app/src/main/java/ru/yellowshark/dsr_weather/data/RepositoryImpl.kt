@@ -80,10 +80,6 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getUnit(): String {
-        return unitManager.getUnit()
-    }
-
     override fun updateLocationTemp(locationId: Int, newTemps: List<String>): Completable {
         return dao.updateLocationTemps(locationId, newTemps[0], newTemps[1])
             .subscribeOn(Schedulers.io())
