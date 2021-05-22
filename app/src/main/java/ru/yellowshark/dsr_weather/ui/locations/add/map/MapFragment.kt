@@ -44,7 +44,6 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         initMaps()
-
     }
 
     override fun onMapReady(map: GoogleMap) {
