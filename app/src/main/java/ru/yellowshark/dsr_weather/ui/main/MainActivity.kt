@@ -103,7 +103,6 @@ class MainActivity :
                 }
                 else -> {
                     binding.toolbar.menu.removeItem(R.id.action_set_unit)
-
                 }
             }
         }
