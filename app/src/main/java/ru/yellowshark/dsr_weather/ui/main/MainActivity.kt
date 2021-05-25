@@ -6,12 +6,19 @@ import android.view.MenuItem
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
 import androidx.viewpager.widget.ViewPager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.ActivityMainBinding
@@ -39,15 +46,19 @@ class MainActivity :
     private val binding: ActivityMainBinding by viewBinding()
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initNavController()
         setupToolbar()
+        initDrawerLayout()
     }
 
-    override fun onSupportNavigateUp(): Boolean =
-        navController.navigateUp()
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_main_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
 
     override fun onClickListener(v: View) {
         val pager = findViewById<ViewPager>(R.id.addLocation_viewPager)
@@ -61,11 +72,20 @@ class MainActivity :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.action_set_unit) {
-            showDialog()
-            true
-        } else
-            super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            android.R.id.home -> {
+                if (navController.currentDestination?.id != R.id.destination_locations)
+                    navController.navigate(R.id.destination_locations)
+                else
+                    binding.drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            R.id.action_set_unit -> {
+                showDialog()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onMetricChangeListener(s: String) {
@@ -92,7 +112,7 @@ class MainActivity :
     private fun setupToolbar() {
         with(binding) {
             setSupportActionBar(toolbar)
-            val appBarConfiguration = AppBarConfiguration.Builder(
+            val toolbarConfiguration = AppBarConfiguration.Builder(
                 R.id.destination_locations,
                 R.id.destination_add_location
             ).build()
@@ -100,7 +120,7 @@ class MainActivity :
             NavigationUI.setupActionBarWithNavController(
                 this@MainActivity,
                 navController,
-                appBarConfiguration
+                toolbarConfiguration
             )
         }
     }
@@ -112,5 +132,22 @@ class MainActivity :
                 getString(R.string.imperial)
             )
         ).show(supportFragmentManager, DialogSetMeasure::class.java.simpleName)
+    }
+
+    private fun initDrawerLayout() {
+        val drawerLayout: DrawerLayout = binding.drawerLayout
+        drawerLayout.setScrimColor(ContextCompat.getColor(this, android.R.color.transparent))
+        drawerLayout.drawerElevation = 0f
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.destination_locations,
+                R.id.destination_triggers,
+            ), drawerLayout
+        )
+
+        findViewById<NavigationView>(R.id.nav_view)
+            .setupWithNavController(navController)
+
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
     }
 }

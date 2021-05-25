@@ -29,4 +29,8 @@
         android:id="@+id/destination_add_location"
         android:name="ru.yellowshark.dsr_weather.ui.locations.add.AddLocationFragment"
         android:label="@string/new_location" />
+    <fragment
+        android:id="@+id/destination_triggers"
+        android:name="ru.yellowshark.dsr_weather.ui.triggers.TriggersFragment"
+        android:label="@string/triggers" />
 </navigation>

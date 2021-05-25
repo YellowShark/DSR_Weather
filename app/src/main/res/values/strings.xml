@@ -42,4 +42,5 @@
 
     <string name="search">Search</string>
     <string name="nothing_found">By your request nothing found</string>
+    <string name="triggers">Triggers</string>
 </resources>

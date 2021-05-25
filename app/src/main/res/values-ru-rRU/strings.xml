@@ -38,4 +38,6 @@
 
     <string name="search">Поиск</string>
     <string name="nothing_found">По заданному запросу ничего не найдено</string>
+    <string name="triggers">Триггеры</string>
+
 </resources>
