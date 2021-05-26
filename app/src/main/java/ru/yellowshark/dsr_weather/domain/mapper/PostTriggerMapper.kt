@@ -10,24 +10,53 @@ class PostTriggerMapper : Mapper<Trigger, AddTriggerRequest> {
     }
 
     override fun fromDomain(domain: Trigger): AddTriggerRequest {
-        return AddTriggerRequest(
-            area = listOf(
-                Area(
-                    listOf(0, 1),
-                    ""
+        with(domain) {
+            val areasList = arrayListOf<Area>()
+            areas.forEach {
+                areasList.add(
+                    Area(
+                        listOf(it.lat.toInt(), it.lon.toInt()),
+                        "MultiPoint"
+                    )
                 )
-            ),
-            conditions = listOf(
-                Condition(
-                    100,
-                    "\$gte",
-                    "temp"
+            }
+
+            val conditions = arrayListOf<Condition>()
+            temp?.let {
+                conditions.add(
+                    Condition(
+                        it,
+                        "\$gte",
+                        "temp"
+                    )
                 )
-            ),
-            TimePeriod(
-                start = Start(0,""),
-                end = End(0, "")
+            }
+            wind?.let {
+                conditions.add(
+                    Condition(
+                        it,
+                        "\$gte",
+                        "wind_speed"
+                    )
+                )
+            }
+            humidity?.let {
+                conditions.add(
+                    Condition(
+                        it,
+                        "\$gte",
+                        "humidity"
+                    )
+                )
+            }
+            return AddTriggerRequest(
+                area = areasList,
+                conditions = conditions,
+                TimePeriod(
+                    start = Start(startMillis.toInt(), "after"),
+                    end = End(endMillis.toInt(), "after")
+                )
             )
-        )
+        }
     }
 }

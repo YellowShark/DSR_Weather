@@ -29,7 +29,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
 
     private fun initListeners() {
         binding.triggerDetailsSaveBtn.setOnClickListener {
-            viewModel.saveTrigger(Trigger(""))
+            viewModel.saveTrigger(Trigger("", ""))
             findNavController().navigateUp()
         }
     }
