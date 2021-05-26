@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -134,19 +133,32 @@ class MainActivity :
     }
 
     private fun initDrawerLayout() {
-        val drawerLayout: DrawerLayout = binding.drawerLayout
-        drawerLayout.setScrimColor(ContextCompat.getColor(this, android.R.color.transparent))
-        drawerLayout.drawerElevation = 0f
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.destination_locations,
-                R.id.destination_triggers,
-            ), drawerLayout
-        )
+        with(binding) {
+            drawerLayout.apply {
+                setScrimColor(
+                    ContextCompat.getColor(
+                        this@MainActivity,
+                        android.R.color.transparent
+                    )
+                )
+                drawerElevation = 0f
+            }
 
-        findViewById<NavigationView>(R.id.nav_view)
-            .setupWithNavController(navController)
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.destination_locations,
+                    R.id.destination_triggers,
+                ), drawerLayout
+            )
 
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+            findViewById<NavigationView>(R.id.nav_view)
+                .setupWithNavController(navController)
+
+            NavigationUI.setupActionBarWithNavController(
+                this@MainActivity,
+                navController,
+                drawerLayout
+            )
+        }
     }
 }
