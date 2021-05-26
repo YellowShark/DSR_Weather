@@ -7,32 +7,36 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
-import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
-import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
-import ru.yellowshark.dsr_weather.domain.mapper.NetworkShortForecastMapper
+import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
+import ru.yellowshark.dsr_weather.data.remote.response.TriggerResponse
+import ru.yellowshark.dsr_weather.domain.mapper.*
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
+import ru.yellowshark.dsr_weather.domain.model.Trigger
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
-    private val api: ForecastApi,
+    private val forecastApi: ForecastApi,
+    private val triggersApi: TriggersApi,
     private val dao: LocationsDao,
     private val networkMapper: NetworkForecastMapper,
     private val networkShortForecastMapper: NetworkShortForecastMapper,
-    private val localLocationMapper: LocalLocationMapper
+    private val localLocationMapper: LocalLocationMapper,
+    private val postTriggerMapper: PostTriggerMapper,
+    private val triggerMapper: TriggerMapper
 ) : Repository {
 
     override fun getForecast(lat: Double, lon: Double): Single<Forecast> {
-        return api.getForecast(lat, lon)
+        return forecastApi.getForecast(lat, lon)
             .map { networkMapper.toDomain(it) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getAllDayForecast(lat: Double, lon: Double): Single<List<ShortForecast>> {
-        return api.getAllDayForecast(lat, lon)
+        return forecastApi.getAllDayForecast(lat, lon)
             .map {
                 it.list.map { forecast ->
                     networkShortForecastMapper.toDomain(forecast)
@@ -43,7 +47,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun getTomorrowForecast(lat: Double, lon: Double): Single<ShortForecast> {
-        return api.getTwoDaysForecast(lat, lon)
+        return forecastApi.getTwoDaysForecast(lat, lon)
             .subscribeOn(Schedulers.io())
             .map {
                 it.list.map { forecast ->
@@ -94,6 +98,19 @@ class RepositoryImpl @Inject constructor(
 
     override fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable {
         return dao.updateIsFavorite(locationId, newValue)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun saveTrigger(trigger: Trigger): Single<TriggerResponse> {
+        return triggersApi.saveTrigger(postTriggerMapper.fromDomain(trigger))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getTriggers(): Observable<List<Trigger>> {
+        return triggersApi.getTriggers()
+            .map { list -> list.map { triggerMapper.toDomain(it) } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
