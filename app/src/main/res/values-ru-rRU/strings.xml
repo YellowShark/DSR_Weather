@@ -38,6 +38,12 @@
 
     <string name="search">Поиск</string>
     <string name="nothing_found">По заданному запросу ничего не найдено</string>
+
     <string name="triggers">Триггеры</string>
+    <string name="trigger_name">Название триггера</string>
+    <string name="trigger_details_title">Параметры триггера</string>
+    <string name="temp">Температура</string>
+    <string name="wind_speed">Скорость ветра</string>
+    <string name="save">Сохранить</string>
 
 </resources>

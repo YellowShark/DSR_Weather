@@ -43,4 +43,9 @@
     <string name="search">Search</string>
     <string name="nothing_found">By your request nothing found</string>
     <string name="triggers">Triggers</string>
+    <string name="trigger_name">Trigger name</string>
+    <string name="trigger_details_title">Trigger settings</string>
+    <string name="temp">Temperature</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="save">Save</string>
 </resources>
