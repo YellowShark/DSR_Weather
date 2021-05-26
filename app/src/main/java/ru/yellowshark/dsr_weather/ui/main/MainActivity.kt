@@ -74,7 +74,7 @@ class MainActivity :
         return when (item.itemId) {
             android.R.id.home -> {
                 if (navController.currentDestination?.id != R.id.destination_locations)
-                    navController.navigate(R.id.destination_locations)
+                    navController.navigateUp()
                 else
                     binding.drawerLayout.openDrawer(GravityCompat.START)
                 true

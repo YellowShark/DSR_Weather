@@ -32,5 +32,17 @@
     <fragment
         android:id="@+id/destination_triggers"
         android:name="ru.yellowshark.dsr_weather.ui.triggers.TriggersFragment"
-        android:label="@string/triggers" />
+        android:label="@string/triggers" >
+        <action
+            android:id="@+id/action_trigger_details"
+            app:destination="@id/destination_trigger_details" />
+    </fragment>
+    <fragment
+        android:id="@+id/destination_trigger_details"
+        android:name="ru.yellowshark.dsr_weather.ui.triggers.DetailTriggerFragment"
+        android:label="@string/trigger_details_title" >
+        <argument
+            android:name="name"
+            app:argType="string" />
+    </fragment>
 </navigation>
