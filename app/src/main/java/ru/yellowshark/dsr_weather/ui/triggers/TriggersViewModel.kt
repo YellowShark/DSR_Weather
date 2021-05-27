@@ -19,10 +19,10 @@ class TriggersViewModel @Inject constructor(
 
     fun getTriggers() {
         _triggers.value = listOf(
-            Trigger("хороший триггер"),
-            Trigger("похуже триггер"),
-            Trigger("такой себе триггер"),
-            Trigger("классный триггер"),
+            Trigger("", "хороший триггер"),
+            Trigger("", "похуже триггер"),
+            Trigger("", "такой себе триггер"),
+            Trigger("", "классный триггер"),
         )
         disposables.add(repository.getTriggers().subscribe({}, { it.printStackTrace() }))
     }

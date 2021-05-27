@@ -45,5 +45,8 @@
     <string name="temp">Температура</string>
     <string name="wind_speed">Скорость ветра</string>
     <string name="save">Сохранить</string>
+    <string name="date_start">Дата начала</string>
+    <string name="date_end">Дата конца</string>
+    <string name="humidity_detail">Влажность</string>
 
 </resources>
