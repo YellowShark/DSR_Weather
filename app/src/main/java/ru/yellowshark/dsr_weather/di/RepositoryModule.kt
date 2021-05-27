@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.RepositoryImpl
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
@@ -23,23 +24,27 @@ object RepositoryModule {
     fun provideRepository(
         forecastApi: ForecastApi,
         triggersApi: TriggersApi,
-        dao: LocationsDao,
+        locationsDao: LocationsDao,
+        triggersDao: TriggersDao,
         networkMapper: NetworkForecastMapper,
         networkShortForecastMapper: NetworkShortForecastMapper,
         localLocationMapper: LocalLocationMapper,
         postTriggerMapper: PostTriggerMapper,
         triggerMapper: TriggerMapper,
+        localTriggerMapper: LocalTriggerMapper,
     ): Repository {
         return RepositoryImpl(
             forecastApi,
             triggersApi,
-            dao,
+            locationsDao,
+            triggersDao,
             networkMapper,
             networkShortForecastMapper,
             localLocationMapper,
             postTriggerMapper,
             triggerMapper,
-        )
+            localTriggerMapper,
+            )
     }
 
     @Provides
@@ -57,4 +62,7 @@ object RepositoryModule {
 
     @Provides
     fun provideTriggerMapper() = TriggerMapper()
+
+    @Provides
+    fun provideLocalTriggerMapper() = LocalTriggerMapper()
 }

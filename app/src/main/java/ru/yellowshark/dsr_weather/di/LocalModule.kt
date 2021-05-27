@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.yellowshark.dsr_weather.data.db.LocationsDatabase
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.other.UnitManager
 import javax.inject.Singleton
 
@@ -18,6 +19,10 @@ object LocalModule {
     fun provideLocationsDao(db: LocationsDatabase): LocationsDao {
         return db.getLocationsDao()
     }
+
+    @Provides
+    fun provideTriggersDao(db: LocationsDatabase): TriggersDao =
+        db.getTriggersDao()
 
     @Singleton
     @Provides

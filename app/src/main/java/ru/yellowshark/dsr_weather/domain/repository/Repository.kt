@@ -30,5 +30,9 @@ interface Repository {
 
     fun saveTrigger(trigger: Trigger): Single<TriggerResponse>
 
-    fun getTriggers(): Observable<List<Trigger>>
+    fun requestAlerts(): Observable<List<Trigger>>
+
+    fun saveTriggerLocal(trigger: Trigger): Completable
+
+    fun getTriggers(): Single<List<Trigger>>
 }

@@ -5,11 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.db.entity.LocationEntity
+import ru.yellowshark.dsr_weather.data.db.entity.TriggerEntity
 
 const val DB_NAME = "locations.db"
 
-@Database(entities = [LocationEntity::class], version = 5)
+@Database(entities = [LocationEntity::class, TriggerEntity::class], version = 6)
 abstract class LocationsDatabase : RoomDatabase() {
     companion object {
         @Volatile
@@ -27,4 +29,6 @@ abstract class LocationsDatabase : RoomDatabase() {
     }
 
     abstract fun getLocationsDao(): LocationsDao
+
+    abstract fun getTriggersDao(): TriggersDao
 }

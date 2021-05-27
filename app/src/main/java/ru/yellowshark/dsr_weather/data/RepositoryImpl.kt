@@ -6,6 +6,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
+import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
 import ru.yellowshark.dsr_weather.data.remote.response.TriggerResponse
@@ -20,12 +21,14 @@ import javax.inject.Inject
 class RepositoryImpl @Inject constructor(
     private val forecastApi: ForecastApi,
     private val triggersApi: TriggersApi,
-    private val dao: LocationsDao,
+    private val locationsDao: LocationsDao,
+    private val triggersDao: TriggersDao,
     private val networkMapper: NetworkForecastMapper,
     private val networkShortForecastMapper: NetworkShortForecastMapper,
     private val localLocationMapper: LocalLocationMapper,
     private val postTriggerMapper: PostTriggerMapper,
-    private val triggerMapper: TriggerMapper
+    private val triggerMapper: TriggerMapper,
+    private val localTriggerMapper: LocalTriggerMapper
 ) : Repository {
 
     override fun getForecast(lat: Double, lon: Double): Single<Forecast> {
@@ -61,13 +64,13 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun saveLocation(newLocation: Location): Completable {
-        return dao.insertLocation(localLocationMapper.fromDomain(newLocation))
+        return locationsDao.insertLocation(localLocationMapper.fromDomain(newLocation))
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getLocations(): Single<List<Location>> {
-        return dao.getLocations()
+        return locationsDao.getLocations()
             .map {
                 it.map { entity -> localLocationMapper.toDomain(entity) }
             }
@@ -76,19 +79,19 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun deleteLocation(locationId: Int): Completable {
-        return dao.deleteLocation(locationId)
+        return locationsDao.deleteLocation(locationId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun updateLocationTemp(locationId: Int, newTemps: List<String>): Completable {
-        return dao.updateLocationTemps(locationId, newTemps[0], newTemps[1])
+        return locationsDao.updateLocationTemps(locationId, newTemps[0], newTemps[1])
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
     override fun getFavoriteLocations(): Single<List<Location>> {
-        return dao.getFavoriteLocations()
+        return locationsDao.getFavoriteLocations()
             .map {
                 it.map { entity -> localLocationMapper.toDomain(entity) }
             }
@@ -97,7 +100,7 @@ class RepositoryImpl @Inject constructor(
     }
 
     override fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable {
-        return dao.updateIsFavorite(locationId, newValue)
+        return locationsDao.updateIsFavorite(locationId, newValue)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -108,9 +111,22 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getTriggers(): Observable<List<Trigger>> {
+    override fun requestAlerts(): Observable<List<Trigger>> {
         return triggersApi.getTriggers()
             .map { list -> list.map { triggerMapper.toDomain(it) } }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun saveTriggerLocal(trigger: Trigger): Completable {
+        return triggersDao.insertTrigger(localTriggerMapper.fromDomain(trigger))
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getTriggers(): Single<List<Trigger>> {
+        return triggersDao.getTriggers()
+            .map { list -> list.map { localTriggerMapper.toDomain(it) } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

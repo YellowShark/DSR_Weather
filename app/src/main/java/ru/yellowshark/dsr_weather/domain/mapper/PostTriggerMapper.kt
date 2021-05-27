@@ -2,6 +2,7 @@ package ru.yellowshark.dsr_weather.domain.mapper
 
 import ru.yellowshark.dsr_weather.data.remote.request.*
 import ru.yellowshark.dsr_weather.domain.model.Trigger
+import ru.yellowshark.dsr_weather.utils.DateConverter
 import ru.yellowshark.dsr_weather.utils.Mapper
 
 class PostTriggerMapper : Mapper<Trigger, AddTriggerRequest> {
@@ -53,8 +54,8 @@ class PostTriggerMapper : Mapper<Trigger, AddTriggerRequest> {
                 area = areasList,
                 conditions = conditions,
                 TimePeriod(
-                    start = Start(startMillis.toInt(), "after"),
-                    end = End(endMillis.toInt(), "after")
+                    start = Start(DateConverter.parseString(startDate).toInt(), "after"),
+                    end = End(DateConverter.parseString(endDate).toInt(), "after")
                 )
             )
         }

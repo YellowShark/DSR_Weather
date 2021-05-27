@@ -24,7 +24,7 @@ class TriggersViewModel @Inject constructor(
             Trigger("", "такой себе триггер"),
             Trigger("", "классный триггер"),
         )
-        disposables.add(repository.getTriggers().subscribe({}, { it.printStackTrace() }))
+        disposables.add(repository.requestAlerts().subscribe({}, { it.printStackTrace() }))
     }
 
     fun saveTrigger(trigger: Trigger) {
