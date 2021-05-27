@@ -35,4 +35,6 @@ interface Repository {
     fun saveTriggerLocal(trigger: Trigger): Completable
 
     fun getTriggers(): Single<List<Trigger>>
+
+    fun deleteLocalTrigger(id: String): Completable
 }

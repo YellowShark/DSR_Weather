@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "trigger_entity")
+@Entity(tableName = "triggers")
 data class TriggerEntity(
     @PrimaryKey
     var id: String,

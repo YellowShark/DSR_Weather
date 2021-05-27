@@ -25,11 +25,15 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
         initRv()
         observeViewModel()
         initListeners()
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.getTriggers()
     }
 
     private fun openDetails(trigger: Trigger) {
-        val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(trigger.name)
+        val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(trigger.name, trigger.id)
         findNavController().navigate(actionTriggerDetails)
     }
 
@@ -38,8 +42,10 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
     }
 
     private fun observeViewModel() {
-        viewModel.triggers.observe(viewLifecycleOwner) {
-            adapter.data = it
+        with(viewModel) {
+            triggers.observe(viewLifecycleOwner) {
+                adapter.data = it
+            }
         }
     }
 

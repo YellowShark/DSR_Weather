@@ -130,4 +130,10 @@ class RepositoryImpl @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun deleteLocalTrigger(id: String): Completable {
+        return triggersDao.deleteTrigger(id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

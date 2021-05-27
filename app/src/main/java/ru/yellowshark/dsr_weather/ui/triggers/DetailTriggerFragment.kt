@@ -2,6 +2,8 @@ package ru.yellowshark.dsr_weather.ui.triggers
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -13,7 +15,10 @@ import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentTriggerDetailsBinding
+import ru.yellowshark.dsr_weather.domain.model.Point
 import ru.yellowshark.dsr_weather.domain.model.Trigger
+import ru.yellowshark.dsr_weather.utils.DateConverter
+import ru.yellowshark.dsr_weather.utils.Event
 
 class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     private val binding: FragmentTriggerDetailsBinding by viewBinding()
@@ -23,10 +28,17 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initUi()
         initListeners()
+        observeViewModel()
+    }
+
+    override fun onDestroy() {
+        viewModel.clearData()
+        super.onDestroy()
     }
 
     private fun initUi() {
         with(binding) {
+            if (args.id.isEmpty()) triggerDetailsDeleteBtn.isVisible = false
             triggerDetailsNameEt.setText(args.name)
             initMasks()
         }
@@ -44,9 +56,68 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     }
 
     private fun initListeners() {
-        binding.triggerDetailsSaveBtn.setOnClickListener {
-            viewModel.saveTrigger(Trigger("", ""))
-            findNavController().navigateUp()
+        with(binding) {
+            triggerDetailsSaveBtn.setOnClickListener {
+                if (validFields()) {
+                    val name = triggerDetailsNameEt.text.toString()
+                    val temp = triggerDetailsTempEt.text.toString()
+                    val wind = triggerDetailsWindEt.text.toString()
+                    val humidity = triggerDetailsHumidityEt.text.toString()
+                    val dateStart = triggerDetailsDateStartEt.text.toString()
+                    val dateEnd = triggerDetailsDateEndEt.text.toString()
+
+                    viewModel.saveTrigger(
+                        Trigger(
+                            args.id,
+                            name,
+                            temp.toInt(),
+                            if (wind.isEmpty()) null else wind.toInt(),
+                            if (humidity.isEmpty()) null else humidity.toInt(),
+                            if (dateStart.isEmpty()) DateConverter.dateFormat(System.currentTimeMillis()) else dateStart,
+                            if (dateEnd.isEmpty()) DateConverter.dateFormat(System.currentTimeMillis() + 24 * 60 * 60 * 1000) else dateEnd,
+                            listOf(Point(55.754093, 37.620407))
+                        )
+                    )
+                } else
+                    Toast.makeText(requireContext(), R.string.required_fields, Toast.LENGTH_SHORT)
+                        .show()
+            }
+            triggerDetailsDeleteBtn.setOnClickListener { viewModel.deleteTrigger(args.id) }
+        }
+    }
+
+    private fun validFields(): Boolean {
+        with(binding) {
+            return triggerDetailsNameEt.text.toString().trim()
+                .isNotEmpty() && triggerDetailsTempEt.text.toString().trim().isNotEmpty()
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.event.observe(viewLifecycleOwner) {
+            it?.let { event ->
+                when (event) {
+                    Event.SUCCESS -> {
+                        findNavController().navigateUp()
+                    }
+                    Event.NO_INTERNET -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.error_no_internet),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    Event.UNKNOWN_ERROR -> {
+                        Toast.makeText(
+                            requireContext(),
+                            getString(R.string.unknown_error),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    else -> {
+                    }
+                }
+            }
         }
     }
 }

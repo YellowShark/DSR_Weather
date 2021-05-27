@@ -43,12 +43,13 @@
     <string name="search">Search</string>
     <string name="nothing_found">By your request nothing found</string>
     <string name="triggers">Triggers</string>
-    <string name="trigger_name">Trigger name</string>
+    <string name="trigger_name">Trigger name (required)</string>
     <string name="trigger_details_title">Trigger settings</string>
-    <string name="temp">Temperature</string>
+    <string name="temp">Temperature (required)</string>
     <string name="wind_speed">Wind speed</string>
     <string name="save">Save</string>
     <string name="date_start">Start date</string>
     <string name="date_end">End date</string>
     <string name="humidity_detail">Humidity</string>
+    <string name="required_fields">Please, fill required fields.</string>
 </resources>
