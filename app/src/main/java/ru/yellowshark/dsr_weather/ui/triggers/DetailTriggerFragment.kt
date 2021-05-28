@@ -25,9 +25,9 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     private val viewModel: TriggersViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        initUi()
         initListeners()
         observeViewModel()
+        initUi()
     }
 
     override fun onDestroy() {
@@ -38,7 +38,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     private fun initUi() {
         with(binding) {
             if (args.id.isEmpty()) triggerDetailsDeleteBtn.isVisible = false
-            triggerDetailsNameEt.setText(args.name)
+            else viewModel.getTriggerById(args.id)
             initMasks()
         }
     }
@@ -74,7 +74,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                             if (humidity.isEmpty()) null else humidity.toInt(),
                             dateStart,
                             dateEnd,
-                            listOf(Point(55.754093, 37.620407))
+                            listOf(Point(55.754093, 37.620407)) //moscow
                         )
                     )
                 } else
@@ -93,27 +93,45 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     }
 
     private fun observeViewModel() {
-        viewModel.event.observe(viewLifecycleOwner) {
-            it?.let { event ->
-                when (event) {
-                    Event.SUCCESS -> {
-                        findNavController().navigateUp()
+        with(viewModel) {
+            trigger.observe(viewLifecycleOwner) {
+                it?.let { trigger ->
+                    binding.apply {
+                        triggerDetailsNameEt.setText(trigger.name)
+                        triggerDetailsTempEt.setText(trigger.temp.toString())
+                        triggerDetailsWindEt.setText(if (trigger.wind == null) "" else trigger.wind.toString())
+                        triggerDetailsHumidityEt.setText(if (trigger.humidity == null) "" else trigger.humidity.toString())
+                        triggerDetailsDateStartEt.setText(trigger.startDate)
+                        triggerDetailsDateEndEt.setText(trigger.endDate)
                     }
-                    Event.NO_INTERNET -> {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.error_no_internet),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    Event.UNKNOWN_ERROR -> {
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.unknown_error),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                    else -> {
+                }
+            }
+            event.observe(viewLifecycleOwner) {
+                it?.let { event ->
+                    when (event) {
+                        Event.LOADING -> {
+                            binding.apply {
+                                triggerDetailsLoaderPb.isVisible = true
+                                triggerDetailsContentWrapper.visibility = View.INVISIBLE
+                            }
+                        }
+                        Event.SUCCESS -> { findNavController().navigateUp() }
+                        Event.NO_INTERNET -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.error_no_internet),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        Event.UNKNOWN_ERROR -> {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.unknown_error),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        else -> {
+                        }
                     }
                 }
             }

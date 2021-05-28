@@ -22,10 +22,31 @@ class TriggersViewModel @Inject constructor(
     val event: LiveData<Event?>
         get() = _event
     private val _event = MutableLiveData<Event?>()
+    val trigger: LiveData<Trigger?>
+        get() = _trigger
+    private val _trigger = MutableLiveData<Trigger?>()
+
+    private fun onError(t: Throwable) {
+        t.printStackTrace()
+        if (t is NoConnectivityException)
+            _event.value = Event.NO_INTERNET
+        else
+            _event.value = Event.UNKNOWN_ERROR
+    }
+
+    private fun saveLocal(triggerId: String, trigger: Trigger) {
+        disposables.add(
+            repository.saveTriggerLocal(trigger.apply { id = triggerId }).subscribe()
+        )
+    }
+
+    private fun deleteLocal(triggerId: String) {
+        disposables.add(repository.deleteLocalTrigger(triggerId).subscribe())
+    }
 
     fun getTriggers() {
         disposables.add(
-            repository.getTriggers().subscribe({ _triggers.value = it }, { it.printStackTrace() })
+            repository.getTriggers().subscribe({ _triggers.value = it }, { onError(it) })
         )
         disposables.add(repository.requestAlerts()
             .subscribe(
@@ -37,6 +58,16 @@ class TriggersViewModel @Inject constructor(
         )
     }
 
+    fun getTriggerById(triggerId: String) {
+        disposables.add(
+            repository.getTriggerById(triggerId)
+                .subscribe(
+                    { _trigger.value = it },
+                    { onError(it) }
+                )
+        )
+    }
+
     fun saveTrigger(trigger: Trigger) {
         disposables.add(
             repository.saveTrigger(trigger)
@@ -45,47 +76,27 @@ class TriggersViewModel @Inject constructor(
                         saveLocal(it.id, trigger)
                         _event.value = Event.SUCCESS
                     },
-                    {
-                        it.printStackTrace()
-                        if (it is NoConnectivityException)
-                            _event.value = Event.NO_INTERNET
-                        else
-                            _event.value = Event.UNKNOWN_ERROR
-                    }
+                    { onError(it) }
                 )
-        )
-    }
-
-    private fun saveLocal(triggerId: String, trigger: Trigger) {
-        disposables.add(
-            repository.saveTriggerLocal(trigger.apply { id = triggerId }).subscribe()
         )
     }
 
     fun deleteTrigger(id: String) {
         disposables.add(
-            repository.deleteTrigger(id).subscribe(
+            repository.deleteTrigger(id)
+                .doOnSubscribe { _event.value = Event.LOADING }
+                .subscribe(
+                { _event.value = Event.SUCCESS },
                 {
                     _event.value = Event.SUCCESS
-                },
-                {
-                    if (it.message == "timeout") {
-                        deleteLocal(id)
-                        _event.value = Event.SUCCESS
-                    } else {
-                        it.printStackTrace()
-                        _event.value = Event.UNKNOWN_ERROR
-                    }
+                    deleteLocal(id)
                 }
             )
         )
     }
 
-    private fun deleteLocal(triggerId: String) {
-        disposables.add(repository.deleteLocalTrigger(triggerId).subscribe())
-    }
-
     fun clearData() {
         _event.value = null
+        _trigger.value = null
     }
 }

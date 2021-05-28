@@ -18,4 +18,7 @@ interface TriggersDao {
 
     @Query("DELETE FROM triggers WHERE id =:triggerId")
     fun deleteTrigger(triggerId: String): Completable
+
+    @Query("SELECT * FROM triggers WHERE id =:triggerId")
+    fun getTriggerById(triggerId: String): Single<TriggerEntity>
 }

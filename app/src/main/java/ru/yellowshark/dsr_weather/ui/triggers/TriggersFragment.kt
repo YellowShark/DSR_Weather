@@ -33,7 +33,7 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
     }
 
     private fun openDetails(trigger: Trigger) {
-        val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(trigger.name, trigger.id)
+        val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(trigger.id)
         findNavController().navigate(actionTriggerDetails)
     }
 

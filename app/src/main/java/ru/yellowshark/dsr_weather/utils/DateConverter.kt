@@ -24,6 +24,7 @@ class DateConverter {
         }
 
         fun dateFormat(millis: Long): String {
+            if (millis == 0L) return ""
             val formatter = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
             val date = Date(millis)
             return formatter.format(date)

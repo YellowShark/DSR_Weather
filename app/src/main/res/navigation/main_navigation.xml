@@ -42,9 +42,6 @@
         android:name="ru.yellowshark.dsr_weather.ui.triggers.DetailTriggerFragment"
         android:label="@string/trigger_details_title" >
         <argument
-            android:name="name"
-            app:argType="string" />
-        <argument
             android:name="id"
             app:argType="string" />
     </fragment>
