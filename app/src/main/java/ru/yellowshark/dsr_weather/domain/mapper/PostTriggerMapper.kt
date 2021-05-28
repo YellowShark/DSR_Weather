@@ -17,7 +17,7 @@ class PostTriggerMapper : Mapper<Trigger, AddTriggerRequest> {
                 areasList.add(
                     Area(
                         listOf(it.lat.toInt(), it.lon.toInt()),
-                        "MultiPoint"
+                        "Point"
                     )
                 )
             }

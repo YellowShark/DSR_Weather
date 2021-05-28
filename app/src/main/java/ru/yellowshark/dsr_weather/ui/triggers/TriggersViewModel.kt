@@ -23,13 +23,8 @@ class TriggersViewModel @Inject constructor(
     private val _event = MutableLiveData<Event?>()
 
     fun getTriggers() {
-        _triggers.value = listOf(
-            Trigger("", "хороший триггер"),
-            Trigger("", "похуже триггер"),
-            Trigger("", "такой себе триггер"),
-            Trigger("", "классный триггер"),
-        )
-        disposables.add(repository.getTriggers().subscribe({}, { it.printStackTrace() }))
+        disposables.add(repository.getTriggers().subscribe({ _triggers.value = it }, { it.printStackTrace() }))
+        disposables.add(repository.requestAlerts().subscribe({},{ it.printStackTrace() }))
     }
 
     fun saveTrigger(trigger: Trigger) {
