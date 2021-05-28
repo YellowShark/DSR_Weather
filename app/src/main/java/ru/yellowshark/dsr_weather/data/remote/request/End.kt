@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class End(
     @SerializedName("amount")
-    val amount: Int,
+    val amount: Long,
     @SerializedName("expression")
     val expression: String
 )

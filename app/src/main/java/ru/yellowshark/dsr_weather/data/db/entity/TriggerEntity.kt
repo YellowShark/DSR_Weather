@@ -11,7 +11,7 @@ data class TriggerEntity(
     @ColumnInfo(name = "name")
     var name: String,
     @ColumnInfo(name = "temp")
-    var temp: Int?,
+    var temp: Int,
     @ColumnInfo(name = "humidity")
     var humidity: Int?,
     @ColumnInfo(name = "wind")

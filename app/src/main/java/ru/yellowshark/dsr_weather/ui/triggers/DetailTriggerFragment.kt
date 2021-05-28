@@ -17,7 +17,6 @@ import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentTriggerDetailsBinding
 import ru.yellowshark.dsr_weather.domain.model.Point
 import ru.yellowshark.dsr_weather.domain.model.Trigger
-import ru.yellowshark.dsr_weather.utils.DateConverter
 import ru.yellowshark.dsr_weather.utils.Event
 
 class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
@@ -73,8 +72,8 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                             temp.toInt(),
                             if (wind.isEmpty()) null else wind.toInt(),
                             if (humidity.isEmpty()) null else humidity.toInt(),
-                            if (dateStart.isEmpty()) DateConverter.dateFormat(System.currentTimeMillis()) else dateStart,
-                            if (dateEnd.isEmpty()) DateConverter.dateFormat(System.currentTimeMillis() + 24 * 60 * 60 * 1000) else dateEnd,
+                            dateStart,
+                            dateEnd,
                             listOf(Point(55.754093, 37.620407))
                         )
                     )

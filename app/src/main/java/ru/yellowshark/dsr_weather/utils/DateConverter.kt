@@ -9,7 +9,7 @@ class DateConverter {
         const val DATE_FORMAT = "dd/MM/yyyy"
 
         fun parseString(dateFormatted: String): Long {
-            val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.getDefault())
+            val sdf = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())
             var date: Date? = null
             try {
                 date = sdf.parse(dateFormatted)

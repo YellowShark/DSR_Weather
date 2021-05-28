@@ -58,7 +58,7 @@ object RepositoryModule {
     fun provideLocalLocationMapper() = LocalLocationMapper()
 
     @Provides
-    fun providePostTriggerMapper() = PostTriggerMapper()
+    fun providePostTriggerMapper(unitManager: UnitManager) = PostTriggerMapper(unitManager)
 
     @Provides
     fun provideTriggerMapper() = TriggerMapper()

@@ -40,14 +40,14 @@ data class Condition(
 
 data class End(
     @SerializedName("amount")
-    val amount: Int,
+    val amount: Long,
     @SerializedName("expression")
     val expression: String
 )
 
 data class Start(
     @SerializedName("amount")
-    val amount: Int,
+    val amount: Long,
     @SerializedName("expression")
     val expression: String
 )

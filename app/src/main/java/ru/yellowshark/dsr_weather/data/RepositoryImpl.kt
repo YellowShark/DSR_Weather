@@ -111,6 +111,12 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
+    override fun deleteTrigger(triggerId: String): Completable {
+        return triggersApi.deleteTrigger(triggerId)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
     override fun requestAlerts(): Observable<List<Trigger>> {
         return triggersApi.getTriggers()
             .map { list -> list.map { triggerMapper.toDomain(it) } }

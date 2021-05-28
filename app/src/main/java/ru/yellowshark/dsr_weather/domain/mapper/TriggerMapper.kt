@@ -8,7 +8,7 @@ import ru.yellowshark.dsr_weather.utils.Mapper
 class TriggerMapper : Mapper<Trigger, TriggerResponse> {
     override fun toDomain(dto: TriggerResponse): Trigger {
         Log.d("TAGGG", "toDomain: ${dto.alerts}")
-        return Trigger(dto.id, dto.id)
+        return Trigger(dto.id, dto.id, 0)
     }
 
     override fun fromDomain(domain: Trigger): TriggerResponse {

@@ -1,5 +1,6 @@
 package ru.yellowshark.dsr_weather.ui.triggers
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,8 +24,17 @@ class TriggersViewModel @Inject constructor(
     private val _event = MutableLiveData<Event?>()
 
     fun getTriggers() {
-        disposables.add(repository.getTriggers().subscribe({ _triggers.value = it }, { it.printStackTrace() }))
-        disposables.add(repository.requestAlerts().subscribe({},{ it.printStackTrace() }))
+        disposables.add(
+            repository.getTriggers().subscribe({ _triggers.value = it }, { it.printStackTrace() })
+        )
+        disposables.add(repository.requestAlerts()
+            .subscribe(
+                {
+                    Log.d("TAG", "getTriggers: $it")
+                },
+                { it.printStackTrace() }
+            )
+        )
     }
 
     fun saveTrigger(trigger: Trigger) {
@@ -54,11 +64,25 @@ class TriggersViewModel @Inject constructor(
 
     fun deleteTrigger(id: String) {
         disposables.add(
-            repository.deleteLocalTrigger(id).subscribe(
-                { _event.value = Event.SUCCESS },
-                { _event.value = Event.UNKNOWN_ERROR }
+            repository.deleteTrigger(id).subscribe(
+                {
+                    _event.value = Event.SUCCESS
+                },
+                {
+                    if (it.message == "timeout") {
+                        deleteLocal(id)
+                        _event.value = Event.SUCCESS
+                    } else {
+                        it.printStackTrace()
+                        _event.value = Event.UNKNOWN_ERROR
+                    }
+                }
             )
         )
+    }
+
+    private fun deleteLocal(triggerId: String) {
+        disposables.add(repository.deleteLocalTrigger(triggerId).subscribe())
     }
 
     fun clearData() {
