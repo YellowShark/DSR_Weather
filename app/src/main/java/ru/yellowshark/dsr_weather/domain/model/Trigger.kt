@@ -8,5 +8,5 @@ data class Trigger(
     val wind: Int? = null,
     val startDate: String = "",
     val endDate: String = "",
-    val areas: List<Point> = emptyList()
+    var areas: List<Point> = emptyList()
 )

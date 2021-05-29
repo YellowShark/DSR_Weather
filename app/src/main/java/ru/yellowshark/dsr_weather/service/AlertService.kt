@@ -1,5 +1,6 @@
 package ru.yellowshark.dsr_weather.service
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -21,27 +22,29 @@ import javax.inject.Inject
 class AlertService : Service() {
     @Inject
     lateinit var repository: Repository
-    var alerts: List<Any?> = arrayListOf()
 
     override fun onBind(intent: Intent): IBinder? {
         return null
     }
 
+    @SuppressLint("CheckResult")
     override fun onCreate() {
         super.onCreate()
         Log.d("TAGGG", "onCreate: service started")
-        startForeground(123, createNotification(
-            getString(R.string.checking_for_updates),
-            "",
-            isImportant = false)
+        startForeground(
+            123, createNotification(
+                getString(R.string.checking_for_updates),
+                "",
+                isImportant = false
+            )
         )
 
         repository.requestAlerts().subscribe(
             {
-                it.forEach {
-                    Log.d("TAGGG", "onCreate: $it. ")
-                    stopSelf()
+                it.values.forEach { alerts ->
+                    Log.d("TAGGG", "alert: $alerts. ")
                 }
+                stopSelf()
             },
             {
                 it.printStackTrace()
@@ -52,6 +55,11 @@ class AlertService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         return START_STICKY
+    }
+
+    override fun onDestroy() {
+        Log.d("TAGGG", "onDestroy: service stopped")
+        super.onDestroy()
     }
 
     private fun createNotification(

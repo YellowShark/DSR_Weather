@@ -15,7 +15,6 @@ import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentTriggerDetailsBinding
-import ru.yellowshark.dsr_weather.domain.model.Point
 import ru.yellowshark.dsr_weather.domain.model.Trigger
 import ru.yellowshark.dsr_weather.utils.Event
 
@@ -74,7 +73,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                             if (humidity.isEmpty()) null else humidity.toInt(),
                             dateStart,
                             dateEnd,
-                            listOf(Point(55.754093, 37.620407)) //moscow
+                            emptyList()
                         )
                     )
                 } else

@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class TriggerResponse(
     @SerializedName("alerts")
-    val alerts: Any,
+    val alerts: Alerts,
     @SerializedName("area")
     val area: List<Area>,
     @SerializedName("conditions")

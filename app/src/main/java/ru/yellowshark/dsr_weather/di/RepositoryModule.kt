@@ -30,7 +30,7 @@ object RepositoryModule {
         networkShortForecastMapper: NetworkShortForecastMapper,
         localLocationMapper: LocalLocationMapper,
         postTriggerMapper: PostTriggerMapper,
-        triggerMapper: TriggerMapper,
+        alertMapper: AlertMapper,
         localTriggerMapper: LocalTriggerMapper,
     ): Repository {
         return RepositoryImpl(
@@ -42,7 +42,7 @@ object RepositoryModule {
             networkShortForecastMapper,
             localLocationMapper,
             postTriggerMapper,
-            triggerMapper,
+            alertMapper,
             localTriggerMapper,
             )
     }
@@ -61,7 +61,7 @@ object RepositoryModule {
     fun providePostTriggerMapper(unitManager: UnitManager) = PostTriggerMapper(unitManager)
 
     @Provides
-    fun provideTriggerMapper() = TriggerMapper()
+    fun provideTriggerMapper() = AlertMapper()
 
     @Provides
     fun provideLocalTriggerMapper() = LocalTriggerMapper()

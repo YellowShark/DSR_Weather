@@ -70,10 +70,22 @@ class TriggersViewModel @Inject constructor(
 
     fun saveTrigger(trigger: Trigger) {
         disposables.add(
-            repository.saveTrigger(trigger)
+            repository.getAreas()
                 .subscribe(
                     {
-                        saveLocal(it.id, trigger)
+                        postTrigger(trigger.apply { areas = it })
+                    },
+                    { it.printStackTrace() }
+                )
+        )
+    }
+
+    private fun postTrigger(trigger: Trigger) {
+        disposables.add(
+            repository.saveTrigger(trigger)
+                .subscribe(
+                    { id ->
+                        saveLocal(id, trigger)
                         _event.value = Event.SUCCESS
                     },
                     { onError(it) }
@@ -86,12 +98,12 @@ class TriggersViewModel @Inject constructor(
             repository.deleteTrigger(id)
                 .doOnSubscribe { _event.value = Event.LOADING }
                 .subscribe(
-                { _event.value = Event.SUCCESS },
-                {
-                    _event.value = Event.SUCCESS
-                    deleteLocal(id)
-                }
-            )
+                    { _event.value = Event.SUCCESS },
+                    {
+                        _event.value = Event.SUCCESS
+                        deleteLocal(id)
+                    }
+                )
         )
     }
 

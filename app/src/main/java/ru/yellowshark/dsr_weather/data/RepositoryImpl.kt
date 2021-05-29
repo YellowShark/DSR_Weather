@@ -9,12 +9,9 @@ import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
-import ru.yellowshark.dsr_weather.data.remote.response.TriggerResponse
+import ru.yellowshark.dsr_weather.data.remote.response.Alerts
 import ru.yellowshark.dsr_weather.domain.mapper.*
-import ru.yellowshark.dsr_weather.domain.model.Forecast
-import ru.yellowshark.dsr_weather.domain.model.Location
-import ru.yellowshark.dsr_weather.domain.model.ShortForecast
-import ru.yellowshark.dsr_weather.domain.model.Trigger
+import ru.yellowshark.dsr_weather.domain.model.*
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import javax.inject.Inject
 
@@ -27,7 +24,7 @@ class RepositoryImpl @Inject constructor(
     private val networkShortForecastMapper: NetworkShortForecastMapper,
     private val localLocationMapper: LocalLocationMapper,
     private val postTriggerMapper: PostTriggerMapper,
-    private val triggerMapper: TriggerMapper,
+    private val alertMapper: AlertMapper,
     private val localTriggerMapper: LocalTriggerMapper
 ) : Repository {
 
@@ -105,8 +102,9 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun saveTrigger(trigger: Trigger): Single<TriggerResponse> {
+    override fun saveTrigger(trigger: Trigger): Single<String> {
         return triggersApi.saveTrigger(postTriggerMapper.fromDomain(trigger))
+            .map { it.id }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -124,9 +122,18 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun requestAlerts(): Observable<List<Trigger>> {
+    override fun requestAlerts(): Observable<Map<String, Alerts>> {
         return triggersApi.getTriggers()
-            .map { list -> list.map { triggerMapper.toDomain(it) } }
+            .map { list -> alertMapper.toDomain(list) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    override fun getAreas(): Single<List<Point>> {
+        return locationsDao.getLocations()
+            .map { list -> list.map {
+                Point(it.lat, it.lon)
+            } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -137,7 +144,7 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun getTriggers(): Single<List<Trigger>> {
+    override fun getTriggers(): Observable<List<Trigger>> {
         return triggersDao.getTriggers()
             .map { list -> list.map { localTriggerMapper.toDomain(it) } }
             .subscribeOn(Schedulers.io())
