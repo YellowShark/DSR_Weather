@@ -21,7 +21,6 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.ActivityMainBinding
-import ru.yellowshark.dsr_weather.ui.locations.OnMetricChangeListener
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 //TODO
@@ -37,11 +36,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 
 @AndroidEntryPoint
-class MainActivity :
-    AppCompatActivity(R.layout.activity_main),
-    OnClickListener,
-    OnMetricChangeListener {
-
+class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
     private val binding: ActivityMainBinding by viewBinding()
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
@@ -85,10 +80,6 @@ class MainActivity :
             }
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    override fun onMetricChangeListener(s: String) {
-        viewModel.selectMetric(s)
     }
 
     private fun initNavController() {
