@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import by.kirich1409.viewbindingdelegate.viewBinding
 import ru.yellowshark.dsr_weather.R
-import ru.yellowshark.dsr_weather.databinding.FragmentLocationsBinding
 import ru.yellowshark.dsr_weather.databinding.FragmentLocationsPagerBinding
 import ru.yellowshark.dsr_weather.ui.locations.all.AllLocationsFragment
 import ru.yellowshark.dsr_weather.ui.locations.favorite.FavoriteLocationsFragment

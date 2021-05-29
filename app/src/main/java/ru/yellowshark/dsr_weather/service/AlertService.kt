@@ -20,22 +20,25 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlertService : Service() {
-    @Inject
-    lateinit var repository: Repository
-
-    override fun onBind(intent: Intent): IBinder? {
-        return null
+    companion object {
+        const val TRIGGER_ID = "TRIGGER_ID"
     }
+    private lateinit var notificationManager: NotificationManager
+    @Inject lateinit var repository: Repository
+
+    override fun onBind(intent: Intent): IBinder? = null
 
     @SuppressLint("CheckResult")
     override fun onCreate() {
         super.onCreate()
         Log.d("TAGGG", "onCreate: service started")
+        initNotificationManager()
         startForeground(
             123, createNotification(
+                "",
                 getString(R.string.checking_for_updates),
                 "",
-                isImportant = false
+                isImportant = false,
             )
         )
 
@@ -43,6 +46,15 @@ class AlertService : Service() {
             {
                 it.values.forEach { alerts ->
                     Log.d("TAGGG", "alert: $alerts. ")
+                    if (alerts.alertData != null)
+                        notificationManager.notify(
+                            123, createNotification(
+                                it.keys.last(),
+                                "Hi",
+                                it.keys.last(),
+                                isImportant = true
+                            )
+                        )
                 }
                 stopSelf()
             },
@@ -51,6 +63,27 @@ class AlertService : Service() {
                 stopSelf()
             }
         )
+    }
+
+    private fun initNotificationManager() {
+        notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                applicationContext.getString(R.string.default_notification_channel_id),
+                "Rewards Notifications",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationChannel.apply {
+                description = "Channel description"
+                enableLights(true)
+                lightColor = Color.WHITE
+                vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
+                enableVibration(true)
+            }
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -63,32 +96,25 @@ class AlertService : Service() {
     }
 
     private fun createNotification(
+        triggerId: String,
         contentText: String,
         detailText: String,
         isImportant: Boolean
     ): Notification {
         val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(applicationContext, 0, intent, 0)
-        val notificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            action = triggerId
+            putExtra(TRIGGER_ID, triggerId)
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                applicationContext.getString(R.string.default_notification_channel_id),
-                "Rewards Notifications",
-                if (isImportant) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_LOW
-            )
-            notificationChannel.description = "Channel description"
-            if (isImportant) {
-                notificationChannel.enableLights(true)
-                notificationChannel.lightColor = Color.WHITE
-                notificationChannel.vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
-                notificationChannel.enableVibration(true)
-            }
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
 
         val notification = NotificationCompat.Builder(
             applicationContext,
@@ -102,15 +128,13 @@ class AlertService : Service() {
             )
             .setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_trigger)
-//            .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
-//            .setPriority(Notification.PRIORITY_MAX)
 
         if (isImportant)
             notification.setSound(defaultSoundUri)
+                .priority = Notification.PRIORITY_MAX
 
         return notification.build()
     }
-
 }

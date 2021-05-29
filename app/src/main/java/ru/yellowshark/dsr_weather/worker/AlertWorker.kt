@@ -2,7 +2,6 @@ package ru.yellowshark.dsr_weather.worker
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -17,7 +16,6 @@ class AlertWorker @AssistedInject constructor(
 ) : Worker(appContext, params) {
 
     override fun doWork(): Result {
-        Log.d("TAGGGG", "doWork: worker there")
         applicationContext.startForegroundService(
             Intent(
                 applicationContext,

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -21,6 +20,7 @@ import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.ActivityMainBinding
+import ru.yellowshark.dsr_weather.service.AlertService
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 //TODO
@@ -38,7 +38,6 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
     private val binding: ActivityMainBinding by viewBinding()
-    private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -47,6 +46,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
         initNavController()
         setupToolbar()
         initDrawerLayout()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        checkIfNotificationWasOpened()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -150,6 +154,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
                 navController,
                 drawerLayout
             )
+        }
+    }
+
+    private fun checkIfNotificationWasOpened() {
+        val extra = intent.extras?.getString(AlertService.TRIGGER_ID) ?: ""
+        if (extra.isNotEmpty()) {
+            val args = Bundle()
+            args.putString(AlertService.TRIGGER_ID, extra)
+            navController.navigate(R.id.destination_triggers, args)
         }
     }
 }

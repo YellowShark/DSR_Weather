@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentTriggersBinding
 import ru.yellowshark.dsr_weather.domain.model.Trigger
+import ru.yellowshark.dsr_weather.service.AlertService
 
 @AndroidEntryPoint
 class TriggersFragment : Fragment(R.layout.fragment_triggers) {
@@ -30,6 +31,11 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
     override fun onResume() {
         super.onResume()
         viewModel.getTriggers()
+        arguments?.getString(AlertService.TRIGGER_ID)?.let { id ->
+            val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(id)
+            requireArguments().clear()
+            findNavController().navigate(actionTriggerDetails)
+        }
     }
 
     private fun openDetails(trigger: Trigger) {
