@@ -44,14 +44,14 @@ class AlertService : Service() {
 
         repository.requestAlerts().subscribe(
             {
-                it.values.forEach { alerts ->
-                    Log.d("TAGGG", "alert: $alerts. ")
-                    if (alerts.alertData != null)
+                it.forEach { alert ->
+                    Log.d("TAGGG", "alert: $alert. ")
+                    if (alert.value.alertData != null)
                         notificationManager.notify(
                             123, createNotification(
-                                it.keys.last(),
+                                alert.key,
                                 "Hi",
-                                it.keys.last(),
+                                alert.value.alertData.toString(),
                                 isImportant = true
                             )
                         )

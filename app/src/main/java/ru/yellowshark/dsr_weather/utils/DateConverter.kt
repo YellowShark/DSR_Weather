@@ -6,7 +6,7 @@ import java.util.*
 
 class DateConverter {
     companion object {
-        const val DATE_FORMAT = "dd/MM/yyyy"
+        private const val DATE_FORMAT = "dd/MM/yyyy"
 
         fun parseString(dateFormatted: String): Long {
             val sdf = SimpleDateFormat(DATE_FORMAT, Locale.getDefault())

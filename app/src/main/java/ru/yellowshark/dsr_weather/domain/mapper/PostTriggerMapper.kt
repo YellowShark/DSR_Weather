@@ -6,6 +6,7 @@ import ru.yellowshark.dsr_weather.domain.model.Trigger
 import ru.yellowshark.dsr_weather.utils.DateConverter
 import ru.yellowshark.dsr_weather.utils.METRIC_UNITS
 import ru.yellowshark.dsr_weather.utils.Mapper
+import java.util.*
 
 class PostTriggerMapper(
     private val unitManager: UnitManager
@@ -20,7 +21,7 @@ class PostTriggerMapper(
             areas.forEach {
                 areasList.add(
                     Area(
-                        listOf(it.lat.toInt(), it.lon.toInt()),
+                        listOf(it.lon.toInt(), it.lat.toInt()),
                         "Point"
                     )
                 )
@@ -30,7 +31,7 @@ class PostTriggerMapper(
             conditions.add(
                 Condition(
                     if (unitManager.getUnit() == METRIC_UNITS) temp + 273 else (temp - 32) * (5 / 9) + 273,
-                    "\$gte",
+                    "\$eq",
                     "temp"
                 )
             )
@@ -38,7 +39,7 @@ class PostTriggerMapper(
                 conditions.add(
                     Condition(
                         it,
-                        "\$gte",
+                        "\$eq",
                         "wind_speed"
                     )
                 )
@@ -47,15 +48,17 @@ class PostTriggerMapper(
                 conditions.add(
                     Condition(
                         it,
-                        "\$gte",
+                        "\$eq",
                         "humidity"
                     )
                 )
             }
-            val startMillis: Long =
-                if (startDate.isEmpty()) 0 else DateConverter.parseString(startDate) - System.currentTimeMillis()
+            var startMillis: Long =
+                if (startDate.isEmpty()) 0 else DateConverter.parseString(startDate) - Calendar.getInstance().timeInMillis
+            if (startMillis < 0)
+                startMillis = 0
             val endMillis: Long =
-                if (endDate.isEmpty()) 24 * 60 * 60 * 1000 else DateConverter.parseString(startDate) - System.currentTimeMillis()
+                if (endDate.isEmpty()) 24 * 60 * 60 * 1000 else DateConverter.parseString(endDate) - DateConverter.parseString(startDate) + startMillis
             return AddTriggerRequest(
                 area = areasList,
                 conditions = conditions,
