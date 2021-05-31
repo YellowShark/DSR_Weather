@@ -17,15 +17,15 @@ class PostTriggerMapper(
 
     override fun fromDomain(domain: Trigger): AddTriggerRequest {
         with(domain) {
-            val areasList = arrayListOf<Area>()
+            /*val areasList = arrayListOf<Area>()
             areas.forEach {
                 areasList.add(
                     Area(
                         listOf(it.lon.toInt(), it.lat.toInt()),
-                        "Point"
+                        "MultiPoint"
                     )
                 )
-            }
+            }*/
 
             val conditions = arrayListOf<Condition>()
             conditions.add(
@@ -60,7 +60,10 @@ class PostTriggerMapper(
             val endMillis: Long =
                 if (endDate.isEmpty()) 24 * 60 * 60 * 1000 else DateConverter.parseString(endDate) - DateConverter.parseString(startDate) + startMillis
             return AddTriggerRequest(
-                area = areasList,
+                area = listOf(Area(
+                    listOf(37.620407, 55.754093),
+                    "Point"
+                )),
                 conditions = conditions,
                 TimePeriod(
                     start = Start(startMillis, "after"),

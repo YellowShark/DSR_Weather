@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.*
 import dagger.hilt.android.HiltAndroidApp
+import io.reactivex.plugins.RxJavaPlugins
 import ru.yellowshark.dsr_weather.worker.AlertWorker
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -16,6 +17,7 @@ class App : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        RxJavaPlugins.setErrorHandler { it.printStackTrace() }
         initWorker()
     }
 
@@ -25,9 +27,9 @@ class App : Application(), Configuration.Provider {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-        val alertWorkRequest = PeriodicWorkRequestBuilder<AlertWorker>(60, TimeUnit.SECONDS)
+        val alertWorkRequest = PeriodicWorkRequestBuilder<AlertWorker>(5, TimeUnit.MINUTES)
             .setConstraints(constraints)
-            .setBackoffCriteria(BackoffPolicy.LINEAR, PeriodicWorkRequest.MIN_BACKOFF_MILLIS, TimeUnit.MILLISECONDS)
+            .setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.MINUTES)
             .build()
 
         WorkManager.getInstance(this)

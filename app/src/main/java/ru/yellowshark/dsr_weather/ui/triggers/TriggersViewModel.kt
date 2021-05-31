@@ -70,18 +70,6 @@ class TriggersViewModel @Inject constructor(
 
     fun saveTrigger(trigger: Trigger) {
         disposables.add(
-            repository.getAreas()
-                .subscribe(
-                    {
-                        postTrigger(trigger.apply { areas = it })
-                    },
-                    { it.printStackTrace() }
-                )
-        )
-    }
-
-    private fun postTrigger(trigger: Trigger) {
-        disposables.add(
             repository.saveTrigger(trigger)
                 .subscribe(
                     { id ->

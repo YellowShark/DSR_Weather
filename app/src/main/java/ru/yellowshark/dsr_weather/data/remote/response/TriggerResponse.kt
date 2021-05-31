@@ -20,7 +20,7 @@ data class TriggerResponse(
 
 data class Area(
     @SerializedName("coordinates")
-    val coordinates: List<Int>,
+    val coordinates: List<Double>,
     @SerializedName("_id")
     val id: String,
     @SerializedName("type")

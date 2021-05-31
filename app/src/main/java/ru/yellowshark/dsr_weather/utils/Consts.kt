@@ -1,6 +1,6 @@
 package ru.yellowshark.dsr_weather.utils
 
-const val API_KEY = "2927df1461f80a6ea264e84ea8e43b83"
+const val API_KEY = "60a5f32bb34e035eed4b61567995f83c"
 const val BASE_URL = "https://api.openweathermap.org"
 const val BASE_LANGUAGE = "en"
 const val RUSSIAN = "ru"

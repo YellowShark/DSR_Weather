@@ -11,7 +11,10 @@ import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
 import ru.yellowshark.dsr_weather.data.remote.response.Alerts
 import ru.yellowshark.dsr_weather.domain.mapper.*
-import ru.yellowshark.dsr_weather.domain.model.*
+import ru.yellowshark.dsr_weather.domain.model.Forecast
+import ru.yellowshark.dsr_weather.domain.model.Location
+import ru.yellowshark.dsr_weather.domain.model.ShortForecast
+import ru.yellowshark.dsr_weather.domain.model.Trigger
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import javax.inject.Inject
 
@@ -125,15 +128,6 @@ class RepositoryImpl @Inject constructor(
     override fun requestAlerts(): Observable<Map<String, Alerts>> {
         return triggersApi.getTriggers()
             .map { list -> alertMapper.toDomain(list) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    override fun getAreas(): Single<List<Point>> {
-        return locationsDao.getLocations()
-            .map { list -> list.map {
-                Point(it.lat, it.lon)
-            } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -24,4 +24,8 @@ class UnitManager(
     fun getUnit(): String {
         return prefs.getString(MEASURE_KEY, METRIC_UNITS) ?: METRIC_UNITS
     }
+
+    fun getUnitSymbol(): String {
+        return if (getUnit() == METRIC_UNITS) "°C" else "°F"
+    }
 }

@@ -1,6 +1,5 @@
 package ru.yellowshark.dsr_weather.service
 
-import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -12,26 +11,35 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.R
-import ru.yellowshark.dsr_weather.domain.repository.Repository
+import ru.yellowshark.dsr_weather.data.db.entity.TriggerEntity
+import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
+import ru.yellowshark.dsr_weather.domain.repository.ServiceRepository
 import ru.yellowshark.dsr_weather.ui.main.MainActivity
+import java.util.*
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class AlertService : Service() {
     companion object {
+        private const val TAG = "TAGGG"
         const val TRIGGER_ID = "TRIGGER_ID"
     }
+
+    private val disposables = CompositeDisposable()
     private lateinit var notificationManager: NotificationManager
-    @Inject lateinit var repository: Repository
+    @Inject
+    lateinit var repository: ServiceRepository
 
     override fun onBind(intent: Intent): IBinder? = null
 
-    @SuppressLint("CheckResult")
     override fun onCreate() {
         super.onCreate()
-        Log.d("TAGGG", "onCreate: service started")
+        Log.d(TAG, "onCreate: service started")
         initNotificationManager()
         startForeground(
             123, createNotification(
@@ -41,28 +49,104 @@ class AlertService : Service() {
                 isImportant = false,
             )
         )
-
-        repository.requestAlerts().subscribe(
-            {
-                it.forEach { alert ->
-                    Log.d("TAGGG", "alert: $alert. ")
-                    if (alert.value.alertData != null)
-                        notificationManager.notify(
-                            123, createNotification(
-                                alert.key,
-                                "Hi",
-                                alert.value.alertData.toString(),
-                                isImportant = true
-                            )
-                        )
+        disposables.add(
+            repository.getTriggers().zipWith(
+                repository.getLocations().toObservable(), { triggers, locations ->
+                    Log.d(TAG, "onCreate: $triggers\n$locations")
+                    if (triggers.isNotEmpty() && locations.isNotEmpty())
+                        locations.forEach {
+                            loadForecastAndCompareWithTriggers(it.lat, it.lon, triggers)
+                        }
+                    else
+                        stopSelf()
                 }
-                stopSelf()
-            },
-            {
-                it.printStackTrace()
-                stopSelf()
-            }
+            )
+                .doOnError { it.printStackTrace() }
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    { },
+                    {
+                        it.printStackTrace()
+                        stopSelf()
+                    }
+                )
         )
+    }
+
+    private fun loadForecastAndCompareWithTriggers(
+        lat: Double,
+        lon: Double,
+        triggers: List<TriggerEntity>
+    ) {
+        disposables.add(
+            repository.getForecast(lat, lon)
+                .subscribeOn(Schedulers.io())
+                .map { forecast ->
+                    triggers.map { trigger ->
+                        if (matchedWithTrigger(forecast, trigger))
+                            trigger.id to forecast
+                        else
+                            null
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError {
+                    it.printStackTrace()
+                }
+                .subscribe(
+                    { list ->
+                        list.forEach { data ->
+                            data?.let { pair ->
+                                val detailText = buildString {
+                                    this.apply {
+                                        append(getString(R.string.curr_temp))
+                                        append(": ${pair.second.main.temp.toInt()}")
+                                        append(repository.getUnitSymbol())
+                                        append("\n")
+                                        append(getString(R.string.humidity_detail))
+                                        append(": ${pair.second.main.humidity}%\n")
+                                        append(getString(R.string.wind_speed))
+                                        append(": ${pair.second.wind.speed} ")
+                                        append(getString(R.string.m_s))
+                                        append("\n")
+                                    }
+                                }
+                                notificationManager.notify(
+                                    pair.second.id, createNotification(
+                                        pair.first,
+                                        pair.second.name,
+                                        detailText,
+                                        isImportant = true
+                                    )
+                                )
+                            }
+                        }
+                        stopSelf()
+                    },
+                    {
+                        it.printStackTrace()
+                        stopSelf()
+                    }
+                )
+        )
+    }
+
+    private fun matchedWithTrigger(
+        forecast: ForecastResponse,
+        trigger: TriggerEntity
+    ): Boolean {
+        val timeInMillis = Calendar.getInstance().timeInMillis
+        Log.d(TAG, "loadAndCompareForecast: $forecast\n$trigger")
+        if (trigger.endMillis > timeInMillis && timeInMillis >= trigger.startMillis)
+            if (forecast.main.temp.toInt() == trigger.temp) {
+                return if (trigger.wind == null && trigger.humidity == null)
+                    true
+                else {
+                    !(trigger.wind != null && trigger.wind != forecast.wind.speed.toInt() ||
+                            trigger.humidity != null && trigger.humidity != forecast.main.humidity)
+                }
+            }
+        return false
     }
 
     private fun initNotificationManager() {
@@ -72,7 +156,7 @@ class AlertService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
                 applicationContext.getString(R.string.default_notification_channel_id),
-                "Rewards Notifications",
+                "Alert Notifications",
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationChannel.apply {
@@ -91,7 +175,8 @@ class AlertService : Service() {
     }
 
     override fun onDestroy() {
-        Log.d("TAGGG", "onDestroy: service stopped")
+        Log.d(TAG, "onDestroy: service stopped")
+        disposables.clear()
         super.onDestroy()
     }
 
@@ -104,7 +189,6 @@ class AlertService : Service() {
         val intent = Intent(applicationContext, MainActivity::class.java)
         intent.apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            action = triggerId
             putExtra(TRIGGER_ID, triggerId)
         }
         val pendingIntent = PendingIntent.getActivity(
@@ -132,8 +216,7 @@ class AlertService : Service() {
             .setOngoing(true)
 
         if (isImportant)
-            notification.setSound(defaultSoundUri)
-                .priority = Notification.PRIORITY_MAX
+            notification.setSound(defaultSoundUri).priority = Notification.PRIORITY_MAX
 
         return notification.build()
     }

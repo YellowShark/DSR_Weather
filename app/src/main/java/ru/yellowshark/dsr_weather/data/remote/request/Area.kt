@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Area(
     @SerializedName("coordinates")
-    val coordinates: List<Int>,
+    val coordinates: List<Double>,
     @SerializedName("type")
     val type: String
 )
