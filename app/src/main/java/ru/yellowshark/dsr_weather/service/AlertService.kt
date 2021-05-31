@@ -3,9 +3,9 @@ package ru.yellowshark.dsr_weather.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
@@ -31,6 +31,7 @@ class AlertService : Service() {
 
     private val disposables = CompositeDisposable()
     private lateinit var notificationManager: NotificationManager
+
     @Inject
     lateinit var repository: ServiceRepository
 
@@ -152,21 +153,33 @@ class AlertService : Service() {
         notificationManager =
             applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                applicationContext.getString(R.string.default_notification_channel_id),
-                "Alert Notifications",
-                NotificationManager.IMPORTANCE_DEFAULT
-            )
-            notificationChannel.apply {
-                description = "Channel description"
-                //enableLights(true)
-                //lightColor = Color.WHITE
-                //vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
-                //enableVibration(true)
-            }
-            notificationManager.createNotificationChannel(notificationChannel)
+        val notificationChannel1 = NotificationChannel(
+            getString(R.string.default_notification_channel_id),
+            "Alert Notifications",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationChannel1.apply {
+            description = "Channel description"
+            enableLights(true)
+            lightColor = Color.WHITE
+            vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
+            enableVibration(true)
         }
+        notificationManager.createNotificationChannel(notificationChannel1)
+
+        val notificationChannel2 = NotificationChannel(
+            getString(R.string.silent_notification_channel_id),
+            "Alert Notifications",
+            NotificationManager.IMPORTANCE_LOW
+        )
+        notificationChannel2.apply {
+            description = "Channel description"
+            enableLights(false)
+            lightColor = Color.WHITE
+            vibrationPattern = null
+            enableVibration(false)
+        }
+        notificationManager.createNotificationChannel(notificationChannel2)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -201,7 +214,10 @@ class AlertService : Service() {
 
         val notification = NotificationCompat.Builder(
             applicationContext,
-            applicationContext.getString(R.string.default_notification_channel_id)
+            if (isImportant)
+                getString(R.string.default_notification_channel_id)
+            else
+                getString(R.string.silent_notification_channel_id)
         )
             .setContentTitle(contentText)
             .setContentText(detailText)
@@ -217,7 +233,6 @@ class AlertService : Service() {
         if (isImportant)
             notification.setOngoing(false)
                 .setSound(defaultSoundUri)
-                .setVibrate(longArrayOf(0, 500, 200, 500, 200, 500, 200))
                 .priority = NotificationCompat.PRIORITY_MAX
         else
             notification.setOngoing(true)

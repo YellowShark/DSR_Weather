@@ -28,7 +28,7 @@ class App : Application(), Configuration.Provider {
 
         val alertWorkRequest = OneTimeWorkRequestBuilder<AlertWorker>()
             .setConstraints(constraints)
-            .setBackoffCriteria(BackoffPolicy.LINEAR, 1, TimeUnit.MINUTES)
+            .setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.MINUTES)
             .build()
 
         WorkManager.getInstance(this)
