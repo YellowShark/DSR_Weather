@@ -34,7 +34,7 @@ class App : Application(), Configuration.Provider {
         WorkManager.getInstance(this)
             .enqueueUniqueWork(
                 AlertWorker::javaClass.name,
-                ExistingWorkPolicy.REPLACE,
+                ExistingWorkPolicy.KEEP,
                 alertWorkRequest
             )
     }
