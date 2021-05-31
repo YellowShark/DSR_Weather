@@ -7,6 +7,5 @@ data class Trigger(
     val humidity: Int? = null,
     val wind: Int? = null,
     val startDate: String = "",
-    val endDate: String = "",
-    var areas: List<Point> = emptyList()
+    val endDate: String = ""
 )

@@ -9,7 +9,6 @@ import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
-import ru.yellowshark.dsr_weather.data.remote.response.Alerts
 import ru.yellowshark.dsr_weather.domain.mapper.*
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
@@ -27,7 +26,6 @@ class RepositoryImpl @Inject constructor(
     private val networkShortForecastMapper: NetworkShortForecastMapper,
     private val localLocationMapper: LocalLocationMapper,
     private val postTriggerMapper: PostTriggerMapper,
-    private val alertMapper: AlertMapper,
     private val localTriggerMapper: LocalTriggerMapper
 ) : Repository {
 
@@ -121,13 +119,6 @@ class RepositoryImpl @Inject constructor(
 
     override fun deleteTrigger(triggerId: String): Completable {
         return triggersApi.deleteTrigger(triggerId)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    override fun requestAlerts(): Observable<Map<String, Alerts>> {
-        return triggersApi.getTriggers()
-            .map { list -> alertMapper.toDomain(list) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }

@@ -1,6 +1,5 @@
 package ru.yellowshark.dsr_weather.ui.triggers
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +35,8 @@ class TriggersViewModel @Inject constructor(
 
     private fun saveLocal(triggerId: String, trigger: Trigger) {
         disposables.add(
-            repository.saveTriggerLocal(trigger.apply { id = triggerId }).subscribe()
+            repository.saveTriggerLocal(trigger.apply { id = triggerId })
+                .subscribe { _event.value = Event.SUCCESS }
         )
     }
 
@@ -47,14 +47,6 @@ class TriggersViewModel @Inject constructor(
     fun getTriggers() {
         disposables.add(
             repository.getTriggers().subscribe({ _triggers.value = it }, { onError(it) })
-        )
-        disposables.add(repository.requestAlerts()
-            .subscribe(
-                {
-                    Log.d("TAG", "getTriggers: $it")
-                },
-                { it.printStackTrace() }
-            )
         )
     }
 
@@ -69,16 +61,16 @@ class TriggersViewModel @Inject constructor(
     }
 
     fun saveTrigger(trigger: Trigger) {
-        disposables.add(
-            repository.saveTrigger(trigger)
-                .subscribe(
-                    { id ->
-                        saveLocal(id, trigger)
-                        _event.value = Event.SUCCESS
-                    },
-                    { onError(it) }
-                )
-        )
+        if (trigger.id.isNotEmpty())
+            saveLocal(trigger.id, trigger)
+        else
+            disposables.add(
+                repository.saveTrigger(trigger)
+                    .subscribe(
+                        { id -> saveLocal(id, trigger) },
+                        { onError(it) }
+                    )
+            )
     }
 
     fun deleteTrigger(id: String) {

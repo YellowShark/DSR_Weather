@@ -17,16 +17,6 @@ class PostTriggerMapper(
 
     override fun fromDomain(domain: Trigger): AddTriggerRequest {
         with(domain) {
-            /*val areasList = arrayListOf<Area>()
-            areas.forEach {
-                areasList.add(
-                    Area(
-                        listOf(it.lon.toInt(), it.lat.toInt()),
-                        "MultiPoint"
-                    )
-                )
-            }*/
-
             val conditions = arrayListOf<Condition>()
             conditions.add(
                 Condition(

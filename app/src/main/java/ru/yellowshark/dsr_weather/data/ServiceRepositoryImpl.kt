@@ -9,7 +9,6 @@ import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
-import ru.yellowshark.dsr_weather.domain.mapper.LocalTriggerMapper
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.repository.ServiceRepository
 import javax.inject.Inject
@@ -19,7 +18,6 @@ class ServiceRepositoryImpl @Inject constructor(
     private val locationsDao: LocationsDao,
     private val triggersDao: TriggersDao,
     private val localLocationMapper: LocalLocationMapper,
-    private val localTriggerMapper: LocalTriggerMapper,
     private val unitManager: UnitManager
 ) : ServiceRepository {
 

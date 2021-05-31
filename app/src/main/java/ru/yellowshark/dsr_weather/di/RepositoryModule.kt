@@ -28,7 +28,6 @@ object RepositoryModule {
         locationsDao: LocationsDao,
         triggersDao: TriggersDao,
         localLocationMapper: LocalLocationMapper,
-        localTriggerMapper: LocalTriggerMapper,
         unitManager: UnitManager
     ): ServiceRepository {
         return ServiceRepositoryImpl(
@@ -36,7 +35,6 @@ object RepositoryModule {
             locationsDao,
             triggersDao,
             localLocationMapper,
-            localTriggerMapper,
             unitManager
         )
     }
@@ -52,7 +50,6 @@ object RepositoryModule {
         networkShortForecastMapper: NetworkShortForecastMapper,
         localLocationMapper: LocalLocationMapper,
         postTriggerMapper: PostTriggerMapper,
-        alertMapper: AlertMapper,
         localTriggerMapper: LocalTriggerMapper,
     ): Repository {
         return RepositoryImpl(
@@ -64,7 +61,6 @@ object RepositoryModule {
             networkShortForecastMapper,
             localLocationMapper,
             postTriggerMapper,
-            alertMapper,
             localTriggerMapper,
         )
     }
@@ -85,9 +81,6 @@ object RepositoryModule {
 
     @Provides
     fun providePostTriggerMapper(unitManager: UnitManager) = PostTriggerMapper(unitManager)
-
-    @Provides
-    fun provideTriggerMapper() = AlertMapper()
 
     @Provides
     fun provideLocalTriggerMapper() = LocalTriggerMapper()

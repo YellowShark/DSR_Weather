@@ -72,8 +72,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                             if (wind.isEmpty()) null else wind.toInt(),
                             if (humidity.isEmpty()) null else humidity.toInt(),
                             dateStart,
-                            dateEnd,
-                            emptyList()
+                            dateEnd
                         )
                     )
                 } else

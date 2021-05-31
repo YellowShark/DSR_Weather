@@ -3,7 +3,6 @@ package ru.yellowshark.dsr_weather.domain.repository
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import ru.yellowshark.dsr_weather.data.remote.response.Alerts
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
@@ -29,8 +28,6 @@ interface Repository {
     fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable
 
     fun saveTrigger(trigger: Trigger): Single<String>
-
-    fun requestAlerts(): Observable<Map<String, Alerts>>
 
     fun saveTriggerLocal(trigger: Trigger): Completable
 

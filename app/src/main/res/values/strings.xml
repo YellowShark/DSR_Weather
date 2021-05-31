@@ -42,6 +42,7 @@
 
     <string name="search">Search</string>
     <string name="nothing_found">By your request nothing found</string>
+
     <string name="triggers">Triggers</string>
     <string name="trigger_name">Trigger name (required)</string>
     <string name="trigger_details_title">Trigger settings</string>
@@ -52,6 +53,7 @@
     <string name="date_end">End date</string>
     <string name="humidity_detail">Humidity</string>
     <string name="required_fields">Please, fill required fields.</string>
+
     <string name="default_notification_channel_id" translatable="false">alert_channel</string>
     <string name="checking_for_updates">Checking for updates…</string>
 </resources>
