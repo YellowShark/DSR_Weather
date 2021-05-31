@@ -16,12 +16,15 @@ import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentTriggerDetailsBinding
 import ru.yellowshark.dsr_weather.domain.model.Trigger
+import ru.yellowshark.dsr_weather.ui.main.MainViewModel
+import ru.yellowshark.dsr_weather.utils.DateConverter
 import ru.yellowshark.dsr_weather.utils.Event
 
 class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     private val binding: FragmentTriggerDetailsBinding by viewBinding()
     private val args: DetailTriggerFragmentArgs by navArgs()
     private val viewModel: TriggersViewModel by activityViewModels()
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initListeners()
@@ -36,9 +39,14 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
 
     private fun initUi() {
         with(binding) {
-            if (args.id.isEmpty()) triggerDetailsDeleteBtn.isVisible = false
-            else viewModel.getTriggerById(args.id)
             initMasks()
+            if (args.id.isEmpty()) {
+                mainViewModel.updateToolbarTitle(getString(R.string.new_trigger))
+                triggerDetailsDeleteBtn.isVisible = false
+                triggerDetailsDateStartEt.setText(DateConverter.dateFormat(System.currentTimeMillis()))
+                triggerDetailsDateEndEt.setText(DateConverter.dateFormat(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+            }
+            else viewModel.getTriggerById(args.id)
         }
     }
 
