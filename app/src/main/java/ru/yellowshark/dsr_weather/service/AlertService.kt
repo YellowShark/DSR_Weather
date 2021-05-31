@@ -3,7 +3,6 @@ package ru.yellowshark.dsr_weather.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Build
@@ -157,14 +156,14 @@ class AlertService : Service() {
             val notificationChannel = NotificationChannel(
                 applicationContext.getString(R.string.default_notification_channel_id),
                 "Alert Notifications",
-                NotificationManager.IMPORTANCE_HIGH
+                NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationChannel.apply {
                 description = "Channel description"
-                enableLights(true)
-                lightColor = Color.WHITE
-                vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
-                enableVibration(true)
+                //enableLights(true)
+                //lightColor = Color.WHITE
+                //vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
+                //enableVibration(true)
             }
             notificationManager.createNotificationChannel(notificationChannel)
         }
@@ -193,7 +192,7 @@ class AlertService : Service() {
         }
         val pendingIntent = PendingIntent.getActivity(
             applicationContext,
-            0,
+            System.currentTimeMillis().toInt(),
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
@@ -213,10 +212,18 @@ class AlertService : Service() {
             .setAutoCancel(true)
             .setSmallIcon(R.drawable.ic_trigger)
             .setContentIntent(pendingIntent)
-            .setOngoing(true)
+
 
         if (isImportant)
-            notification.setSound(defaultSoundUri).priority = Notification.PRIORITY_MAX
+            notification.setOngoing(false)
+                .setSound(defaultSoundUri)
+                .setVibrate(longArrayOf(0, 500, 200, 500, 200, 500, 200))
+                .priority = NotificationCompat.PRIORITY_MAX
+        else
+            notification.setOngoing(true)
+                .setSound(null)
+                .priority = NotificationCompat.PRIORITY_MIN
+
 
         return notification.build()
     }

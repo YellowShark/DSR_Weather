@@ -15,9 +15,9 @@ class TriggersViewModel @Inject constructor(
     private val repository: Repository
 ) : BaseViewModel() {
 
-    private val _triggers = MutableLiveData<List<Trigger>>()
     val triggers: LiveData<List<Trigger>>
         get() = _triggers
+    private val _triggers = MutableLiveData<List<Trigger>>()
     val event: LiveData<Event?>
         get() = _event
     private val _event = MutableLiveData<Event?>()
