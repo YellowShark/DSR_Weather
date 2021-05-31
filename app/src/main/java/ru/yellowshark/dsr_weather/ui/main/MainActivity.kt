@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
@@ -32,12 +33,13 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 // metric and imperial systems +++
 // 2 languages +++
 // delete location +++
-// triggers
+// triggers +++
 
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
     private val binding: ActivityMainBinding by viewBinding()
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
         initNavController()
         setupToolbar()
         initDrawerLayout()
+        observeViewModel()
     }
 
     override fun onResume() {
@@ -163,6 +166,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
             val args = Bundle()
             args.putString(AlertService.TRIGGER_ID, extra)
             navController.navigate(R.id.destination_triggers, args)
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.toolbarTitle.observe(this) {
+            binding.toolbar.title = it
         }
     }
 }

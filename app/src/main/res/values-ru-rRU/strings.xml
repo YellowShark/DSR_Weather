@@ -49,6 +49,7 @@
     <string name="date_end">Дата конца</string>
     <string name="humidity_detail">Влажность</string>
     <string name="required_fields">Пожалуйста, заполните обязательные поля.</string>
+    <string name="new_trigger">Новый триггер</string>
 
     <string name="checking_for_updates">Обновление данных…</string>
 </resources>

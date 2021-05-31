@@ -11,9 +11,16 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val unitManager: UnitManager
 ) : ViewModel() {
+    val toolbarTitle: LiveData<String>
+        get() = _toolbarTitle
+    private val _toolbarTitle = MutableLiveData<String>()
     val metric: LiveData<String?>
         get() = _metric
     private val _metric = MutableLiveData<String?>()
+
+    fun updateToolbarTitle(title: String) {
+        _toolbarTitle.value = title
+    }
 
     fun selectMetric(measure: String?) {
         measure?.let { unitManager.setUnit(it) }

@@ -52,7 +52,8 @@
     <string name="date_start">Start date</string>
     <string name="date_end">End date</string>
     <string name="humidity_detail">Humidity</string>
-    <string name="required_fields">Please, fill required fields.</string>
+    <string name="required_fields">Please, fill all required fields.</string>
+    <string name="new_trigger">New trigger</string>
 
     <string name="default_notification_channel_id" translatable="false">alert_channel1</string>
     <string name="silent_notification_channel_id" translatable="false">alert_channel2</string>
