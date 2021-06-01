@@ -26,17 +26,13 @@ class App : Application(), Configuration.Provider {
                 .setRequiredNetworkType(NetworkType.CONNECTED)
                 .build()
 
-        val alertWorkRequest = OneTimeWorkRequestBuilder<AlertWorker>()
+        val alertWorkRequest = PeriodicWorkRequestBuilder<AlertWorker>(15, TimeUnit.MINUTES)
             .setConstraints(constraints)
-            .setBackoffCriteria(BackoffPolicy.LINEAR, 1, TimeUnit.MINUTES)
+            //.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.MINUTES)
             .build()
 
         WorkManager.getInstance(this)
-            .enqueueUniqueWork(
-                AlertWorker::javaClass.name,
-                ExistingWorkPolicy.REPLACE,
-                alertWorkRequest
-            )
+            .enqueue(alertWorkRequest)
     }
 
     override fun getWorkManagerConfiguration(): Configuration =

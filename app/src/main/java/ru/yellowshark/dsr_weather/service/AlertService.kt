@@ -18,6 +18,8 @@ import ru.yellowshark.dsr_weather.data.db.entity.TriggerEntity
 import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 import ru.yellowshark.dsr_weather.domain.repository.ServiceRepository
 import ru.yellowshark.dsr_weather.ui.main.MainActivity
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.util.*
 import javax.inject.Inject
 
@@ -71,6 +73,100 @@ class AlertService : Service() {
                     }
                 )
         )
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return START_STICKY
+    }
+
+    override fun onDestroy() {
+        Log.d(TAG, "onDestroy: service stopped")
+        disposables.clear()
+        super.onDestroy()
+    }
+
+    private fun initNotificationManager() {
+        notificationManager =
+            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        val notificationChannel1 = NotificationChannel(
+            getString(R.string.default_notification_channel_id),
+            "Alert Notifications",
+            NotificationManager.IMPORTANCE_HIGH
+        )
+        notificationChannel1.apply {
+            description = "Channel description"
+            enableLights(true)
+            lightColor = Color.WHITE
+            vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
+            enableVibration(true)
+        }
+        notificationManager.createNotificationChannel(notificationChannel1)
+
+        val notificationChannel2 = NotificationChannel(
+            getString(R.string.silent_notification_channel_id),
+            "Alert Notifications",
+            NotificationManager.IMPORTANCE_LOW
+        )
+        notificationChannel2.apply {
+            description = "Channel description"
+            enableLights(false)
+            lightColor = Color.WHITE
+            vibrationPattern = null
+            enableVibration(false)
+        }
+        notificationManager.createNotificationChannel(notificationChannel2)
+    }
+
+    private fun createNotification(
+        triggerId: String,
+        contentText: String,
+        detailText: String,
+        isImportant: Boolean
+    ): Notification {
+        val intent = Intent(applicationContext, MainActivity::class.java)
+        intent.apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(TRIGGER_ID, triggerId)
+        }
+        val pendingIntent = PendingIntent.getActivity(
+            applicationContext,
+            System.currentTimeMillis().toInt(),
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+        val notification = NotificationCompat.Builder(
+            applicationContext,
+            if (isImportant)
+                getString(R.string.default_notification_channel_id)
+            else
+                getString(R.string.silent_notification_channel_id)
+        )
+            .setContentTitle(contentText)
+            .setContentText(detailText)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(detailText)
+            )
+            .setAutoCancel(true)
+            .setSmallIcon(R.drawable.ic_trigger)
+            .setContentIntent(pendingIntent)
+
+
+        if (isImportant)
+            notification.setOngoing(false)
+                .setSound(defaultSoundUri)
+                .priority = NotificationCompat.PRIORITY_MAX
+        else
+            notification.setOngoing(true)
+                .setSound(null)
+                .priority = NotificationCompat.PRIORITY_MIN
+
+
+        return notification.build()
     }
 
     private fun loadForecastAndCompareWithTriggers(
@@ -135,7 +231,9 @@ class AlertService : Service() {
         forecast: ForecastResponse,
         trigger: TriggerEntity
     ): Boolean {
-        if (forecast.coord.lat == trigger.lat && forecast.coord.lon == trigger.lon) {
+        if (forecast.coord.lat.round() == trigger.lat.round() &&
+            forecast.coord.lon.round() == trigger.lon.round()
+        ) {
             val timeInMillis = Calendar.getInstance().timeInMillis
             Log.d(TAG, "loadAndCompareForecast: $forecast\n$trigger")
             if (trigger.endMillis > timeInMillis && timeInMillis >= trigger.startMillis)
@@ -151,97 +249,7 @@ class AlertService : Service() {
         return false
     }
 
-    private fun initNotificationManager() {
-        notificationManager =
-            applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        val notificationChannel1 = NotificationChannel(
-            getString(R.string.default_notification_channel_id),
-            "Alert Notifications",
-            NotificationManager.IMPORTANCE_HIGH
-        )
-        notificationChannel1.apply {
-            description = "Channel description"
-            enableLights(true)
-            lightColor = Color.WHITE
-            vibrationPattern = longArrayOf(0, 500, 200, 500, 200, 500, 200)
-            enableVibration(true)
-        }
-        notificationManager.createNotificationChannel(notificationChannel1)
-
-        val notificationChannel2 = NotificationChannel(
-            getString(R.string.silent_notification_channel_id),
-            "Alert Notifications",
-            NotificationManager.IMPORTANCE_LOW
-        )
-        notificationChannel2.apply {
-            description = "Channel description"
-            enableLights(false)
-            lightColor = Color.WHITE
-            vibrationPattern = null
-            enableVibration(false)
-        }
-        notificationManager.createNotificationChannel(notificationChannel2)
-    }
-
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return START_STICKY
-    }
-
-    override fun onDestroy() {
-        Log.d(TAG, "onDestroy: service stopped")
-        disposables.clear()
-        super.onDestroy()
-    }
-
-    private fun createNotification(
-        triggerId: String,
-        contentText: String,
-        detailText: String,
-        isImportant: Boolean
-    ): Notification {
-        val intent = Intent(applicationContext, MainActivity::class.java)
-        intent.apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            putExtra(TRIGGER_ID, triggerId)
-        }
-        val pendingIntent = PendingIntent.getActivity(
-            applicationContext,
-            System.currentTimeMillis().toInt(),
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
-
-        val defaultSoundUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
-        val notification = NotificationCompat.Builder(
-            applicationContext,
-            if (isImportant)
-                getString(R.string.default_notification_channel_id)
-            else
-                getString(R.string.silent_notification_channel_id)
-        )
-            .setContentTitle(contentText)
-            .setContentText(detailText)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(detailText)
-            )
-            .setAutoCancel(true)
-            .setSmallIcon(R.drawable.ic_trigger)
-            .setContentIntent(pendingIntent)
-
-
-        if (isImportant)
-            notification.setOngoing(false)
-                .setSound(defaultSoundUri)
-                .priority = NotificationCompat.PRIORITY_MAX
-        else
-            notification.setOngoing(true)
-                .setSound(null)
-                .priority = NotificationCompat.PRIORITY_MIN
-
-
-        return notification.build()
+    private fun Double.round(): Double {
+        return BigDecimal(this).setScale(1, RoundingMode.HALF_EVEN).toDouble()
     }
 }
