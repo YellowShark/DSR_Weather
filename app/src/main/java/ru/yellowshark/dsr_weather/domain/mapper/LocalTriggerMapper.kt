@@ -12,11 +12,14 @@ class LocalTriggerMapper : Mapper<Trigger, TriggerEntity> {
             return Trigger(
                 id,
                 name,
+                locationName,
+                lat,
+                lon,
                 temp,
                 humidity,
                 wind,
                 DateConverter.dateFormat(startMillis),
-                DateConverter.dateFormat(endMillis)
+                DateConverter.dateFormat(endMillis),
             )
         }
     }
@@ -32,6 +35,9 @@ class LocalTriggerMapper : Mapper<Trigger, TriggerEntity> {
             return TriggerEntity(
                 id,
                 name,
+                locationName,
+                lat,
+                lon,
                 temp,
                 humidity,
                 wind,

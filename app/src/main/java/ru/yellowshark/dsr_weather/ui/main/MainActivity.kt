@@ -122,12 +122,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
     }
 
     private fun showDialog() {
-        DialogSetMeasure(
+        SetMeasureDialog(
             arrayOf(
                 getString(R.string.metric),
                 getString(R.string.imperial)
             )
-        ).show(supportFragmentManager, DialogSetMeasure::class.java.simpleName)
+        ).show(supportFragmentManager, SetMeasureDialog::class.java.simpleName)
     }
 
     private fun initDrawerLayout() {

@@ -56,6 +56,17 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
     }
 
     private fun initListeners() {
-        binding.triggersAddBtn.setOnClickListener { openDetails(Trigger("", "", 0)) }
+        binding.triggersAddBtn.setOnClickListener {
+            openDetails(
+                Trigger(
+                    "",
+                    "",
+                    "",
+                    0.0,
+                    0.0,
+                    0
+                )
+            )
+        }
     }
 }

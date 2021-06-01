@@ -13,7 +13,7 @@ import ru.yellowshark.dsr_weather.utils.METRIC_UNITS
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class DialogSetMeasure(
+class SetMeasureDialog(
     private val items: Array<String>
 ) : DialogFragment() {
 

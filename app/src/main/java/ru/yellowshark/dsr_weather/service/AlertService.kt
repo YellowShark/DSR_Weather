@@ -135,17 +135,19 @@ class AlertService : Service() {
         forecast: ForecastResponse,
         trigger: TriggerEntity
     ): Boolean {
-        val timeInMillis = Calendar.getInstance().timeInMillis
-        Log.d(TAG, "loadAndCompareForecast: $forecast\n$trigger")
-        if (trigger.endMillis > timeInMillis && timeInMillis >= trigger.startMillis)
-            if (forecast.main.temp.toInt() == trigger.temp) {
-                return if (trigger.wind == null && trigger.humidity == null)
-                    true
-                else {
-                    !(trigger.wind != null && trigger.wind != forecast.wind.speed.toInt() ||
-                            trigger.humidity != null && trigger.humidity != forecast.main.humidity)
+        if (forecast.coord.lat == trigger.lat && forecast.coord.lon == trigger.lon) {
+            val timeInMillis = Calendar.getInstance().timeInMillis
+            Log.d(TAG, "loadAndCompareForecast: $forecast\n$trigger")
+            if (trigger.endMillis > timeInMillis && timeInMillis >= trigger.startMillis)
+                if (forecast.main.temp.toInt() == trigger.temp) {
+                    return if (trigger.wind == null && trigger.humidity == null)
+                        true
+                    else {
+                        !(trigger.wind != null && trigger.wind != forecast.wind.speed.toInt() ||
+                                trigger.humidity != null && trigger.humidity != forecast.main.humidity)
+                    }
                 }
-            }
+        }
         return false
     }
 

@@ -15,16 +15,22 @@ import ru.tinkoff.decoro.watchers.FormatWatcher
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentTriggerDetailsBinding
+import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.model.Trigger
 import ru.yellowshark.dsr_weather.ui.main.MainViewModel
 import ru.yellowshark.dsr_weather.utils.DateConverter
 import ru.yellowshark.dsr_weather.utils.Event
+import kotlin.properties.Delegates
 
 class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
+    private lateinit var locationName: String
+    private var locationLon by Delegates.notNull<Double>()
+    private var locationLat by Delegates.notNull<Double>()
     private val binding: FragmentTriggerDetailsBinding by viewBinding()
     private val args: DetailTriggerFragmentArgs by navArgs()
     private val viewModel: TriggersViewModel by activityViewModels()
     private val mainViewModel: MainViewModel by activityViewModels()
+    private var dialog: LocationDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initListeners()
@@ -42,11 +48,10 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
             initMasks()
             if (args.id.isEmpty()) {
                 mainViewModel.updateToolbarTitle(getString(R.string.new_trigger))
-                triggerDetailsDeleteBtn.isVisible = false
+                triggerDetailsDeleteBtn.visibility = View.INVISIBLE
                 triggerDetailsDateStartEt.setText(DateConverter.dateFormat(System.currentTimeMillis()))
                 triggerDetailsDateEndEt.setText(DateConverter.dateFormat(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
-            }
-            else viewModel.getTriggerById(args.id)
+            } else viewModel.getTriggerById(args.id)
         }
     }
 
@@ -63,6 +68,9 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
 
     private fun initListeners() {
         with(binding) {
+            triggerDetailsLocationEt.setOnClickListener {
+                dialog?.show(childFragmentManager, LocationDialog::javaClass.name)
+            }
             triggerDetailsSaveBtn.setOnClickListener {
                 if (validFields()) {
                     val name = triggerDetailsNameEt.text.toString()
@@ -76,9 +84,12 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                         Trigger(
                             args.id,
                             name,
+                            locationName,
+                            locationLat,
+                            locationLon,
                             temp.toInt(),
-                            if (wind.isEmpty()) null else wind.toInt(),
                             if (humidity.isEmpty()) null else humidity.toInt(),
+                            if (wind.isEmpty()) null else wind.toInt(),
                             dateStart,
                             dateEnd
                         )
@@ -94,16 +105,38 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     private fun validFields(): Boolean {
         with(binding) {
             return triggerDetailsNameEt.text.toString().trim()
-                .isNotEmpty() && triggerDetailsTempEt.text.toString().trim().isNotEmpty()
+                .isNotEmpty() && triggerDetailsTempEt.text.toString().trim()
+                .isNotEmpty() && viewModel.chosenLocation.value != null
         }
     }
 
     private fun observeViewModel() {
         with(viewModel) {
+            chosenLocation.observe(viewLifecycleOwner) {
+                it?.let { location ->
+                    binding.triggerDetailsLocationEt.setText(location.city)
+                    locationLat = location.lat
+                    locationLon = location.lon
+                    locationName = location.city
+                }
+            }
+            locations.observe(viewLifecycleOwner) {
+                dialog = LocationDialog(it)
+            }
             trigger.observe(viewLifecycleOwner) {
                 it?.let { trigger ->
                     binding.apply {
+                        viewModel.setLocation(
+                            Location(
+                                0,
+                                "",
+                                trigger.locationName,
+                                lat = trigger.lat,
+                                lon = trigger.lon
+                            )
+                        )
                         triggerDetailsNameEt.setText(trigger.name)
+                        triggerDetailsLocationEt.setText(trigger.locationName)
                         triggerDetailsTempEt.setText(trigger.temp.toString())
                         triggerDetailsWindEt.setText(if (trigger.wind == null) "" else trigger.wind.toString())
                         triggerDetailsHumidityEt.setText(if (trigger.humidity == null) "" else trigger.humidity.toString())
@@ -121,7 +154,9 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                                 triggerDetailsContentWrapper.visibility = View.INVISIBLE
                             }
                         }
-                        Event.SUCCESS -> { findNavController().navigateUp() }
+                        Event.SUCCESS -> {
+                            findNavController().navigateUp()
+                        }
                         Event.NO_INTERNET -> {
                             Toast.makeText(
                                 requireContext(),

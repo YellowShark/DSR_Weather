@@ -10,6 +10,12 @@ data class TriggerEntity(
     var id: String,
     @ColumnInfo(name = "name")
     var name: String,
+    @ColumnInfo(name = "location_name")
+    var locationName: String,
+    @ColumnInfo(name = "lat")
+    var lat: Double,
+    @ColumnInfo(name = "lon")
+    var lon: Double,
     @ColumnInfo(name = "temp")
     var temp: Int,
     @ColumnInfo(name = "humidity")
