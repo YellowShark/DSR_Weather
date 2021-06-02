@@ -24,6 +24,6 @@ class AlertWorker @AssistedInject constructor(
                 AlertService::class.java
             )
         )
-        return Result.success()
+        return Result.retry()
     }
 }

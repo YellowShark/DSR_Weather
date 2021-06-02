@@ -21,20 +21,15 @@ class App : Application(), Configuration.Provider {
     }
 
     private fun initWorker() {
-        val constraints =
-            Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
-
-        val alertWorkRequest = PeriodicWorkRequestBuilder<AlertWorker>(15, TimeUnit.MINUTES)
-            .setConstraints(constraints)
+        val alertWorkRequest = OneTimeWorkRequestBuilder<AlertWorker>()
             .setInitialDelay(5, TimeUnit.MINUTES)
+            .setBackoffCriteria(BackoffPolicy.LINEAR, 15, TimeUnit.MINUTES)
             .build()
 
         WorkManager.getInstance(this)
-            .enqueueUniquePeriodicWork(
+            .enqueueUniqueWork(
                 AlertWorker::javaClass.name,
-                ExistingPeriodicWorkPolicy.KEEP,
+                ExistingWorkPolicy.KEEP,
                 alertWorkRequest
             )
     }
