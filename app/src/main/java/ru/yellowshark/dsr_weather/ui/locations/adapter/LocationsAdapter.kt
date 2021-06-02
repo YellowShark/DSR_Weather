@@ -22,6 +22,7 @@ class LocationsAdapter(
 
     fun addItem(location: Location) {
         data.add(location)
+        data.sortBy { it.city }
         notifyDataSetChanged()
     }
 

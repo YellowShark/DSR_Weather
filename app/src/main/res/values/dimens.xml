@@ -22,6 +22,7 @@
     <dimen name="margin_60dp">60dp</dimen>
     <!-- padding -->
     <dimen name="padding_8dp">8dp</dimen>
+    <dimen name="padding_15dp">15dp</dimen>
     <dimen name="padding_100dp">100dp</dimen>
     <!-- text size -->
     <dimen name="text_size_10sp">10sp</dimen>

@@ -2,6 +2,7 @@ package ru.yellowshark.dsr_weather.ui.triggers
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -50,7 +51,13 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
     private fun observeViewModel() {
         with(viewModel) {
             triggers.observe(viewLifecycleOwner) {
-                adapter.data = it
+                if (it.isNotEmpty())
+                    adapter.data = it
+                else
+                    with(binding) {
+                        triggersRv.isVisible = false
+                        triggersTextIfNoTriggers.isVisible = true
+                    }
             }
         }
     }

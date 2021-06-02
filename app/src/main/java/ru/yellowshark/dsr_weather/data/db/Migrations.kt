@@ -32,5 +32,4 @@ internal val MIGRATION_12_13 = object : Migration(12, 13) {
         db.execSQL("DROP TABLE triggers")
         db.execSQL("ALTER TABLE triggers_temp RENAME TO triggers")
     }
-
 }

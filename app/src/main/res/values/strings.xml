@@ -43,6 +43,7 @@
     <string name="search">Search</string>
     <string name="nothing_found">By your request nothing found</string>
 
+    <string name="text_if_no_triggers">Create triggers with weather conditions and be always on the alert!</string>
     <string name="triggers">Triggers</string>
     <string name="trigger_name">Trigger name (required)</string>
     <string name="trigger_details_title">Trigger settings</string>

@@ -55,4 +55,5 @@
     <string name="choose_location">Выберите локацию</string>
 
     <string name="checking_for_updates">Обновление данных…</string>
+    <string name="text_if_no_triggers">Создавайте триггеры с погодными условиями и будьте всегда на чеку!</string>
 </resources>
