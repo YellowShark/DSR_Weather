@@ -43,6 +43,6 @@
         android:label="@string/trigger_details_title" >
         <argument
             android:name="id"
-            app:argType="string" />
+            app:argType="integer" />
     </fragment>
 </navigation>

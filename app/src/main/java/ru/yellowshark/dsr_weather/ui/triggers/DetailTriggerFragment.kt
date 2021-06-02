@@ -46,7 +46,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
     private fun initUi() {
         with(binding) {
             initMasks()
-            if (args.id.isEmpty()) {
+            if (args.id == -1) {
                 mainViewModel.updateToolbarTitle(getString(R.string.new_trigger))
                 triggerDetailsDeleteBtn.visibility = View.INVISIBLE
                 triggerDetailsDateStartEt.setText(DateConverter.dateFormat(System.currentTimeMillis()))

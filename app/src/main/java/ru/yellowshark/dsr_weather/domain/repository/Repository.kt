@@ -27,15 +27,11 @@ interface Repository {
 
     fun updateIsFavorite(locationId: Int, newValue: Boolean): Completable
 
-    fun saveTrigger(trigger: Trigger): Single<String>
-
     fun saveTriggerLocal(trigger: Trigger): Completable
 
     fun getTriggers(): Observable<List<Trigger>>
 
-    fun getTriggerById(triggerId: String): Single<Trigger>
+    fun getTriggerById(triggerId: Int): Single<Trigger>
 
-    fun deleteTrigger(triggerId: String): Completable
-
-    fun deleteLocalTrigger(id: String): Completable
+    fun deleteLocalTrigger(id: Int): Completable
 }

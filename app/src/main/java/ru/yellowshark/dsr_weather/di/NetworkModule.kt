@@ -17,7 +17,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
-import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
 import ru.yellowshark.dsr_weather.domain.exception.NoConnectivityException
 import ru.yellowshark.dsr_weather.utils.*
 import java.util.*
@@ -29,10 +28,6 @@ object NetworkModule {
     @Provides
     fun provideForecastApi(retrofit: Retrofit): ForecastApi =
         retrofit.create(ForecastApi::class.java)
-
-    @Provides
-    fun provideTriggersApi(retrofit: Retrofit): TriggersApi =
-        retrofit.create(TriggersApi::class.java)
 
     @Singleton
     @Provides

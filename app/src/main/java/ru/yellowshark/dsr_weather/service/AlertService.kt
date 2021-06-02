@@ -45,7 +45,7 @@ class AlertService : Service() {
         initNotificationManager()
         startForeground(
             123, createNotification(
-                "",
+                -1,
                 getString(R.string.checking_for_updates),
                 "",
                 isImportant = false,
@@ -119,7 +119,7 @@ class AlertService : Service() {
     }
 
     private fun createNotification(
-        triggerId: String,
+        triggerId: Int,
         contentText: String,
         detailText: String,
         isImportant: Boolean

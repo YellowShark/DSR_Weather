@@ -1,7 +1,7 @@
 package ru.yellowshark.dsr_weather.domain.model
 
 data class Trigger(
-    var id: String,
+    var id: Int,
     val name: String,
     val locationName: String,
     val lat: Double,

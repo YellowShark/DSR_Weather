@@ -12,8 +12,10 @@ import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
-import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
-import ru.yellowshark.dsr_weather.domain.mapper.*
+import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
+import ru.yellowshark.dsr_weather.domain.mapper.LocalTriggerMapper
+import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
+import ru.yellowshark.dsr_weather.domain.mapper.NetworkShortForecastMapper
 import ru.yellowshark.dsr_weather.domain.repository.Repository
 import ru.yellowshark.dsr_weather.domain.repository.ServiceRepository
 import javax.inject.Singleton
@@ -43,24 +45,20 @@ object RepositoryModule {
     @Singleton
     fun provideRepository(
         forecastApi: ForecastApi,
-        triggersApi: TriggersApi,
         locationsDao: LocationsDao,
         triggersDao: TriggersDao,
         networkMapper: NetworkForecastMapper,
         networkShortForecastMapper: NetworkShortForecastMapper,
         localLocationMapper: LocalLocationMapper,
-        postTriggerMapper: PostTriggerMapper,
         localTriggerMapper: LocalTriggerMapper,
     ): Repository {
         return RepositoryImpl(
             forecastApi,
-            triggersApi,
             locationsDao,
             triggersDao,
             networkMapper,
             networkShortForecastMapper,
             localLocationMapper,
-            postTriggerMapper,
             localTriggerMapper,
         )
     }
@@ -78,9 +76,6 @@ object RepositoryModule {
 
     @Provides
     fun provideLocalLocationMapper() = LocalLocationMapper()
-
-    @Provides
-    fun providePostTriggerMapper(unitManager: UnitManager) = PostTriggerMapper(unitManager)
 
     @Provides
     fun provideLocalTriggerMapper() = LocalTriggerMapper()

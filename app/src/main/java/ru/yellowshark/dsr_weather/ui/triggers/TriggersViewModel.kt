@@ -53,15 +53,11 @@ class TriggersViewModel @Inject constructor(
         )
     }
 
-    private fun saveLocal(triggerId: String, trigger: Trigger) {
+    private fun saveLocal(triggerId: Int, trigger: Trigger) {
         disposables.add(
             repository.saveTriggerLocal(trigger.apply { id = triggerId })
                 .subscribe { _event.value = Event.SUCCESS }
         )
-    }
-
-    private fun deleteLocal(triggerId: String) {
-        disposables.add(repository.deleteLocalTrigger(triggerId).subscribe())
     }
 
     fun getTriggers() {
@@ -70,7 +66,7 @@ class TriggersViewModel @Inject constructor(
         )
     }
 
-    fun getTriggerById(triggerId: String) {
+    fun getTriggerById(triggerId: Int) {
         disposables.add(
             repository.getTriggerById(triggerId)
                 .subscribe(
@@ -81,27 +77,20 @@ class TriggersViewModel @Inject constructor(
     }
 
     fun saveTrigger(trigger: Trigger) {
-        if (trigger.id.isNotEmpty())
+        if (trigger.id != -1)
             saveLocal(trigger.id, trigger)
         else
-            disposables.add(
-                repository.saveTrigger(trigger)
-                    .subscribe(
-                        { id -> saveLocal(id, trigger) },
-                        { onError(it) }
-                    )
-            )
+            saveLocal(0, trigger)
     }
 
-    fun deleteTrigger(id: String) {
+    fun deleteTrigger(id: Int) {
         disposables.add(
-            repository.deleteTrigger(id)
+            repository.deleteLocalTrigger(id)
                 .doOnSubscribe { _event.value = Event.LOADING }
                 .subscribe(
                     { _event.value = Event.SUCCESS },
                     {
-                        _event.value = Event.SUCCESS
-                        deleteLocal(id)
+                        onError(it)
                     }
                 )
         )

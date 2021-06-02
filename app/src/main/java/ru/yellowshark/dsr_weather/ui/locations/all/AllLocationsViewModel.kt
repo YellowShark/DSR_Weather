@@ -23,20 +23,15 @@ class AllLocationsViewModel @Inject constructor(
         get() = _event
     private val _event = MutableLiveData<Event>()
 
-    fun updateIsFavorite(locationId: Int, newValue: Boolean) {
-        disposables.add(repository.updateIsFavorite(locationId, newValue).subscribe())
-    }
-
-    fun updateLocations() {
-        disposables.add(repository.getLocations()
-            .doOnSubscribe { _event.value = Event.LOADING }
-            .subscribe { list ->
-                if (list.isEmpty())
-                    _event.value = Event.EMPTY
-                else
-                    list.forEach { updateTemperature(it) }
-            }
-        )
+    private fun onError(t: Throwable) {
+        t.printStackTrace()
+        if (_event.value != Event.NO_INTERNET && _event.value != Event.UNKNOWN_ERROR) {
+            if (t is NoConnectivityException)
+                _event.value = Event.NO_INTERNET
+            else
+                _event.value = Event.UNKNOWN_ERROR
+            showLocalData()
+        }
     }
 
     private fun updateTemperature(location: Location) {
@@ -81,21 +76,32 @@ class AllLocationsViewModel @Inject constructor(
         )
     }
 
-    private fun onError(t: Throwable) {
-        t.printStackTrace()
-        if (_event.value != Event.NO_INTERNET && _event.value != Event.UNKNOWN_ERROR) {
-            if (t is NoConnectivityException)
-                _event.value = Event.NO_INTERNET
-            else
-                _event.value = Event.UNKNOWN_ERROR
-            showLocalData()
-        }
-    }
-
     private fun showLocalData() {
         disposables.add(repository.getLocations()
-            .subscribe { list ->
-                list.forEach { _location.value = it }
-            })
+            .subscribe(
+                { list ->
+                    list.forEach { _location.value = it }
+                },
+                { onError(it) }
+            ))
+    }
+
+    fun updateIsFavorite(locationId: Int, newValue: Boolean) {
+        disposables.add(repository.updateIsFavorite(locationId, newValue).subscribe())
+    }
+
+    fun updateLocations() {
+        disposables.add(repository.getLocations()
+            .doOnSubscribe { _event.value = Event.LOADING }
+            .subscribe(
+                { list ->
+                    if (list.isEmpty())
+                        _event.value = Event.EMPTY
+                    else
+                        list.forEach { updateTemperature(it) }
+                },
+                { onError(it) }
+            )
+        )
     }
 }

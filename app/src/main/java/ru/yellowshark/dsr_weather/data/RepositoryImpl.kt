@@ -8,8 +8,10 @@ import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
-import ru.yellowshark.dsr_weather.data.remote.api.TriggersApi
-import ru.yellowshark.dsr_weather.domain.mapper.*
+import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
+import ru.yellowshark.dsr_weather.domain.mapper.LocalTriggerMapper
+import ru.yellowshark.dsr_weather.domain.mapper.NetworkForecastMapper
+import ru.yellowshark.dsr_weather.domain.mapper.NetworkShortForecastMapper
 import ru.yellowshark.dsr_weather.domain.model.Forecast
 import ru.yellowshark.dsr_weather.domain.model.Location
 import ru.yellowshark.dsr_weather.domain.model.ShortForecast
@@ -19,13 +21,11 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val forecastApi: ForecastApi,
-    private val triggersApi: TriggersApi,
     private val locationsDao: LocationsDao,
     private val triggersDao: TriggersDao,
     private val networkMapper: NetworkForecastMapper,
     private val networkShortForecastMapper: NetworkShortForecastMapper,
     private val localLocationMapper: LocalLocationMapper,
-    private val postTriggerMapper: PostTriggerMapper,
     private val localTriggerMapper: LocalTriggerMapper
 ) : Repository {
 
@@ -103,22 +103,9 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun saveTrigger(trigger: Trigger): Single<String> {
-        return triggersApi.saveTrigger(postTriggerMapper.fromDomain(trigger))
-            .map { it.id }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    override fun getTriggerById(triggerId: String): Single<Trigger> {
+    override fun getTriggerById(triggerId: Int): Single<Trigger> {
         return triggersDao.getTriggerById(triggerId)
             .map { localTriggerMapper.toDomain(it) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-    }
-
-    override fun deleteTrigger(triggerId: String): Completable {
-        return triggersApi.deleteTrigger(triggerId)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -136,7 +123,7 @@ class RepositoryImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    override fun deleteLocalTrigger(id: String): Completable {
+    override fun deleteLocalTrigger(id: Int): Completable {
         return triggersDao.deleteTrigger(id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

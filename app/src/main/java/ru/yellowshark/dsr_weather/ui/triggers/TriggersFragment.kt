@@ -31,7 +31,7 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
     override fun onResume() {
         super.onResume()
         viewModel.getTriggers()
-        arguments?.getString(AlertService.TRIGGER_ID)?.let { id ->
+        arguments?.getInt(AlertService.TRIGGER_ID)?.let { id ->
             val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(id)
             requireArguments().clear()
             findNavController().navigate(actionTriggerDetails)
@@ -59,7 +59,7 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
         binding.triggersAddBtn.setOnClickListener {
             openDetails(
                 Trigger(
-                    "",
+                    -1,
                     "",
                     "",
                     0.0,

@@ -11,7 +11,7 @@ import ru.yellowshark.dsr_weather.data.db.entity.TriggerEntity
 
 const val DB_NAME = "locations.db"
 
-@Database(entities = [LocationEntity::class, TriggerEntity::class], version = 12)
+@Database(entities = [LocationEntity::class, TriggerEntity::class], version = 13)
 abstract class LocationsDatabase : RoomDatabase() {
     companion object {
         @Volatile
@@ -23,8 +23,12 @@ abstract class LocationsDatabase : RoomDatabase() {
         }
 
         private fun buildDatabase(context: Context) =
-            Room.databaseBuilder(context.applicationContext, LocationsDatabase::class.java, DB_NAME)
-                .addMigrations(MIGRATION_10_11, MIGRATION_11_12)
+            Room.databaseBuilder(
+                context.applicationContext,
+                LocationsDatabase::class.java,
+                DB_NAME
+            )
+                .addMigrations(MIGRATION_10_11, MIGRATION_11_12, MIGRATION_12_13)
                 .build()
     }
 

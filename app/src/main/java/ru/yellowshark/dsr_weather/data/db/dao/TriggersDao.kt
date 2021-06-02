@@ -18,8 +18,8 @@ interface TriggersDao {
     fun updateTrigger(trigger: TriggerEntity): Completable
 
     @Query("DELETE FROM triggers WHERE id =:triggerId")
-    fun deleteTrigger(triggerId: String): Completable
+    fun deleteTrigger(triggerId: Int): Completable
 
     @Query("SELECT * FROM triggers WHERE id =:triggerId")
-    fun getTriggerById(triggerId: String): Single<TriggerEntity>
+    fun getTriggerById(triggerId: Int): Single<TriggerEntity>
 }
