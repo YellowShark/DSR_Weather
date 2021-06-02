@@ -50,9 +50,14 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
 
     private fun observeViewModel() {
         with(viewModel) {
-            triggers.observe(viewLifecycleOwner) {
-                if (it.isNotEmpty())
-                    adapter.data = it
+            triggers.observe(viewLifecycleOwner) { list ->
+                if (list.isNotEmpty())
+                    with(binding) {
+                        triggersRv.isVisible = true
+                        triggersTextIfNoTriggers.isVisible = false
+                    }.also {
+                        adapter.data = list
+                    }
                 else
                     with(binding) {
                         triggersRv.isVisible = false
