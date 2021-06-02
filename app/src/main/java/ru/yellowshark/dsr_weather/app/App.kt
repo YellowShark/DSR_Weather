@@ -28,7 +28,7 @@ class App : Application(), Configuration.Provider {
 
         val alertWorkRequest = PeriodicWorkRequestBuilder<AlertWorker>(15, TimeUnit.MINUTES)
             .setConstraints(constraints)
-            //.setBackoffCriteria(BackoffPolicy.LINEAR, 5, TimeUnit.MINUTES)
+            .setInitialDelay(5, TimeUnit.MINUTES)
             .build()
 
         WorkManager.getInstance(this)
