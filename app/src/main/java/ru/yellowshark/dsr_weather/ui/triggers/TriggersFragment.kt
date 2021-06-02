@@ -33,9 +33,11 @@ class TriggersFragment : Fragment(R.layout.fragment_triggers) {
         super.onResume()
         viewModel.getTriggers()
         arguments?.getInt(AlertService.TRIGGER_ID)?.let { id ->
-            val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(id)
-            requireArguments().clear()
-            findNavController().navigate(actionTriggerDetails)
+            if (id != 0) {
+                val actionTriggerDetails = TriggersFragmentDirections.actionTriggerDetails(id)
+                requireArguments().clear()
+                findNavController().navigate(actionTriggerDetails)
+            }
         }
     }
 
