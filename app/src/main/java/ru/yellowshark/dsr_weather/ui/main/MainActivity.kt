@@ -3,6 +3,7 @@ package ru.yellowshark.dsr_weather.ui.main
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.ActivityMainBinding
 import ru.yellowshark.dsr_weather.service.AlertService
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
+import ru.yellowshark.dsr_weather.utils.hideKeyboard
 
 //TODO
 // init favorites +++
@@ -37,7 +39,7 @@ import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
+class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener {
     private val binding: ActivityMainBinding by viewBinding()
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
@@ -54,6 +56,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener{
     override fun onResume() {
         super.onResume()
         checkIfNotificationWasOpened()
+    }
+
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        hideKeyboard(currentFocus ?: View(this))
+        return super.dispatchTouchEvent(ev)
     }
 
     override fun onSupportNavigateUp(): Boolean {

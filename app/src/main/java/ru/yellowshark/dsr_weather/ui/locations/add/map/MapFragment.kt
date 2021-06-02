@@ -21,6 +21,7 @@ import ru.yellowshark.dsr_weather.R
 import ru.yellowshark.dsr_weather.databinding.FragmentMapBinding
 import ru.yellowshark.dsr_weather.ui.locations.add.AddLocationViewModel
 import ru.yellowshark.dsr_weather.ui.locations.add.OnClickListener
+import ru.yellowshark.dsr_weather.utils.hideKeyboard
 import java.io.IOException
 
 class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
@@ -90,6 +91,7 @@ class MapFragment : Fragment(R.layout.fragment_map), OnMapReadyCallback {
     }
 
     private fun search() {
+        requireActivity().hideKeyboard(binding.root)
         val location = binding.mapSearchEt.text.toString()
         val addressList: List<Address>?
         if (location.trim().isNotEmpty()) {
