@@ -45,6 +45,7 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
 
     private fun initUi() {
         with(binding) {
+            initHints()
             initMasks()
             if (args.id == -1) {
                 mainViewModel.updateToolbarTitle(getString(R.string.new_trigger))
@@ -53,6 +54,11 @@ class DetailTriggerFragment : Fragment(R.layout.fragment_trigger_details) {
                 triggerDetailsDateEndEt.setText(DateConverter.dateFormat(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
             } else viewModel.getTriggerById(args.id)
         }
+    }
+
+    private fun initHints() {
+        if (!viewModel.isMetricUnit()) binding.triggerDetailsTempTil.hint =
+            getString(R.string.temp_fahrenheit)
     }
 
     private fun initMasks() {

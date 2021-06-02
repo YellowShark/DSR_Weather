@@ -1,12 +1,14 @@
 package ru.yellowshark.dsr_weather.domain.mapper
 
 import ru.yellowshark.dsr_weather.data.db.entity.TriggerEntity
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.domain.model.Trigger
-import ru.yellowshark.dsr_weather.utils.DateConverter
-import ru.yellowshark.dsr_weather.utils.Mapper
+import ru.yellowshark.dsr_weather.utils.*
 import java.util.*
 
-class LocalTriggerMapper : Mapper<Trigger, TriggerEntity> {
+class LocalTriggerMapper constructor(
+    private val unitManager: UnitManager
+) : Mapper<Trigger, TriggerEntity> {
     override fun toDomain(dto: TriggerEntity): Trigger {
         with(dto) {
             return Trigger(
@@ -15,7 +17,7 @@ class LocalTriggerMapper : Mapper<Trigger, TriggerEntity> {
                 locationName,
                 lat,
                 lon,
-                temp,
+                if (unitManager.isMetric()) temp.celsiusFromKelvin() else temp.fahrenheitFromKelvin(),
                 humidity,
                 wind,
                 DateConverter.dateFormat(startMillis),
@@ -38,7 +40,7 @@ class LocalTriggerMapper : Mapper<Trigger, TriggerEntity> {
                 locationName,
                 lat,
                 lon,
-                temp,
+                if (unitManager.isMetric()) temp.celsiusToKelvin() else temp.fahrenheitToKelvin(),
                 humidity,
                 wind,
                 startMillis,

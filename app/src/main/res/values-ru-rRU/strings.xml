@@ -42,13 +42,14 @@
     <string name="triggers">Триггеры</string>
     <string name="trigger_name">Название триггера (обязательное поле)</string>
     <string name="trigger_details_title">Параметры триггера</string>
-    <string name="temp">Температура (обязательное поле)</string>
+    <string name="temp_celsius">Температура °C (обязательное поле)</string>
+    <string name="temp_fahrenheit">Температура °F (обязательное поле)</string>
     <string name="location_name_detail">Название локации (обязательное поле)</string>
-    <string name="wind_speed">Скорость ветра</string>
+    <string name="wind_speed">Скорость ветра м/с</string>
     <string name="save">Сохранить</string>
     <string name="date_start">Дата начала</string>
     <string name="date_end">Дата конца</string>
-    <string name="humidity_detail">Влажность</string>
+    <string name="humidity_detail">Влажность %</string>
     <string name="required_fields">Пожалуйста, заполните обязательные поля.</string>
     <string name="new_trigger">Новый триггер</string>
     <string name="choose_location">Выберите локацию</string>

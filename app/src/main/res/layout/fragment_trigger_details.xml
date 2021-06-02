@@ -65,7 +65,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/triggerDetails_temp_til"
                 style="@style/trigger_til_style"
-                android:hint="@string/temp">
+                android:hint="@string/temp_celsius">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/triggerDetails_temp_et"

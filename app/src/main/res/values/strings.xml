@@ -46,12 +46,13 @@
     <string name="triggers">Triggers</string>
     <string name="trigger_name">Trigger name (required)</string>
     <string name="trigger_details_title">Trigger settings</string>
-    <string name="temp">Temperature (required)</string>
-    <string name="wind_speed">Wind speed</string>
+    <string name="temp_celsius">Temperature °C (required)</string>
+    <string name="temp_fahrenheit">Temperature °F (required)</string>
+    <string name="wind_speed">Wind speed m/s</string>
     <string name="save">Save</string>
     <string name="date_start">Start date</string>
     <string name="date_end">End date</string>
-    <string name="humidity_detail">Humidity</string>
+    <string name="humidity_detail">Humidity %</string>
     <string name="required_fields">Please, fill all required fields.</string>
     <string name="new_trigger">New trigger</string>
     <string name="choose_location">Choose a location</string>

@@ -14,4 +14,6 @@ interface ServiceRepository {
     fun getTriggers(): Observable<List<TriggerEntity>>
 
     fun getUnitSymbol(): String
+
+    fun isMetricUnit(): Boolean
 }

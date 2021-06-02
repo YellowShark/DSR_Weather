@@ -18,6 +18,8 @@ import ru.yellowshark.dsr_weather.data.db.entity.TriggerEntity
 import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 import ru.yellowshark.dsr_weather.domain.repository.ServiceRepository
 import ru.yellowshark.dsr_weather.ui.main.MainActivity
+import ru.yellowshark.dsr_weather.utils.celsiusToKelvin
+import ru.yellowshark.dsr_weather.utils.fahrenheitToKelvin
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.util.*
@@ -237,7 +239,7 @@ class AlertService : Service() {
             val timeInMillis = Calendar.getInstance().timeInMillis
             Log.d(TAG, "loadAndCompareForecast: $forecast\n$trigger")
             if (trigger.endMillis > timeInMillis && timeInMillis >= trigger.startMillis)
-                if (forecast.main.temp.toInt() == trigger.temp) {
+                if (compareTemperatures(forecast.main.temp.toInt(), trigger.temp)) {
                     return if (trigger.wind == null && trigger.humidity == null)
                         true
                     else {
@@ -247,6 +249,12 @@ class AlertService : Service() {
                 }
         }
         return false
+    }
+
+    private fun compareTemperatures(currTemp: Int, triggerTemp: Int): Boolean {
+        val currInKelvins =
+            if (repository.isMetricUnit()) currTemp.celsiusToKelvin() else currTemp.fahrenheitToKelvin()
+        return currInKelvins == triggerTemp
     }
 
     private fun Double.round(): Double {

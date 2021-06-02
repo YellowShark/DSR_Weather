@@ -36,4 +36,6 @@ class ServiceRepositoryImpl @Inject constructor(
     }
 
     override fun getUnitSymbol(): String = unitManager.getUnitSymbol()
+
+    override fun isMetricUnit(): Boolean = unitManager.isMetric()
 }

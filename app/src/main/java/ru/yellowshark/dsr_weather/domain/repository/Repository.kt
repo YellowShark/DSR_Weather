@@ -34,4 +34,6 @@ interface Repository {
     fun getTriggerById(triggerId: Int): Single<Trigger>
 
     fun deleteLocalTrigger(id: Int): Completable
+
+    fun isMetricUnit(): Boolean
 }

@@ -28,4 +28,8 @@ class UnitManager(
     fun getUnitSymbol(): String {
         return if (getUnit() == METRIC_UNITS) "°C" else "°F"
     }
+
+    fun isMetric(): Boolean {
+        return getUnit() == METRIC_UNITS
+    }
 }

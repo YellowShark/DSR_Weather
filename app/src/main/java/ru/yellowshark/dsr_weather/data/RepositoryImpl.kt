@@ -7,6 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.yellowshark.dsr_weather.data.db.dao.LocationsDao
 import ru.yellowshark.dsr_weather.data.db.dao.TriggersDao
+import ru.yellowshark.dsr_weather.data.other.UnitManager
 import ru.yellowshark.dsr_weather.data.remote.api.ForecastApi
 import ru.yellowshark.dsr_weather.domain.mapper.LocalLocationMapper
 import ru.yellowshark.dsr_weather.domain.mapper.LocalTriggerMapper
@@ -26,7 +27,8 @@ class RepositoryImpl @Inject constructor(
     private val networkMapper: NetworkForecastMapper,
     private val networkShortForecastMapper: NetworkShortForecastMapper,
     private val localLocationMapper: LocalLocationMapper,
-    private val localTriggerMapper: LocalTriggerMapper
+    private val localTriggerMapper: LocalTriggerMapper,
+    private val unitManager: UnitManager
 ) : Repository {
 
     override fun getForecast(lat: Double, lon: Double): Single<Forecast> {
@@ -128,4 +130,6 @@ class RepositoryImpl @Inject constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    override fun isMetricUnit(): Boolean = unitManager.isMetric()
 }

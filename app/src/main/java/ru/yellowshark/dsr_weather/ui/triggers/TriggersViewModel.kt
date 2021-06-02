@@ -100,6 +100,8 @@ class TriggersViewModel @Inject constructor(
         _chosenLocation.value = location
     }
 
+    fun isMetricUnit() = repository.isMetricUnit()
+
     fun clearData() {
         _event.value = null
         _trigger.value = null
