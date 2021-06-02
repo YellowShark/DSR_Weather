@@ -37,20 +37,20 @@
                 android:id="@+id/locations_addLocations_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginStart="@dimen/margin_40dp"
+                android:layout_marginEnd="@dimen/margin_40dp"
                 android:gravity="center"
                 android:text="@string/no_locations_text"
                 android:textColor="@color/black"
-                android:textSize="18sp" />
+                android:textSize="@dimen/text_size_18sp" />
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/locations_addLocations_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="40dp"
+                android:layout_marginStart="@dimen/margin_40dp"
+                android:layout_marginTop="@dimen/margin_40dp"
+                android:layout_marginEnd="@dimen/margin_40dp"
                 android:background="@color/black"
                 android:text="@string/add_location"
                 android:textColor="@color/white" />
@@ -61,8 +61,8 @@
             android:id="@+id/locations_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="@dimen/margin_30dp"
+            android:layout_marginEnd="@dimen/margin_30dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

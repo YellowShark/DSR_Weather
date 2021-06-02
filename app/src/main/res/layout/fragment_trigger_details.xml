@@ -124,26 +124,14 @@
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/triggerDetails_save_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="15dp"
-                android:background="@color/black"
+                style="@style/base_button_style"
                 android:text="@string/save"
-                android:textColor="@color/white" />
+                android:layout_marginBottom="0dp"/>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/triggerDetails_delete_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="30dp"
-                android:background="@color/black"
-                android:text="@string/delete"
-                android:textColor="@color/white" />
+                style="@style/base_button_style"
+                android:text="@string/delete" />
 
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

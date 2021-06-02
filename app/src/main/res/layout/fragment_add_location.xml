@@ -15,8 +15,8 @@
     <com.rd.PageIndicatorView
         android:id="@+id/addLocation_pageIndicator"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
-        android:layout_marginBottom="40dp"
+        android:layout_height="@dimen/height_20dp"
+        android:layout_marginBottom="@dimen/margin_40dp"
         app:piv_selectedColor="@color/black"
         app:piv_unselectedColor="@color/gray"
         android:layout_gravity="center"

@@ -14,9 +14,9 @@
             android:id="@+id/forecast_city_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_margin="@dimen/margin_30dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_16sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Воронеж" />
@@ -25,18 +25,18 @@
             android:id="@+id/forecast_date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="30dp"
+            android:layout_margin="@dimen/margin_30dp"
             android:textColor="@color/black"
-            android:textSize="16sp"
+            android:textSize="@dimen/text_size_16sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="9 мая" />
 
         <ImageView
             android:id="@+id/forecast_icon_image"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="@dimen/size_200dp"
+            android:layout_height="@dimen/size_200dp"
+            android:layout_marginTop="@dimen/margin_20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_city_text"
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="64sp"
+            android:textSize="@dimen/text_size_64sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_icon_image"
@@ -57,9 +57,9 @@
             android:id="@+id/forecast_desc_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/margin_20dp"
             android:textColor="@color/black"
-            android:textSize="24sp"
+            android:textSize="@dimen/text_size_24sp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_temperature_text"
@@ -70,7 +70,7 @@
             android:id="@+id/forecast_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/margin_20dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_desc_text"
             tools:itemCount="1"
@@ -80,8 +80,8 @@
             android:id="@+id/forecast_details_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginStart="@dimen/margin_60dp"
+            android:layout_marginTop="@dimen/margin_30dp"
             android:orientation="vertical"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_rv">
@@ -90,27 +90,27 @@
                 android:id="@+id/forecast_wind_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/margin_12dp"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_16sp"
                 tools:text="Ветер:" />
 
             <TextView
                 android:id="@+id/forecast_pressure_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/margin_12dp"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_16sp"
                 tools:text="Давление:" />
 
             <TextView
                 android:id="@+id/forecast_humidity_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="12dp"
+                android:layout_margin="@dimen/margin_12dp"
                 android:textColor="@color/black"
-                android:textSize="16sp"
+                android:textSize="@dimen/text_size_16sp"
                 tools:text="Влажность:" />
 
         </LinearLayout>
@@ -118,18 +118,15 @@
         <com.jjoe64.graphview.GraphView
             android:id="@+id/forecast_graph"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="30dp"
+            android:layout_height="@dimen/height_200dp"
+            android:layout_margin="@dimen/margin_15dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/forecast_details_wrapper" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/forecast_delete_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="40dp"
-            android:background="@color/black"
+            style="@style/base_button_style"
             android:text="@string/delete"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
