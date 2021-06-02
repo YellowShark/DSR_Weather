@@ -168,10 +168,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), OnClickListener 
     }
 
     private fun checkIfNotificationWasOpened() {
-        val extra = intent.extras?.getString(AlertService.TRIGGER_ID) ?: ""
-        if (extra.isNotEmpty()) {
+        val extra = intent.extras?.getInt(AlertService.TRIGGER_ID) ?: -1
+        if (extra != -1) {
             val args = Bundle()
-            args.putString(AlertService.TRIGGER_ID, extra)
+            args.putInt(AlertService.TRIGGER_ID, extra)
             navController.navigate(R.id.destination_triggers, args)
         }
     }

@@ -32,7 +32,11 @@ class App : Application(), Configuration.Provider {
             .build()
 
         WorkManager.getInstance(this)
-            .enqueue(alertWorkRequest)
+            .enqueueUniquePeriodicWork(
+                AlertWorker::javaClass.name,
+                ExistingPeriodicWorkPolicy.KEEP,
+                alertWorkRequest
+            )
     }
 
     override fun getWorkManagerConfiguration(): Configuration =
