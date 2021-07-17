@@ -9,9 +9,6 @@ import ru.yellowshark.dsr_weather.data.remote.response.ForecastResponse
 
 interface ForecastApi {
     @GET("data/2.5/weather")
-    fun getForecastByCityId(@Query("id") cityId: Int): Single<ForecastResponse>
-
-    @GET("data/2.5/weather")
     fun getForecast(
         @Query("lat") lat: Double,
         @Query("lon") lon: Double
